@@ -16,6 +16,7 @@ import { labeledField, textField } from '../components/fields.js';
 import { showConfirmation } from '../components/sheets.js';
 import { showToast } from '../components/feedback.js';
 import { downloadTextFile } from '../download.js';
+import { APPEARANCE_THEMES, loadAppearancePreferences, saveAppearancePreferences } from '../appearance.js';
 function standaloneMode() {
     const nav = navigator;
     return window.matchMedia('(display-mode: standalone)').matches || nav.standalone === true;
@@ -77,6 +78,73 @@ export async function renderSettings(repositories, profile, onProfileChanged, on
         labeledField('Nome exibido', nameInput),
         saveNameButton
     ]);
+    let appearancePreferences = loadAppearancePreferences();
+    const themeButtons = new Map();
+    const intensityButtons = new Map();
+    const themeGrid = el('div', 'appearance-theme-grid');
+    const applyAppearancePreferences = (next) => {
+        appearancePreferences = next;
+        saveAppearancePreferences(next);
+        for (const [theme, themeButton] of themeButtons) {
+            themeButton.classList.toggle('active', !next.autoByTime && theme === next.theme);
+            themeButton.setAttribute('aria-pressed', String(!next.autoByTime && theme === next.theme));
+        }
+        autoToggle.classList.toggle('active', next.autoByTime);
+        autoToggle.setAttribute('aria-pressed', String(next.autoByTime));
+        for (const [intensity, intensityButton] of intensityButtons) {
+            intensityButton.classList.toggle('active', intensity === next.intensity);
+            intensityButton.setAttribute('aria-pressed', String(intensity === next.intensity));
+        }
+    };
+    for (const option of APPEARANCE_THEMES) {
+        const themeButton = el('button', 'appearance-theme', [
+            el('span', 'appearance-swatch'),
+            el('span', '', [el('strong', '', [option.label]), el('small', '', [option.support])])
+        ]);
+        themeButton.type = 'button';
+        themeButton.dataset.theme = option.id;
+        themeButton.setAttribute('aria-label', `Usar aparência ${option.label}`);
+        themeButton.addEventListener('click', () => applyAppearancePreferences({ ...appearancePreferences, theme: option.id, autoByTime: false }));
+        themeButtons.set(option.id, themeButton);
+        themeGrid.append(themeButton);
+    }
+    const autoToggle = el('button', 'appearance-toggle');
+    autoToggle.type = 'button';
+    autoToggle.setAttribute('aria-label', 'Trocar aparência automaticamente pelo horário');
+    autoToggle.addEventListener('click', () => applyAppearancePreferences({ ...appearancePreferences, autoByTime: !appearancePreferences.autoByTime }));
+    const intensityControl = el('div', 'appearance-intensity');
+    const intensityOptions = [
+        { id: 'soft', label: 'Suave' },
+        { id: 'balanced', label: 'Equilibrado' },
+        { id: 'vivid', label: 'Vivo' }
+    ];
+    for (const option of intensityOptions) {
+        const intensityButton = el('button', '', [option.label]);
+        intensityButton.type = 'button';
+        intensityButton.addEventListener('click', () => applyAppearancePreferences({ ...appearancePreferences, intensity: option.id }));
+        intensityButtons.set(option.id, intensityButton);
+        intensityControl.append(intensityButton);
+    }
+    const appearanceCard = el('section', 'settings-section-card appearance-card', [
+        el('div', 'settings-section-heading', [
+            el('div', '', [el('small', '', ['APARÊNCIA']), el('h2', '', ['Seu Orion'])])
+        ]),
+        el('p', 'settings-help', ['Escolha a aparência do app. Isso não altera seus dados nem os cálculos financeiros.']),
+        themeGrid,
+        el('div', 'appearance-row', [
+            el('div', 'appearance-row-copy', [
+                el('strong', '', ['Mudar automaticamente pelo horário']),
+                el('small', '', ['Aurora de manhã · Clássico durante o dia · Cobre ao entardecer · Violeta à noite'])
+            ]),
+            autoToggle
+        ]),
+        el('div', 'appearance-row', [
+            el('div', 'appearance-row-copy', [el('strong', '', ['Intensidade visual']), el('small', '', ['Controla brilho e elementos decorativos.'])]),
+            intensityControl
+        ]),
+        el('p', 'appearance-auto-note', ['A preferência fica somente neste dispositivo e pode ser alterada a qualquer momento. O ícone instalado do PWA permanece o mesmo.'])
+    ]);
+    applyAppearancePreferences(appearancePreferences);
     const exportButton = settingsAction('backup', 'Criar backup', 'Salve uma cópia dos seus dados neste dispositivo.', () => {
         void createProfileBackup(repositories, profile).then((backup) => {
             const day = new Date().toISOString().slice(0, 10);
@@ -194,6 +262,6 @@ export async function renderSettings(repositories, profile, onProfileChanged, on
             el('div', 'settings-action-list', [technicalReportButton, exportTechnicalReportButton])
         ], 'info')
     ]);
-    root.append(profileCard, dataCard, supportCard);
+    root.append(profileCard, appearanceCard, dataCard, supportCard);
     return root;
 }

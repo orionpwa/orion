@@ -7,6 +7,7 @@ import { IndexedDbMarketDataCache } from '../data/indexeddb/market-cache.js';
 import { IndexedDbMetadataRepository } from '../data/indexeddb/metadata.js';
 import { clear } from '../ui/dom.js';
 import { createShell } from '../ui/shell.js';
+import { initializeAppearanceClock } from '../ui/appearance.js';
 import { renderHome } from '../ui/screens/home.js';
 import { renderMovements } from '../ui/screens/movements.js';
 import { renderPlanning } from '../ui/screens/planning.js';
@@ -30,6 +31,7 @@ import { FundamentalRefreshCoordinator } from '../application/market-data/fundam
 const platformRuntime = new WebPlatformRuntime();
 const marketDataCache = new IndexedDbMarketDataCache();
 document.documentElement.classList.toggle('pwa-standalone', platformRuntime.isStandalone());
+initializeAppearanceClock();
 const repositories = {
     profiles: new IndexedDbProfileRepository(),
     accounts: new IndexedDbAccountRepository(),

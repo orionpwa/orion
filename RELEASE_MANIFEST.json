@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "product": "Orion Finance",
-  "appVersion": "0.1.0-development.12.16",
+  "appVersion": "0.1.0-development.12.17",
   "phase": 12,
   "classification": "PWA TESTÁVEL — PODE IR AO GITHUB PARA TESTE",
   "runtimeOnly": true,
@@ -20,13 +20,13 @@
     },
     {
       "path": "dist/app/main.js",
-      "bytes": 10159,
-      "sha256": "d4fccd07007a2b77cc96e392cd320bcf4e7aeb8bdfe0556bb0ef946e36879475"
+      "bytes": 10253,
+      "sha256": "375c0c47b382530f17a27f15ec2676ab7e13a53a0847277bb41463ed3164ab3a"
     },
     {
       "path": "dist/app/version.js",
       "bytes": 190,
-      "sha256": "ea2a32cc5dfa99f7aefece3aec6b0617d54928c674b68ec8ccf0b8beef5c04a7"
+      "sha256": "f33315b41c0be5cd94396688c5e02a6b57cafc72c710764ef928f53aae501bd6"
     },
     {
       "path": "dist/application/accounts/create-account.js",
@@ -579,6 +579,11 @@
       "sha256": "8956ccb3e79262abdd7e7b99d6738fa8230a6422b07ef7cee7fa9e67fca07cc4"
     },
     {
+      "path": "dist/ui/appearance.js",
+      "bytes": 3568,
+      "sha256": "1da4c73aa030249398687a0cd44f2243557eac34938226e106f90ab0894b36df"
+    },
+    {
       "path": "dist/ui/components/entity-actions.js",
       "bytes": 2688,
       "sha256": "d48559d7b9bba2af1acc3071c99b0c85c3f4edb4f61f45adc814551b84653f59"
@@ -620,8 +625,8 @@
     },
     {
       "path": "dist/ui/icons.js",
-      "bytes": 1620,
-      "sha256": "d392d43e7924fda520798d954eb0ea199f14e1bd6c460d04f42557d81b335b2e"
+      "bytes": 1648,
+      "sha256": "94990b84114f214c8a150aa8ee44ca9bb525eea1b1ba326fa928466d3dfa3040"
     },
     {
       "path": "dist/ui/screens/accounts.js",
@@ -710,8 +715,8 @@
     },
     {
       "path": "dist/ui/screens/settings.js",
-      "bytes": 12256,
-      "sha256": "6f5f4d9c2556455cdad47cf5dc56cf1e94b8f53581dbe6ec2cce87b7b4c78b8b"
+      "bytes": 16210,
+      "sha256": "494ca2a33451e841404f17f4c284749d603487160122d161e5b678a6cbb6bed4"
     },
     {
       "path": "dist/ui/shell.js",
@@ -720,8 +725,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 1620,
-      "sha256": "841ec9f48a90c2995b1a526eee9f08436fdf522749fb2815d116d47bcfda43e6"
+      "bytes": 1677,
+      "sha256": "6a79201f62cff83f1b90fd6ca288e18ba5209d7d1ac68ee86dff6b9efa3297f5"
     },
     {
       "path": "manifest.webmanifest",
@@ -735,8 +740,13 @@
     },
     {
       "path": "service-worker.js",
-      "bytes": 8298,
-      "sha256": "ec11d86a1b5f9739703e1c7d9fcd7e0e5a5d5a7aade068a9b32c4477c78570b6"
+      "bytes": 8327,
+      "sha256": "4cec8bef67d162217c3c7f030cec43433ffcb82191468d475b23e7021b35201d"
+    },
+    {
+      "path": "styles/appearance.css",
+      "bytes": 9641,
+      "sha256": "8bed7146c6635b88c7ffdd4c57b9afd4ff81a89fe167fa51d06df6f8bf5275c9"
     },
     {
       "path": "styles/base.css",
@@ -755,8 +765,8 @@
     },
     {
       "path": "styles/tokens.css",
-      "bytes": 854,
-      "sha256": "01db9b44a870792bc07c739c92b77fe265a3b98ea0714065e3119c99b2921cd3"
+      "bytes": 731,
+      "sha256": "cc1aad3aedce2dce98c54a34d5681ea40e2c3932758631960d818aae1c9d6168"
     }
   ]
 }

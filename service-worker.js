@@ -1,4 +1,4 @@
-const CACHE_NAME = "orion-0-1-0-development-12-16-static-v1";
+const CACHE_NAME = "orion-0-1-0-development-12-17-static-v1";
 const STATIC_PATHS = [
   "./",
   "./index.html",
@@ -120,6 +120,7 @@ const STATIC_PATHS = [
   "./dist/privacy/redaction.js",
   "./dist/privacy/remote-disclosure.js",
   "./dist/product/capabilities.js",
+  "./dist/ui/appearance.js",
   "./dist/ui/components/entity-actions.js",
   "./dist/ui/components/feedback.js",
   "./dist/ui/components/fields.js",
