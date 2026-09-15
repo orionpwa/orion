@@ -173,3 +173,18 @@
   .settings-action{grid-template-columns:34px minmax(0,1fr) 20px;padding:8px}
   .settings-action-symbol{width:32px;height:32px}
 }
+
+
+/* Fase 12.16 — Safari/iPhone: Configurações sempre rolável até o último bloco */
+.settings-screen{
+  display:block;
+  min-height:0;
+  height:100%;
+  overflow-y:auto;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-y;
+  padding-bottom:calc(44px + var(--safe-bottom));
+}
+.settings-screen>*+*{margin-top:11px}
+.settings-screen>.screen-heading{margin-top:0}
