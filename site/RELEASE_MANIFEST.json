@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "product": "Orion Finance",
-  "appVersion": "0.1.0-development.12.20",
+  "appVersion": "0.1.0-development.12.21",
   "phase": 12,
   "classification": "PWA TESTÁVEL — PODE IR AO GITHUB PARA TESTE",
   "runtimeOnly": true,
@@ -12,6 +12,166 @@
       "path": "_headers",
       "bytes": 717,
       "sha256": "ca42d38b19892be2ab4c7a422df545c2dc703cade7111f836f96869145f146f3"
+    },
+    {
+      "path": "assets/institutions-v2/agibank.svg",
+      "bytes": 698,
+      "sha256": "b993e67b35e7d300fa78aad5e301494412e2ec4e433f343690be795a2c9ac161"
+    },
+    {
+      "path": "assets/institutions-v2/banco-bv.svg",
+      "bytes": 696,
+      "sha256": "01ac5557b2e64e15ff5469f51632852482bdc6a9e6ce114d4a925ab28d1c7792"
+    },
+    {
+      "path": "assets/institutions-v2/banco-do-brasil.svg",
+      "bytes": 696,
+      "sha256": "26bf8a123adadcfbfb66ef66e6d1690b6f47bc7dc39275cfc540f267fdb66288"
+    },
+    {
+      "path": "assets/institutions-v2/banco-do-nordeste.svg",
+      "bytes": 698,
+      "sha256": "4467de42f9effce5c73defef611cbe7465d021281d2eecfcc524527d364c08ce"
+    },
+    {
+      "path": "assets/institutions-v2/banco-original.svg",
+      "bytes": 698,
+      "sha256": "99c5ea7cc025a85226f4733adde3659b5b14b5f423fdafc4b847c7a7cc510ca3"
+    },
+    {
+      "path": "assets/institutions-v2/banco-pan.svg",
+      "bytes": 698,
+      "sha256": "9aafd8d9bc47482912d28b775121131fc90861425e7fab2998f374f189a650f6"
+    },
+    {
+      "path": "assets/institutions-v2/banestes.svg",
+      "bytes": 694,
+      "sha256": "7705c24072d90e98d20b486f3ecc9f9a04a185cfe4c532f326d0c715de2c6a31"
+    },
+    {
+      "path": "assets/institutions-v2/banrisul.svg",
+      "bytes": 698,
+      "sha256": "fd70cc7edf707aa20382c6b5c1a64afa77272076399d52df1f700c28fd5c5fe7"
+    },
+    {
+      "path": "assets/institutions-v2/bmg.svg",
+      "bytes": 698,
+      "sha256": "bc4cf55f768baa03d932cfed1be59d5f9d8a5e7445485018e12d4ef7bd7c1446"
+    },
+    {
+      "path": "assets/institutions-v2/bradesco.svg",
+      "bytes": 698,
+      "sha256": "8e808092c10b9b7eb46de95ff55745e2c387beac207b04350b82fe390e92fe3d"
+    },
+    {
+      "path": "assets/institutions-v2/brb.svg",
+      "bytes": 698,
+      "sha256": "37bcfc6615e7872536cb62e6c529bde1e4de7924be20a18d7eb6ccb92fef0972"
+    },
+    {
+      "path": "assets/institutions-v2/btg.svg",
+      "bytes": 698,
+      "sha256": "dd1af9cc3d266f285cde75606788f655002dc476091c655be3f9115d0d4df01e"
+    },
+    {
+      "path": "assets/institutions-v2/c6-bank.svg",
+      "bytes": 696,
+      "sha256": "9c7a0873e22b086d96771e5bd0e0e0916ac650ec3d4a2c0da59c4de4c5759281"
+    },
+    {
+      "path": "assets/institutions-v2/caixa.svg",
+      "bytes": 694,
+      "sha256": "87a21a8ad5cd9cf0749b1300955414b4c247cedcfad541fc007458924b3997c6"
+    },
+    {
+      "path": "assets/institutions-v2/caju.svg",
+      "bytes": 700,
+      "sha256": "08db9bb5e41d691bc075a83e00d2ef000968007ba2b0fcb88ef45f3485871beb"
+    },
+    {
+      "path": "assets/institutions-v2/custom.svg",
+      "bytes": 694,
+      "sha256": "7eea8d863dc676517829ccbc8c27d226c9c750348adbe5bf5b14fece75c7ad02"
+    },
+    {
+      "path": "assets/institutions-v2/daycoval.svg",
+      "bytes": 698,
+      "sha256": "5231374f10925cfa49934f5260a9e81012b6fc625dce5053d98624b7aa661699"
+    },
+    {
+      "path": "assets/institutions-v2/inter.svg",
+      "bytes": 702,
+      "sha256": "e77f409273cd098dccd17bc0fbb11aed058ec79a80f27ba3c0a1c34a89726381"
+    },
+    {
+      "path": "assets/institutions-v2/itau.svg",
+      "bytes": 702,
+      "sha256": "84fba43800b855fc0837515be0406d5da94aa7d5d764156cc591aeea8ccdf07a"
+    },
+    {
+      "path": "assets/institutions-v2/mercado-pago.svg",
+      "bytes": 696,
+      "sha256": "1774085b437f498de27dadeb3d9fda7ee3bb0ba7720be2f777770688ba9aeec5"
+    },
+    {
+      "path": "assets/institutions-v2/neon.svg",
+      "bytes": 700,
+      "sha256": "34932a242b1dfe157a5492783683c30415cb955b2b86515fb980a238748a2654"
+    },
+    {
+      "path": "assets/institutions-v2/next.svg",
+      "bytes": 700,
+      "sha256": "80fcce1acad2cc649f51d04bba115a019b595f50bf88193494f267deba53fa0c"
+    },
+    {
+      "path": "assets/institutions-v2/nubank.svg",
+      "bytes": 696,
+      "sha256": "fd29af47462e7f4e7ad84e7d2682d7f61d7fd64b6bce35f1170ad281e5ef8ca4"
+    },
+    {
+      "path": "assets/institutions-v2/pagbank.svg",
+      "bytes": 698,
+      "sha256": "fb8e1c72243b5861a5c62506152514775e2efdb8744c8f8656cfa9616c08ce99"
+    },
+    {
+      "path": "assets/institutions-v2/picpay.svg",
+      "bytes": 694,
+      "sha256": "ddc2e6af32336bea8b9ca7277635265461fc70261ff1c6747c866f318527f042"
+    },
+    {
+      "path": "assets/institutions-v2/rico.svg",
+      "bytes": 700,
+      "sha256": "63d45fe488a2b7ac12136260daadc7834ab94bb53ad6479adbee95bf6c3e78c3"
+    },
+    {
+      "path": "assets/institutions-v2/safra.svg",
+      "bytes": 702,
+      "sha256": "7f606cdef9e5be0f6df2abdedce7d4f5b770ffd23ba5dacee588459aa008d214"
+    },
+    {
+      "path": "assets/institutions-v2/santander.svg",
+      "bytes": 698,
+      "sha256": "f6f30924c2b28308e438d1ae60954b4d56629c943cac8143a4a2eb7ad85baf60"
+    },
+    {
+      "path": "assets/institutions-v2/sicoob.svg",
+      "bytes": 704,
+      "sha256": "6cd552ee42b2faed23d1f695c5f74e496a5537bd9a76af3cc302f9b9b9c90e80"
+    },
+    {
+      "path": "assets/institutions-v2/sicredi.svg",
+      "bytes": 706,
+      "sha256": "cf7d86e965b850f02db608f33bb3deba415611d818acca870903084744bf8710"
+    },
+    {
+      "path": "assets/institutions-v2/will-bank.svg",
+      "bytes": 700,
+      "sha256": "5d75bd755b6b543a17025939b3c17c7ee73b875405a8489f1e5a2aea550fac7f"
+    },
+    {
+      "path": "assets/institutions-v2/xp.svg",
+      "bytes": 696,
+      "sha256": "6f7e39cbf080691a95a738f6d908ebbbdb6c8b2a7e88c56f49439098f2a9cce4"
     },
     {
       "path": "assets/orion-icon-rubi-v2-1254.png",
@@ -39,6 +199,11 @@
       "sha256": "b7021375633bb862d16958e97cfea827769dfdbd7641d591eea2e46edc19990d"
     },
     {
+      "path": "dist/app/main-v2.js",
+      "bytes": 10456,
+      "sha256": "8a5479c352be37005c46f1ac8e780c26da9fa3f98f0a6e32ff4a80ed66e455fc"
+    },
+    {
       "path": "dist/app/main.js",
       "bytes": 10253,
       "sha256": "375c0c47b382530f17a27f15ec2676ab7e13a53a0847277bb41463ed3164ab3a"
@@ -46,7 +211,7 @@
     {
       "path": "dist/app/version.js",
       "bytes": 190,
-      "sha256": "7a6f2e2ed9c6b18a4bbc69f6f8ed3959f4f4b5e8b773ff51d9b332e864c6c233"
+      "sha256": "ae53d64d75632970dbc3e730e765ac3b79aa2c8274cd94ca3d16350ee3d8cdcf"
     },
     {
       "path": "dist/application/accounts/create-account.js",
@@ -265,8 +430,8 @@
     },
     {
       "path": "dist/catalog/institutions.js",
-      "bytes": 2010,
-      "sha256": "234d449e3c9abef286355fcc99923ab0ada2b2d5e4e9af1958b186ce726ccfd1"
+      "bytes": 3112,
+      "sha256": "713521a0c8b29cd9d5bed90de1e7437eb6ca004c0e430b2e02c7652a6ca1d832"
     },
     {
       "path": "dist/config/runtime.js",
@@ -744,14 +909,49 @@
       "sha256": "496f59e256e270444eb960e78dc064b67dbec0743f6b8f7a617f54ce2f8e585c"
     },
     {
+      "path": "dist/ui/v2/accounts-manager.js",
+      "bytes": 8365,
+      "sha256": "346024d0bca5066ac21a0629df02aaf471110b30fd3c7a332e62eb0644c551ca"
+    },
+    {
+      "path": "dist/ui/v2/app-preview.js",
+      "bytes": 759,
+      "sha256": "4f721ce4cf80b8af208ca65017756244f47a5640219abe280a8d4c6be6660343"
+    },
+    {
+      "path": "dist/ui/v2/home.js",
+      "bytes": 5093,
+      "sha256": "21345426bb25e1b815e14c223a46d62f4f675e2802936f673cff721f2d3e761b"
+    },
+    {
+      "path": "dist/ui/v2/institution-brand.js",
+      "bytes": 964,
+      "sha256": "1fa4d850635aadce9b5e98bf13f46bf9f6716a9de9a3843f72acc6cf28ecaa61"
+    },
+    {
+      "path": "dist/ui/v2/movement-icon.js",
+      "bytes": 2704,
+      "sha256": "7c51196aa881d51f9e01ef3685732e40ee89c932d8f0637e5bc1fd3f27521a4f"
+    },
+    {
+      "path": "dist/ui/v2/movements.js",
+      "bytes": 10347,
+      "sha256": "c5fffe1d8bedbb1095497fa26094a335121cf99be6c7b3d51018f0a91a79d6bd"
+    },
+    {
+      "path": "dist/ui/v2/shell.js",
+      "bytes": 4699,
+      "sha256": "cbfc2a0d4ceace71469e93c6699cea11e5ee683ba042378d1cd3d808abea7701"
+    },
+    {
       "path": "index.html",
-      "bytes": 1796,
-      "sha256": "40bbf561ac9c8e69bc0ef52d4971c0399a9d168d3cf1e49f9d1629a44f354a9b"
+      "bytes": 1839,
+      "sha256": "d9c1fc4c1e3620131fd3ae4d1bd78de3da1f4020eeb6f986dbe6f952db791341"
     },
     {
       "path": "manifest.webmanifest",
       "bytes": 915,
-      "sha256": "5bbada05aceb97d4754e7eeea6f01de89899f14f43965d333d34784b5455d93a"
+      "sha256": "8a6f779330165864ab13c7f2910232fd040aa7ae3c472adf3a72f3181a87c3db"
     },
     {
       "path": "runtime-config.json",
@@ -760,8 +960,8 @@
     },
     {
       "path": "service-worker.js",
-      "bytes": 8583,
-      "sha256": "8f905d74bfcb38c1adf18e0ff7989d41cd16659e75a6c6bac9aa094d5e46d5ae"
+      "bytes": 10206,
+      "sha256": "4d694f234d29c7d0e11813b6b7249d8f9b56a8c6e09d151724dea9b98cab755f"
     },
     {
       "path": "styles/appearance.css",
@@ -787,6 +987,11 @@
       "path": "styles/tokens.css",
       "bytes": 731,
       "sha256": "8ebaada628bc90ddc88f083eafea478782d8de5c836eed0888043998bd5cbaf8"
+    },
+    {
+      "path": "styles/ux-v2.css",
+      "bytes": 11897,
+      "sha256": "79c84ea508610f2079dab73f9c59730469c499469e2c2bf812115643f42808f8"
     }
   ]
 }

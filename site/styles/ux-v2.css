@@ -1,0 +1,77 @@
+/* Orion UX v2 — camada nova de apresentação. Financial Core não depende deste arquivo. */
+:root{
+  --v2-radius-xl:22px;
+  --v2-radius-lg:18px;
+  --v2-radius-md:14px;
+  --v2-dock-base:58px;
+}
+
+html,body,#app{background:var(--bg);}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",Inter,system-ui,sans-serif;}
+
+/* Shell inspirado na densidade e hierarquia do Uno, sem copiar sua identidade. */
+.app-shell-v2{background:
+  radial-gradient(circle at 84% 12%,rgba(var(--orion-accent-rgb),.12),transparent 30%),
+  linear-gradient(180deg,var(--orion-shell-start),var(--orion-shell-end));}
+.app-shell-v2::before{top:calc(-190px + var(--safe-top));height:300px;opacity:.75;}
+.orion-header-v2{position:relative;z-index:20;padding:calc(10px + var(--safe-top)) var(--page-pad) 12px;display:grid;gap:13px;border-bottom:1px solid rgba(var(--orion-line-rgb),.18);background:linear-gradient(180deg,color-mix(in srgb,var(--orion-shell-start) 97%,transparent),color-mix(in srgb,var(--orion-shell-mid) 88%,transparent));}
+.orion-header-top-v2{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:48px;}
+.orion-brand-v2{display:flex;align-items:center;gap:11px;}
+.orion-brand-mark-v2{width:46px;height:46px;display:grid;place-items:center;border:1px solid rgba(var(--orion-accent-rgb),.48);border-radius:15px;background:linear-gradient(145deg,rgba(var(--orion-accent-rgb),.14),rgba(var(--orion-accent-2-rgb),.055));box-shadow:inset 0 1px rgba(255,255,255,.05),0 8px 24px rgba(0,0,0,.16);color:var(--orion-accent);font-size:22px;}
+.orion-brand-copy-v2{display:grid;gap:3px}.orion-brand-copy-v2 strong{font-size:11px;font-weight:850;letter-spacing:.22em}.orion-brand-copy-v2 small{color:var(--muted);font-size:7px;letter-spacing:.18em;}
+.profile-chip-v2{width:44px;height:44px;display:grid;place-items:center;border:1px solid rgba(var(--orion-accent-rgb),.58);border-radius:50%;background:color-mix(in srgb,var(--orion-panel) 82%,transparent);font-size:14px;font-weight:820;box-shadow:0 7px 22px rgba(0,0,0,.16);}
+.profile-chip-v2.active{box-shadow:0 0 0 3px rgba(var(--orion-accent-rgb),.12),0 0 20px rgba(var(--orion-accent-rgb),.14)}
+.orion-context-v2{display:grid;gap:3px;}.orion-context-title-v2{margin:0;color:var(--text);font-size:23px;line-height:1.08;letter-spacing:-.035em}.orion-context-support-v2{margin:0;color:var(--muted);font-size:10px;line-height:1.4;}
+.app-shell-v2[data-route="home"] .orion-context-title-v2{font-size:24px;}
+
+/* Conteúdo mais próximo da densidade visual do Uno. */
+.app-shell-v2 .screen{padding:14px var(--page-pad) 18px;}
+.home-screen-v2{display:grid;align-content:start;gap:12px;}
+.hero-card-v2{padding:14px 15px 11px;border-radius:var(--v2-radius-xl);}
+.hero-money-v2{display:block;margin:8px 0 10px;font-size:34px;letter-spacing:-.055em;line-height:1;}
+.metrics-grid-v2{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding-top:10px;border-top:1px solid rgba(var(--orion-line-rgb),.19);}
+.metric-tile-v2{min-height:54px;padding:7px 8px;grid-template-columns:7px 1fr;gap:6px;border-radius:13px;}
+.metric-tile-v2 .metric-copy small{font-size:6.8px}.metric-tile-v2 .metric-copy strong{font-size:9.2px;line-height:1.2}.hero-card-v2 .metric-note{display:block;margin-top:7px;font-size:7px;}
+.priority-card-v2{margin:0;min-height:86px;border-radius:var(--v2-radius-lg);padding:13px 14px;grid-template-columns:42px minmax(0,1fr) 16px;gap:12px;}
+.priority-card-v2 strong{font-size:14px}.priority-card-v2 span:not(.priority-icon):not(.priority-chevron){font-size:9px;line-height:1.35}.priority-card-v2 small{font-size:7px;letter-spacing:.17em}.priority-card-v2 .priority-icon{width:40px;height:40px;font-size:17px;}
+.home-accounts-v2{margin-top:1px}.home-accounts-v2 .section-title-row{margin-bottom:8px}.home-accounts-v2 h2{font-size:20px;letter-spacing:-.03em}.text-action-v2{font-size:10px;}
+.home-account-grid-v2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;}
+.home-account-tile-v2{position:relative;min-height:104px;padding:11px;display:grid;grid-template-columns:38px minmax(0,1fr) 12px;grid-template-rows:auto 1fr auto;column-gap:9px;align-items:start;text-align:left;border:1px solid color-mix(in srgb,var(--institution-color) 54%,rgba(var(--orion-line-rgb),.28));border-radius:18px;background:linear-gradient(145deg,color-mix(in srgb,var(--institution-color) 8%,var(--orion-surface-1)),color-mix(in srgb,var(--orion-panel) 94%,black));box-shadow:inset 0 1px rgba(255,255,255,.035);}
+.institution-brand-v2{width:38px;height:38px;display:grid;place-items:center;overflow:hidden;border-radius:12px;background:var(--institution-color);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),0 7px 18px rgba(0,0,0,.18);font-size:10px;font-weight:850;color:white;}
+.institution-brand-v2 img{width:100%;height:100%;object-fit:cover;display:block;}
+.home-account-copy{display:grid;gap:2px}.home-account-copy strong{font-size:11px}.home-account-copy small{font-size:7px;color:var(--muted)}
+.home-account-balance{grid-column:1/3;align-self:end;font-size:15px;line-height:1.1}.home-account-chevron-v2{grid-column:3;grid-row:1/4;align-self:center;color:var(--muted);font-size:21px}.home-zero-accounts-v2{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;border:1px dashed rgba(var(--orion-line-rgb),.28);border-radius:16px;color:var(--muted);font-size:9px}.home-empty-v2{min-height:114px;}
+
+/* Movimentos: ícones por categoria + filtros claros. */
+.movements-screen-v2{display:block}.movement-filters-v2{display:flex;gap:7px;overflow-x:auto;padding:0 0 12px;scrollbar-width:none}.movement-filters-v2::-webkit-scrollbar{display:none}.movement-filter-v2{flex:0 0 auto;min-height:34px;padding:0 12px;border:1px solid rgba(var(--orion-line-rgb),.25);border-radius:999px;background:rgba(var(--orion-panel-rgb),.48);color:var(--muted);font-size:9px;font-weight:760}.movement-filter-v2.active{border-color:rgba(var(--orion-accent-rgb),.65);background:rgba(var(--orion-accent-rgb),.13);color:color-mix(in srgb,var(--orion-accent) 76%,white)}
+.statement-list-v2{display:grid;gap:5px}.date-heading-v2{margin:12px 3px 4px;color:var(--muted);font-size:8px;letter-spacing:.09em}.movement-row-v2{min-height:66px;padding:8px 9px;grid-template-columns:42px minmax(0,1fr) auto;border-radius:15px;background:color-mix(in srgb,var(--orion-panel) 62%,transparent);border-color:rgba(var(--orion-line-rgb),.20)}
+.movement-icon-v2{width:40px;height:40px;border-radius:12px;background:rgba(var(--orion-accent-rgb),.07);border:1px solid rgba(var(--orion-line-rgb),.18)}.movement-glyph-v2{width:21px;height:21px;stroke-width:1.8}.movement-icon-v2.positive-text{background:rgba(71,217,154,.08);color:var(--green)}.movement-icon-v2.negative-text{background:rgba(255,104,97,.08);color:var(--red)}.movement-icon-v2.neutral-text{color:var(--orion-accent-2)}
+.movement-row-v2 .movement-copy strong{font-size:11px}.movement-row-v2 .movement-copy small{font-size:7.5px;line-height:1.25}.movement-value-v2{display:grid;justify-items:end;gap:3px}.movement-value-v2 b{font-size:10px}.movement-value-v2 span{color:var(--muted);font-size:17px}
+
+/* Sheet de contas substitui a aba redundante. */
+.accounts-manager-v2{display:grid;gap:10px}.accounts-manager-head-v2{display:flex;align-items:center;justify-content:space-between}.accounts-manager-head-v2 strong{font-size:16px}.accounts-manager-head-v2 small{display:block;margin-top:2px;color:var(--muted);font-size:8px}.accounts-manager-list-v2{display:grid;gap:8px}.account-manager-row-v2{width:100%;min-height:66px;padding:8px 10px;display:grid;grid-template-columns:40px minmax(0,1fr) auto 12px;align-items:center;gap:9px;text-align:left;border:1px solid rgba(var(--orion-line-rgb),.23);border-radius:15px;background:color-mix(in srgb,var(--orion-panel) 66%,transparent)}.account-manager-brand-v2{width:40px;height:40px;border-radius:12px}.account-manager-copy-v2{display:grid;gap:2px}.account-manager-copy-v2 strong{font-size:11px}.account-manager-copy-v2 small{color:var(--muted);font-size:7.5px}.account-manager-balance-v2{font-size:11px}.account-manager-chevron-v2{color:var(--muted);font-size:18px}.accounts-manager-add-v2{margin-top:2px}
+
+/* Configurações: temas como caixas compactas. */
+.settings-screen .appearance-card{gap:9px}.settings-screen .appearance-theme-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.settings-screen .appearance-theme{min-height:68px;padding:8px;display:grid;grid-template-columns:1fr;justify-items:start;align-content:center;gap:7px;border-radius:13px}.settings-screen .appearance-swatch{width:100%;height:28px;border-radius:9px}.settings-screen .appearance-theme strong{font-size:8px;line-height:1.15}.settings-screen .appearance-theme small{display:none}.settings-screen .appearance-row{padding:10px 0}.settings-screen .appearance-auto-note{font-size:7px}
+
+/* Offline: cápsula premium no topo, sem ocupar o miolo do app. */
+.system-status.offline-status{left:var(--page-pad);right:var(--page-pad);top:calc(var(--safe-top) + 7px);width:auto;transform:none;min-height:39px;padding:8px 11px;grid-template-columns:auto 1fr;gap:9px;border:1px solid rgba(var(--orion-accent-rgb),.38);border-radius:14px;background:linear-gradient(135deg,color-mix(in srgb,var(--orion-panel) 94%,black),color-mix(in srgb,var(--orion-accent) 8%,var(--orion-panel)));box-shadow:0 14px 38px rgba(0,0,0,.28),inset 0 1px rgba(255,255,255,.035);backdrop-filter:blur(20px)}
+.system-status.offline-status::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--orion-accent);box-shadow:0 0 12px rgba(var(--orion-accent-rgb),.55)}.system-status.offline-status strong{color:color-mix(in srgb,var(--orion-accent) 76%,white);font-size:9px}.system-status.offline-status span{color:var(--muted);font-size:7.5px;line-height:1.25}
+
+/* Dock mobile: reduz o vão percebido até a barra de gesto do iOS, preservando safe area. */
+@media(max-width:699px){
+  .bottom-dock-v2{width:100%;margin:0;height:calc(var(--v2-dock-base) + max(6px,calc(var(--safe-bottom) - 16px)));padding:2px 10px max(6px,calc(var(--safe-bottom) - 16px));grid-template-columns:1fr 1fr 52px 1fr 1fr;border:0;border-top:1px solid rgba(var(--orion-line-rgb),.27);border-radius:0;background:color-mix(in srgb,var(--orion-panel) 98%,black);box-shadow:0 -10px 28px rgba(0,0,0,.24)}
+  .bottom-dock-v2 .dock-item-v2{height:50px;gap:3px}.bottom-dock-v2 .dock-item-v2 .icon{width:20px;height:20px}.bottom-dock-v2 .dock-item-v2 span{font-size:7.5px}.bottom-dock-v2 .dock-fab-v2{width:46px;height:46px;margin:auto}.bottom-dock-v2 .dock-fab-v2 .icon{width:23px;height:23px}
+  .toast{bottom:calc(var(--v2-dock-base) + max(6px,calc(var(--safe-bottom) - 16px)) + 10px)}
+}
+
+/* Pré-visualização estável no app switcher: remove efeitos WebKit mais frágeis sem ocultar a tela. */
+.orion-snapshot-stable body,.orion-snapshot-stable #app,.orion-snapshot-stable .app-shell-v2{background:var(--bg)!important}.orion-snapshot-stable .orion-header-v2,.orion-snapshot-stable .bottom-dock-v2,.orion-snapshot-stable .system-status{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}.orion-snapshot-stable .app-shell-v2::before,.orion-snapshot-stable .app-shell-v2::after{opacity:.22!important}
+
+@media(max-width:380px){
+  .metrics-grid-v2{grid-template-columns:1fr 1fr}.home-account-grid-v2{grid-template-columns:1fr 1fr}.orion-context-title-v2{font-size:21px}.settings-screen .appearance-theme-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+/* O shell v2 já fornece títulos contextuais; evita cabeçalhos duplicados dentro das telas. */
+.app-shell-v2 .screen-heading{display:none!important}
+.system-status.offline-status{display:flex;align-items:center}.system-status.offline-status strong{flex:0 0 auto}.system-status.offline-status span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

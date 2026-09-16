@@ -1,12 +1,12 @@
-# Orion Finance — Cloudflare Pages
+# Orion Finance — 0.1.0-development.12.21
 
-Este pacote é o repositório de publicação. O conteúdo público está em `site/`.
+Pacote de publicação Cloudflare Pages. O conteúdo público está em `site/`.
 
-Configuração auditada:
+## Configuração auditada
 - Framework: **None**
 - Build command: **exit 0**
 - Build output directory: **site**
 - Root directory: **vazio**
 - Production branch: **main**
 
-Não mova `src/`, testes, documentação técnica ou gateway para `site/`.
+A UX v2 é uma camada nova. O Financial Core, IndexedDB, schema e backup permanecem preservados.
