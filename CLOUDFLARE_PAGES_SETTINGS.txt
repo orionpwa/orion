@@ -1,0 +1,10 @@
+ORION FINANCE — CLOUDFLARE PAGES
+
+Framework preset: None
+Production branch: main
+Build command: exit 0
+Build output directory: site
+Root directory: (deixar vazio / raiz do repositório)
+Environment variables: nenhuma nesta fase
+
+Motivo: o repositório de deploy contém o artefato PWA já compilado e auditado. Cloudflare não recompila o Orion nesta fase.

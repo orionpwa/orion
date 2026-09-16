@@ -116,7 +116,7 @@ export async function renderSettings(repositories, profile, onProfileChanged, on
     const intensityOptions = [
         { id: 'soft', label: 'Suave' },
         { id: 'balanced', label: 'Equilibrado' },
-        { id: 'vivid', label: 'Vivo' }
+        { id: 'immersive', label: 'Imersivo' }
     ];
     for (const option of intensityOptions) {
         const intensityButton = el('button', '', [option.label]);
@@ -134,7 +134,7 @@ export async function renderSettings(repositories, profile, onProfileChanged, on
         el('div', 'appearance-row', [
             el('div', 'appearance-row-copy', [
                 el('strong', '', ['Mudar automaticamente pelo horário']),
-                el('small', '', ['Aurora de manhã · Clássico durante o dia · Cobre ao entardecer · Violeta à noite'])
+                el('small', '', ['Aurora cedo · Azul Glacial durante o dia · Cobre ao entardecer · Noir à noite · Cósmico de madrugada'])
             ]),
             autoToggle
         ]),
@@ -142,7 +142,7 @@ export async function renderSettings(repositories, profile, onProfileChanged, on
             el('div', 'appearance-row-copy', [el('strong', '', ['Intensidade visual']), el('small', '', ['Controla brilho e elementos decorativos.'])]),
             intensityControl
         ]),
-        el('p', 'appearance-auto-note', ['A preferência fica somente neste dispositivo e pode ser alterada a qualquer momento. O ícone instalado do PWA permanece o mesmo.'])
+        el('p', 'appearance-auto-note', ['A aparência fica apenas neste dispositivo e nunca altera dados financeiros. O ícone instalado do PWA permanece Rubi; a marca interna acompanha o tema.'])
     ]);
     applyAppearancePreferences(appearancePreferences);
     const exportButton = settingsAction('backup', 'Criar backup', 'Salve uma cópia dos seus dados neste dispositivo.', () => {

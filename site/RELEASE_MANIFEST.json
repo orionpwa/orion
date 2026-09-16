@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "product": "Orion Finance",
-  "appVersion": "0.1.0-development.12.17",
+  "appVersion": "0.1.0-development.12.19",
   "phase": 12,
   "classification": "PWA TESTÁVEL — PODE IR AO GITHUB PARA TESTE",
   "runtimeOnly": true,
@@ -10,13 +10,33 @@
   "files": [
     {
       "path": "_headers",
-      "bytes": 474,
-      "sha256": "eb95896de5029d9067567d511b86f9d4aa5795cddfc5cd35554571b16b0b30ab"
+      "bytes": 717,
+      "sha256": "ca42d38b19892be2ab4c7a422df545c2dc703cade7111f836f96869145f146f3"
     },
     {
       "path": "assets/orion-icon-1254.png",
-      "bytes": 1455962,
-      "sha256": "fd9b594ca8073abebc32653aed37afd7d288c5c14df98874da75c0cabc48603a"
+      "bytes": 1153172,
+      "sha256": "f411ef3229ca829a73780677c3190ee822ea3abae54a999fa6fff79f815ea64f"
+    },
+    {
+      "path": "assets/orion-icon-180.png",
+      "bytes": 31417,
+      "sha256": "662e179b9b6ac1be10cfdf31bf69e2785545ca360f76afb3bbefbff2cc58f6cd"
+    },
+    {
+      "path": "assets/orion-icon-192.png",
+      "bytes": 35056,
+      "sha256": "311d3b2641f84d1197cb1b1f0d473763df54f29cafc17218b46d2dadce8d38cd"
+    },
+    {
+      "path": "assets/orion-icon-512.png",
+      "bytes": 219360,
+      "sha256": "d87dbb96fe253ccce226f55453c1f4b6ec99cb9d9665905e6cf102c0a7b25c7f"
+    },
+    {
+      "path": "assets/orion-icon-maskable-512.png",
+      "bytes": 149702,
+      "sha256": "04b53889252ee4a749738b5d35a07b0092f04b733de6e7ecad4129c8d6d5aa59"
     },
     {
       "path": "dist/app/main.js",
@@ -26,7 +46,7 @@
     {
       "path": "dist/app/version.js",
       "bytes": 190,
-      "sha256": "f33315b41c0be5cd94396688c5e02a6b57cafc72c710764ef928f53aae501bd6"
+      "sha256": "6e3dfe6b0a8deb14245f13f74505e1342d2e6045a971ade80a8d918624fd9557"
     },
     {
       "path": "dist/application/accounts/create-account.js",
@@ -580,8 +600,8 @@
     },
     {
       "path": "dist/ui/appearance.js",
-      "bytes": 3568,
-      "sha256": "1da4c73aa030249398687a0cd44f2243557eac34938226e106f90ab0894b36df"
+      "bytes": 5170,
+      "sha256": "009b112f04adc0225c75a0151eead21c4f284c4d1622f54de38165ca188447ed"
     },
     {
       "path": "dist/ui/components/entity-actions.js",
@@ -640,8 +660,8 @@
     },
     {
       "path": "dist/ui/screens/home.js",
-      "bytes": 5185,
-      "sha256": "e9bb0da6102753ff93e96e19cfb84a4eb3b8d2cb94152dffa125c7d8bfce6091"
+      "bytes": 4779,
+      "sha256": "1d72b8699cfe437529511f539334555fcc559d61fb6c065e82aa54d9bd58cf8f"
     },
     {
       "path": "dist/ui/screens/investments.js",
@@ -715,23 +735,23 @@
     },
     {
       "path": "dist/ui/screens/settings.js",
-      "bytes": 16210,
-      "sha256": "494ca2a33451e841404f17f4c284749d603487160122d161e5b678a6cbb6bed4"
+      "bytes": 16260,
+      "sha256": "3b794f8c52a142129ab10c8060313efd7d874ab28c192f4ff11939b49444d216"
     },
     {
       "path": "dist/ui/shell.js",
-      "bytes": 2904,
-      "sha256": "aa1ce01a80f9f3d4897941db62b1743683310100e2e9fc3186cdfb803afa1f79"
+      "bytes": 4609,
+      "sha256": "496f59e256e270444eb960e78dc064b67dbec0743f6b8f7a617f54ce2f8e585c"
     },
     {
       "path": "index.html",
-      "bytes": 1677,
-      "sha256": "6a79201f62cff83f1b90fd6ca288e18ba5209d7d1ac68ee86dff6b9efa3297f5"
+      "bytes": 1692,
+      "sha256": "12005a72458b8da721caedf355cd1e32983209e890d671e2e8356679065070ce"
     },
     {
       "path": "manifest.webmanifest",
-      "bytes": 479,
-      "sha256": "05bfe3245772d62a5f1b770be47c943c42888a2ebc0331823a7227ec47ef5813"
+      "bytes": 883,
+      "sha256": "3f459b47b9f5f833d943fac6919fb29ca0ea627473148f79c720a716e7c70740"
     },
     {
       "path": "runtime-config.json",
@@ -740,23 +760,23 @@
     },
     {
       "path": "service-worker.js",
-      "bytes": 8327,
-      "sha256": "4cec8bef67d162217c3c7f030cec43433ffcb82191468d475b23e7021b35201d"
+      "bytes": 8543,
+      "sha256": "79d1262354ce018495ef07836ee3ae5b070f8c2c9092f22fec5f22416e346f04"
     },
     {
       "path": "styles/appearance.css",
-      "bytes": 9641,
-      "sha256": "8bed7146c6635b88c7ffdd4c57b9afd4ff81a89fe167fa51d06df6f8bf5275c9"
+      "bytes": 17408,
+      "sha256": "c0c16991021157655ca3bc576e1b1b737a5b07162db25e4bbe8ed3350212189b"
     },
     {
       "path": "styles/base.css",
-      "bytes": 2555,
-      "sha256": "b65a5119f350077ade7d88089eb808159ba0052f27fc2deb39ae7bb1971827c6"
+      "bytes": 2510,
+      "sha256": "b31b3bed83e7effa7dc14b599f7ac722371df4962e1b015e8e416c20027c68ce"
     },
     {
       "path": "styles/components.css",
-      "bytes": 11281,
-      "sha256": "5f6a8c99e7976e0c6a3fe023d06685acc11b3a0293c545bc56962f893119b326"
+      "bytes": 11794,
+      "sha256": "a92a24c4470d312f8155c6a1024519431bfc10eab851b6deda7835f8af760b1c"
     },
     {
       "path": "styles/screens.css",
@@ -766,7 +786,7 @@
     {
       "path": "styles/tokens.css",
       "bytes": 731,
-      "sha256": "cc1aad3aedce2dce98c54a34d5681ea40e2c3932758631960d818aae1c9d6168"
+      "sha256": "8ebaada628bc90ddc88f083eafea478782d8de5c836eed0888043998bd5cbaf8"
     }
   ]
 }

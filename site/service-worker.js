@@ -1,13 +1,11 @@
-const CACHE_NAME = "orion-0-1-0-development-12-17-static-v1";
+const CACHE_NAME = "orion-0-1-0-development-12-19-static-v1";
 const STATIC_PATHS = [
   "./",
-  "./index.html",
-  "./manifest.webmanifest",
   "./assets/orion-icon-1254.png",
-  "./styles/tokens.css",
-  "./styles/base.css",
-  "./styles/components.css",
-  "./styles/screens.css",
+  "./assets/orion-icon-180.png",
+  "./assets/orion-icon-192.png",
+  "./assets/orion-icon-512.png",
+  "./assets/orion-icon-maskable-512.png",
   "./dist/app/main.js",
   "./dist/app/version.js",
   "./dist/application/accounts/create-account.js",
@@ -148,7 +146,14 @@ const STATIC_PATHS = [
   "./dist/ui/screens/planning/sections.js",
   "./dist/ui/screens/planning/shared.js",
   "./dist/ui/screens/settings.js",
-  "./dist/ui/shell.js"
+  "./dist/ui/shell.js",
+  "./index.html",
+  "./manifest.webmanifest",
+  "./styles/appearance.css",
+  "./styles/base.css",
+  "./styles/components.css",
+  "./styles/screens.css",
+  "./styles/tokens.css"
 ];
 
 self.addEventListener('install', (event) => {
@@ -177,14 +182,14 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return;
 
   if (url.pathname.endsWith('/runtime-config.json')) {
-    event.respondWith(fetch(event.request));
+    event.respondWith(fetch(event.request, { cache: 'no-store' }));
     return;
   }
 
   if (event.request.mode === 'navigate') {
     event.respondWith((async () => {
       try {
-        const response = await fetch(event.request);
+        const response = await fetch(event.request, { cache: 'no-cache' });
         const cache = await caches.open(CACHE_NAME);
         await cache.put(new URL('./index.html', self.registration.scope).href, response.clone());
         return response;

@@ -3,14 +3,6 @@ import { financialStatusLabel } from '../../application/dashboard/financial-stat
 import { formatBRL } from '../../domain/money/money.js';
 import { getInstitution } from '../../catalog/institutions.js';
 import { el } from '../dom.js';
-function greetingFor(now) {
-    const hour = now.getHours();
-    if (hour < 12)
-        return 'Bom dia';
-    if (hour < 18)
-        return 'Boa tarde';
-    return 'Boa noite';
-}
 function metric(label, value, tone) {
     return el('div', 'metric-tile', [
         el('span', `metric-dot ${tone}`),
@@ -20,15 +12,11 @@ function metric(label, value, tone) {
 export async function renderHome(repositories, profile, actions) {
     const snapshot = await getDashboardSnapshot(repositories, profile.id);
     const root = el('div', 'screen home-screen');
-    const greeting = el('section', 'greeting-row', [
-        el('div', '', [
-            el('h1', '', [`${greetingFor(new Date())}, ${profile.displayName}!`]),
-            el('p', '', ['Sua visão financeira, sem ruído.'])
-        ]),
-        el('span', `status-pill status-${snapshot.status}`, [financialStatusLabel(snapshot.status)])
-    ]);
     const balance = el('section', 'hero-card hero-card-compact', [
-        el('div', 'hero-card-top', [el('span', 'eyebrow', ['DISPONÍVEL AGORA'])]),
+        el('div', 'hero-card-top', [
+            el('span', 'eyebrow', ['DISPONÍVEL AGORA']),
+            el('span', `status-pill status-${snapshot.status}`, [financialStatusLabel(snapshot.status)])
+        ]),
         el('strong', 'hero-money', [formatBRL(snapshot.availableNow)]),
         el('div', 'metrics-grid', [
             metric('Entrou no mês', formatBRL(snapshot.incomeMonth), 'positive'),
@@ -91,6 +79,6 @@ export async function renderHome(repositories, profile, actions) {
     priority.type = 'button';
     priority.setAttribute('aria-label', 'Abrir planejamento financeiro');
     priority.addEventListener('click', actions.onOpenPlanning);
-    root.append(greeting, balance, priority, accountsSection);
+    root.append(balance, priority, accountsSection);
     return root;
 }

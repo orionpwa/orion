@@ -1,0 +1,196 @@
+/* Orion UX v2 · aparência totalmente isolada do domínio financeiro.
+   Temas mudam somente apresentação. Verde/vermelho financeiros continuam semânticos. */
+:root{
+  --orion-accent:#6378ff;
+  --orion-accent-rgb:99,120,255;
+  --orion-accent-2:#45c8ff;
+  --orion-accent-2-rgb:69,200,255;
+  --orion-warm:#efc86a;
+  --orion-warm-rgb:239,200,106;
+  --orion-shell-start:#020813;
+  --orion-shell-mid:#06132a;
+  --orion-shell-end:#020711;
+  --orion-surface-1:#08172a;
+  --orion-surface-2:#0b1d34;
+  --orion-surface-3:#112748;
+  --orion-panel:#04111f;
+  --orion-panel-rgb:4,17,31;
+  --orion-line-rgb:88,116,166;
+  --orion-planet-rgb:58,91,212;
+  --orion-glow:.19;
+  --orion-decoration:.76;
+
+  --bg:var(--orion-shell-start);
+  --bg-deep:var(--orion-shell-end);
+  --surface:var(--orion-surface-1);
+  --surface-2:var(--orion-surface-2);
+  --surface-3:var(--orion-surface-3);
+  --line:rgba(var(--orion-line-rgb),.28);
+  --line-strong:rgba(var(--orion-accent-rgb),.68);
+  --blue:var(--orion-accent);
+  --cyan:var(--orion-accent-2);
+  --gold:var(--orion-warm);
+}
+
+:root[data-orion-theme="aurora"]{
+  --orion-accent:#18d9a5;--orion-accent-rgb:24,217,165;
+  --orion-accent-2:#4ce7d1;--orion-accent-2-rgb:76,231,209;
+  --orion-warm:#e7c66b;--orion-warm-rgb:231,198,107;
+  --orion-shell-start:#010b0d;--orion-shell-mid:#031c19;--orion-shell-end:#02090c;
+  --orion-surface-1:#061a19;--orion-surface-2:#082521;--orion-surface-3:#0b312a;
+  --orion-panel:#031411;--orion-panel-rgb:3,20,17;--orion-line-rgb:60,132,119;--orion-planet-rgb:20,174,139;
+}
+:root[data-orion-theme="ruby"]{
+  --orion-accent:#ff477b;--orion-accent-rgb:255,71,123;
+  --orion-accent-2:#ff8b9e;--orion-accent-2-rgb:255,139,158;
+  --orion-warm:#f6d184;--orion-warm-rgb:246,209,132;
+  --orion-shell-start:#0d0308;--orion-shell-mid:#1a0610;--orion-shell-end:#080207;
+  --orion-surface-1:#1a0811;--orion-surface-2:#250b17;--orion-surface-3:#32101f;
+  --orion-panel:#14060d;--orion-panel-rgb:20,6,13;--orion-line-rgb:158,72,103;--orion-planet-rgb:196,38,80;
+}
+:root[data-orion-theme="cosmic"]{
+  --orion-accent:#8b63ff;--orion-accent-rgb:139,99,255;
+  --orion-accent-2:#d376ff;--orion-accent-2-rgb:211,118,255;
+  --orion-warm:#b6a4ff;--orion-warm-rgb:182,164,255;
+  --orion-shell-start:#050511;--orion-shell-mid:#100a28;--orion-shell-end:#04040d;
+  --orion-surface-1:#111026;--orion-surface-2:#171334;--orion-surface-3:#211a49;
+  --orion-panel:#0c0a1b;--orion-panel-rgb:12,10,27;--orion-line-rgb:100,84,162;--orion-planet-rgb:103,70,219;
+}
+:root[data-orion-theme="copper"]{
+  --orion-accent:#d8874c;--orion-accent-rgb:216,135,76;
+  --orion-accent-2:#91b59a;--orion-accent-2-rgb:145,181,154;
+  --orion-warm:#efb277;--orion-warm-rgb:239,178,119;
+  --orion-shell-start:#080806;--orion-shell-mid:#11120d;--orion-shell-end:#070806;
+  --orion-surface-1:#171812;--orion-surface-2:#1f2118;--orion-surface-3:#292c21;
+  --orion-panel:#11120d;--orion-panel-rgb:17,18,13;--orion-line-rgb:132,113,88;--orion-planet-rgb:137,94,59;
+}
+:root[data-orion-theme="glacial"]{
+  --orion-accent:#21d4f5;--orion-accent-rgb:33,212,245;
+  --orion-accent-2:#3b82f6;--orion-accent-2-rgb:59,130,246;
+  --orion-warm:#dce8f6;--orion-warm-rgb:220,232,246;
+  --orion-shell-start:#03101e;--orion-shell-mid:#061c31;--orion-shell-end:#020b16;
+  --orion-surface-1:#071c30;--orion-surface-2:#0a2740;--orion-surface-3:#103451;
+  --orion-panel:#041522;--orion-panel-rgb:4,21,34;--orion-line-rgb:72,126,169;--orion-planet-rgb:42,137,211;
+}
+:root[data-orion-theme="noir"]{
+  --orion-accent:#d4af37;--orion-accent-rgb:212,175,55;
+  --orion-accent-2:#f3e6bb;--orion-accent-2-rgb:243,230,187;
+  --orion-warm:#f0c968;--orion-warm-rgb:240,201,104;
+  --orion-shell-start:#060606;--orion-shell-mid:#0d0d0c;--orion-shell-end:#050505;
+  --orion-surface-1:#121313;--orion-surface-2:#1a1b1b;--orion-surface-3:#242525;
+  --orion-panel:#0c0d0d;--orion-panel-rgb:12,13,13;--orion-line-rgb:113,107,85;--orion-planet-rgb:165,131,39;
+}
+
+:root[data-orion-intensity="soft"]{--orion-glow:.08;--orion-decoration:.36}
+:root[data-orion-intensity="balanced"]{--orion-glow:.19;--orion-decoration:.76}
+:root[data-orion-intensity="immersive"]{--orion-glow:.31;--orion-decoration:1}
+
+/* Atmosfera reproduzível via CSS: nada depende de mockup externo. */
+.app-shell{background:
+  radial-gradient(circle at 78% 9%,rgba(var(--orion-accent-rgb),calc(var(--orion-glow) * .9)) 0 1px,transparent 1.8px),
+  radial-gradient(circle at 22% 30%,rgba(var(--orion-warm-rgb),.34) 0 1px,transparent 1.6px),
+  radial-gradient(circle at 64% 56%,rgba(var(--orion-accent-2-rgb),calc(var(--orion-glow) * .65)) 0 1px,transparent 1.6px),
+  linear-gradient(180deg,var(--orion-shell-start),var(--orion-shell-mid) 46%,var(--orion-shell-end))}
+.app-shell::before{left:auto;right:-18%;top:calc(-118px + var(--safe-top));width:78%;height:270px;border:1px solid rgba(var(--orion-accent-rgb),.38);border-left-color:transparent;border-top-color:transparent;border-radius:50%;background:radial-gradient(ellipse at 35% 80%,rgba(var(--orion-planet-rgb),calc(var(--orion-glow) * 1.9)),rgba(var(--orion-panel-rgb),.18) 52%,transparent 70%);box-shadow:0 30px 80px rgba(var(--orion-accent-rgb),calc(var(--orion-glow) * .35));opacity:var(--orion-decoration)}
+.app-shell::after{content:"";position:absolute;z-index:0;right:-25%;bottom:12%;width:68%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(var(--orion-accent-2-rgb),calc(var(--orion-glow) * .52)),rgba(var(--orion-planet-rgb),calc(var(--orion-glow) * .26)) 34%,rgba(var(--orion-panel-rgb),.08) 58%,transparent 70%);filter:blur(1px);opacity:calc(var(--orion-decoration) * .55);pointer-events:none}
+
+.app-header{border-bottom-color:rgba(var(--orion-line-rgb),.18);background:linear-gradient(180deg,color-mix(in srgb,var(--orion-shell-start) 94%,transparent),color-mix(in srgb,var(--orion-shell-mid) 76%,transparent));box-shadow:0 12px 30px rgba(0,0,0,.10)}
+.app-header-context{padding-top:7px;border-top:1px solid rgba(var(--orion-line-rgb),.12)}
+.app-header-context-title{color:color-mix(in srgb,var(--text) 94%,var(--orion-accent));font-size:20px}
+.app-header-context-support{color:color-mix(in srgb,var(--muted) 88%,var(--orion-accent-2));font-size:8.5px}
+.brand-symbol{width:40px;height:40px;border-color:rgba(var(--orion-accent-rgb),.48);border-radius:13px;color:var(--orion-accent-2);background:linear-gradient(145deg,rgba(var(--orion-accent-rgb),.16),rgba(var(--orion-panel-rgb),.72));box-shadow:0 0 22px rgba(var(--orion-accent-rgb),calc(var(--orion-glow) * .7))}
+.brand-star{display:grid;place-items:center;font-size:23px;line-height:1;color:var(--orion-accent-2);filter:drop-shadow(0 0 7px rgba(var(--orion-accent-rgb),.55))}
+.brand-copy small{color:color-mix(in srgb,var(--text) 88%,var(--orion-accent-2));font-size:9.2px}
+.brand-copy span{color:color-mix(in srgb,var(--muted) 88%,var(--orion-accent-2));font-size:6.2px}
+.profile-chip{border-color:rgba(var(--orion-accent-rgb),.58);background:color-mix(in srgb,var(--orion-panel) 88%,transparent);box-shadow:0 0 18px rgba(var(--orion-accent-rgb),calc(var(--orion-glow) * .35))}
+.profile-chip.active{border-color:rgba(var(--orion-accent-rgb),.86);box-shadow:0 0 0 3px rgba(var(--orion-accent-rgb),.12),0 0 18px rgba(var(--orion-accent-rgb),.18)}
+
+/* Dock no próprio grid do app: ocupa também a safe-area do iPhone, sem espaço residual. */
+.bottom-dock{border-top-color:rgba(var(--orion-line-rgb),.30);background:color-mix(in srgb,var(--orion-panel) 96%,transparent);box-shadow:0 -12px 32px rgba(0,0,0,.26);backdrop-filter:blur(20px)}
+.text-action,.dock-item.active{color:var(--orion-accent)}
+.dock-item.active .icon{filter:drop-shadow(0 0 7px rgba(var(--orion-accent-rgb),.44))}
+.dock-item.active::after{content:"";width:18px;height:2px;margin-top:-1px;border-radius:999px;background:var(--orion-accent);box-shadow:0 0 8px rgba(var(--orion-accent-rgb),.38)}
+.dock-item .icon{width:21px;height:21px;stroke-width:2.05}
+.dock-fab{background:linear-gradient(145deg,color-mix(in srgb,var(--orion-accent) 72%,var(--orion-warm)),color-mix(in srgb,var(--orion-accent) 82%,var(--orion-panel)));box-shadow:0 7px 22px rgba(var(--orion-accent-rgb),.28),inset 0 1px rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.18)}
+
+/* Home: Opção 6 como estrutura-base. */
+.home-screen{padding-top:10px}
+.hero-card{border-color:rgba(var(--orion-accent-rgb),.58);background:linear-gradient(150deg,color-mix(in srgb,var(--orion-accent) 6%,var(--orion-surface-1)),color-mix(in srgb,var(--orion-panel) 96%,black));box-shadow:0 16px 34px rgba(0,0,0,.18),inset 0 1px rgba(255,255,255,.025)}
+.hero-card::after{border-bottom-color:rgba(var(--orion-accent-2-rgb),.46);background:radial-gradient(ellipse at 45% 72%,rgba(var(--orion-accent-rgb),calc(var(--orion-glow) * 1.8)),rgba(var(--orion-panel-rgb),.12) 54%,transparent 70%);opacity:var(--orion-decoration)}
+.hero-card-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.hero-card-top .status-pill{position:relative;z-index:2;height:24px;padding:0 8px;font-size:6.5px}
+.metric-tile{border-color:rgba(var(--orion-line-rgb),.24);background:color-mix(in srgb,var(--orion-panel) 76%,transparent)}
+.metric-dot.accent{background:var(--orion-accent-2)}
+.priority-card{border-color:rgba(var(--orion-accent-rgb),.36);background:linear-gradient(145deg,rgba(var(--orion-accent-rgb),.065),color-mix(in srgb,var(--orion-panel) 84%,transparent));box-shadow:inset 0 1px rgba(255,255,255,.02)}
+.priority-icon,.priority-card small{color:var(--orion-accent-2)}
+.priority-icon{border-color:rgba(var(--orion-accent-rgb),.38);background:rgba(var(--orion-accent-rgb),.07)}
+.home-account-grid{grid-auto-flow:row;grid-auto-columns:auto;grid-template-columns:repeat(2,minmax(0,1fr));overflow:visible;scroll-snap-type:none;padding:1px;gap:8px}
+.home-account-tile{min-height:90px;padding:9px;grid-template-columns:32px minmax(0,1fr);grid-template-rows:auto 1fr auto;border-radius:16px;background:linear-gradient(150deg,color-mix(in srgb,var(--institution-color) 8%,var(--orion-surface-1)),color-mix(in srgb,var(--orion-panel) 97%,black));box-shadow:inset 0 1px rgba(255,255,255,.028)}
+.home-account-mark{width:30px;height:30px;border-radius:10px}
+.home-account-balance{margin-top:7px;font-size:12px}
+.home-account-empty-note,.empty-card{border-color:rgba(var(--orion-line-rgb),.22);background:color-mix(in srgb,var(--orion-panel) 72%,transparent)}
+.hero-card-compact{padding:10px 11px 8px}
+.hero-card-compact .hero-money{margin:6px 0 7px;font-size:32px}
+.hero-card-compact .metrics-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;border-top-color:rgba(var(--orion-line-rgb),.18)}
+.hero-card-compact .metric-tile{min-height:48px;grid-template-columns:1fr;align-content:center;gap:4px;padding:5px 6px}
+.hero-card-compact .metric-dot{width:6px;height:6px}
+.hero-card-compact .metric-copy small{font-size:5.8px;line-height:1.15}
+.hero-card-compact .metric-copy strong{font-size:8.2px}
+.hero-card-compact .metric-note{margin-top:4px}
+.home-screen .priority-card{margin-top:10px}
+
+/* Componentes comuns. */
+.btn.primary{background:linear-gradient(145deg,color-mix(in srgb,var(--orion-accent) 86%,white),color-mix(in srgb,var(--orion-accent) 76%,var(--orion-panel)));box-shadow:0 8px 22px rgba(var(--orion-accent-rgb),.20)}
+.field-input,.selector-trigger,.segmented-control{border-color:rgba(var(--orion-line-rgb),.34);background:color-mix(in srgb,var(--orion-panel) 82%,transparent)}
+.field-input:focus,.selector-trigger:focus-visible{border-color:rgba(var(--orion-accent-rgb),.78);box-shadow:0 0 0 3px rgba(var(--orion-accent-rgb),.10)}
+.segment.active{background:rgba(var(--orion-accent-rgb),.14);color:color-mix(in srgb,var(--orion-accent) 72%,white);box-shadow:inset 0 0 0 1px rgba(var(--orion-accent-rgb),.34)}
+.sheet-panel{border-color:rgba(var(--orion-line-rgb),.34);background:linear-gradient(180deg,var(--orion-surface-2),var(--orion-panel))}
+.sheet-header{border-bottom-color:rgba(var(--orion-line-rgb),.18)}
+.icon-button{border-color:rgba(var(--orion-line-rgb),.24);background:rgba(var(--orion-accent-rgb),.025);color:color-mix(in srgb,var(--muted) 88%,var(--orion-accent))}
+.planning-card,.planning-advanced,.accounts-summary,.account-detail-card,.settings-card,.settings-profile-card,.settings-section-card,.investment-hero,.investment-row{border-color:rgba(var(--orion-line-rgb),.26);background:linear-gradient(145deg,color-mix(in srgb,var(--orion-surface-1) 88%,transparent),color-mix(in srgb,var(--orion-panel) 90%,transparent))}
+.settings-profile-card{border-color:rgba(var(--orion-accent-rgb),.30)}
+.settings-profile-avatar{border-color:rgba(var(--orion-accent-rgb),.48);background:linear-gradient(145deg,rgba(var(--orion-accent-rgb),.13),rgba(var(--orion-accent-2-rgb),.06));color:var(--orion-accent-2)}
+.settings-action,.settings-disclosure{border-color:rgba(var(--orion-line-rgb),.22);background:color-mix(in srgb,var(--orion-panel) 64%,transparent)}
+.settings-action-symbol,.settings-disclosure-chevron{border-color:rgba(var(--orion-accent-rgb),.24);background:rgba(var(--orion-accent-rgb),.07);color:color-mix(in srgb,var(--orion-accent) 74%,white)}
+.settings-disclosure[open] .settings-disclosure-chevron{border-color:rgba(var(--orion-accent-rgb),.42);background:rgba(var(--orion-accent-rgb),.10);color:color-mix(in srgb,var(--orion-accent) 74%,white)}
+.settings-simple-info>div,.settings-profile-head,.appearance-row{border-color:rgba(var(--orion-line-rgb),.14)}
+
+/* Configurações > Aparência */
+.appearance-card{display:grid;gap:12px}
+.appearance-theme-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.appearance-theme{min-height:72px;padding:9px 10px;display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;align-items:center;text-align:left;border:1px solid rgba(var(--orion-line-rgb),.24);border-radius:14px;background:color-mix(in srgb,var(--orion-panel) 62%,transparent)}
+.appearance-theme.active{border-color:rgba(var(--orion-accent-rgb),.68);background:rgba(var(--orion-accent-rgb),.08);box-shadow:inset 0 0 0 1px rgba(var(--orion-accent-rgb),.08),0 0 18px rgba(var(--orion-accent-rgb),.07)}
+.appearance-swatch{width:27px;height:27px;border-radius:9px;background:linear-gradient(145deg,var(--swatch-a),var(--swatch-b));box-shadow:0 0 14px color-mix(in srgb,var(--swatch-a) 34%,transparent)}
+.appearance-theme strong{display:block;font-size:9.5px}.appearance-theme small{display:block;margin-top:2px;color:var(--muted);font-size:6.5px;line-height:1.25}
+.appearance-theme[data-theme="orion"]{--swatch-a:#6378ff;--swatch-b:#45c8ff}
+.appearance-theme[data-theme="aurora"]{--swatch-a:#18d9a5;--swatch-b:#4ce7d1}
+.appearance-theme[data-theme="ruby"]{--swatch-a:#ff477b;--swatch-b:#ff9b85}
+.appearance-theme[data-theme="cosmic"]{--swatch-a:#8b63ff;--swatch-b:#d376ff}
+.appearance-theme[data-theme="copper"]{--swatch-a:#d8874c;--swatch-b:#91b59a}
+.appearance-theme[data-theme="glacial"]{--swatch-a:#21d4f5;--swatch-b:#3b82f6}
+.appearance-theme[data-theme="noir"]{--swatch-a:#d4af37;--swatch-b:#f3e6bb}
+.appearance-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 1px;border-top:1px solid rgba(var(--orion-line-rgb),.15)}
+.appearance-row-copy strong{display:block;font-size:9.5px}.appearance-row-copy small{display:block;margin-top:3px;color:var(--muted);font-size:6.8px;line-height:1.35}
+.appearance-toggle{width:42px;height:24px;padding:2px;border:1px solid rgba(var(--orion-line-rgb),.32);border-radius:999px;background:rgba(255,255,255,.035);transition:.16s ease}.appearance-toggle::after{content:"";display:block;width:18px;height:18px;border-radius:50%;background:#8294a8;transition:.16s ease}.appearance-toggle.active{border-color:rgba(var(--orion-accent-rgb),.56);background:rgba(var(--orion-accent-rgb),.14)}.appearance-toggle.active::after{transform:translateX(17px);background:var(--orion-accent)}
+.appearance-intensity{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;padding:4px;border:1px solid rgba(var(--orion-line-rgb),.22);border-radius:13px;background:color-mix(in srgb,var(--orion-panel) 52%,transparent)}
+.appearance-intensity button{min-height:31px;border-radius:9px;color:var(--muted);font-size:7px;font-weight:760}.appearance-intensity button.active{background:rgba(var(--orion-accent-rgb),.12);color:color-mix(in srgb,var(--orion-accent) 72%,white);box-shadow:inset 0 0 0 1px rgba(var(--orion-accent-rgb),.28)}
+.appearance-auto-note{margin:0;color:var(--muted);font-size:6.8px;line-height:1.45}
+
+/* Desktop/tablet ganha respiro; no mobile o dock permanece aderente. */
+@media(min-width:700px){
+  .bottom-dock{width:calc(100% - 24px);margin:0 12px 12px;border:1px solid rgba(var(--orion-line-rgb),.34);border-radius:22px;height:68px;padding:6px 8px}
+}
+@media(max-width:699px){
+  .bottom-dock{width:100%;margin:0;height:calc(60px + var(--safe-bottom));padding:2px 10px var(--safe-bottom);border:0;border-top:1px solid rgba(var(--orion-line-rgb),.28);border-radius:0}
+  .bottom-dock .dock-item{height:56px}
+  .bottom-dock .dock-fab{width:50px;height:50px}
+  .toast{bottom:calc(60px + var(--safe-bottom) + 12px)}
+  .system-status{top:calc(var(--safe-top) + 132px)}
+}
+@media(max-width:359px){
+  .hero-card-compact .metrics-grid{grid-template-columns:1fr 1fr}
+  .home-account-grid{grid-template-columns:1fr 1fr}
+  .home-account-tile{min-height:88px;padding:8px}
+  .app-header-context-title{font-size:17px}
+  .appearance-theme-grid{grid-template-columns:1fr}
+}
