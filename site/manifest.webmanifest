@@ -12,25 +12,25 @@
   "theme_color": "#12050b",
   "icons": [
     {
-      "src": "./assets/orion-icon-192.png",
+      "src": "./assets/orion-icon-rubi-v2-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./assets/orion-icon-512.png",
+      "src": "./assets/orion-icon-rubi-v2-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./assets/orion-icon-maskable-512.png",
+      "src": "./assets/orion-icon-rubi-v2-maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "./assets/orion-icon-1254.png",
+      "src": "./assets/orion-icon-rubi-v2-1254.png",
       "sizes": "1254x1254",
       "type": "image/png",
       "purpose": "any"

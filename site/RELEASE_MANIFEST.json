@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "product": "Orion Finance",
-  "appVersion": "0.1.0-development.12.19",
+  "appVersion": "0.1.0-development.12.20",
   "phase": 12,
   "classification": "PWA TESTÁVEL — PODE IR AO GITHUB PARA TESTE",
   "runtimeOnly": true,
@@ -14,29 +14,29 @@
       "sha256": "ca42d38b19892be2ab4c7a422df545c2dc703cade7111f836f96869145f146f3"
     },
     {
-      "path": "assets/orion-icon-1254.png",
-      "bytes": 1153172,
-      "sha256": "f411ef3229ca829a73780677c3190ee822ea3abae54a999fa6fff79f815ea64f"
+      "path": "assets/orion-icon-rubi-v2-1254.png",
+      "bytes": 293341,
+      "sha256": "e3f1441654354332218918551b39f3ffa61c7a5765c6c5996b71981adebbdb27"
     },
     {
-      "path": "assets/orion-icon-180.png",
-      "bytes": 31417,
-      "sha256": "662e179b9b6ac1be10cfdf31bf69e2785545ca360f76afb3bbefbff2cc58f6cd"
+      "path": "assets/orion-icon-rubi-v2-180.png",
+      "bytes": 17558,
+      "sha256": "13e2b2c4f8e19f721835978563d3dc9bdcace362c2520417b0ad980845e4d74a"
     },
     {
-      "path": "assets/orion-icon-192.png",
-      "bytes": 35056,
-      "sha256": "311d3b2641f84d1197cb1b1f0d473763df54f29cafc17218b46d2dadce8d38cd"
+      "path": "assets/orion-icon-rubi-v2-192.png",
+      "bytes": 19439,
+      "sha256": "f0f227d1acd37c70cdf68bb1314d4546b15f1fb2368c2116f2025cb0430b6d86"
     },
     {
-      "path": "assets/orion-icon-512.png",
-      "bytes": 219360,
-      "sha256": "d87dbb96fe253ccce226f55453c1f4b6ec99cb9d9665905e6cf102c0a7b25c7f"
+      "path": "assets/orion-icon-rubi-v2-512.png",
+      "bytes": 82371,
+      "sha256": "b7021375633bb862d16958e97cfea827769dfdbd7641d591eea2e46edc19990d"
     },
     {
-      "path": "assets/orion-icon-maskable-512.png",
-      "bytes": 149702,
-      "sha256": "04b53889252ee4a749738b5d35a07b0092f04b733de6e7ecad4129c8d6d5aa59"
+      "path": "assets/orion-icon-rubi-v2-maskable-512.png",
+      "bytes": 82371,
+      "sha256": "b7021375633bb862d16958e97cfea827769dfdbd7641d591eea2e46edc19990d"
     },
     {
       "path": "dist/app/main.js",
@@ -46,7 +46,7 @@
     {
       "path": "dist/app/version.js",
       "bytes": 190,
-      "sha256": "6e3dfe6b0a8deb14245f13f74505e1342d2e6045a971ade80a8d918624fd9557"
+      "sha256": "7a6f2e2ed9c6b18a4bbc69f6f8ed3959f4f4b5e8b773ff51d9b332e864c6c233"
     },
     {
       "path": "dist/application/accounts/create-account.js",
@@ -745,13 +745,13 @@
     },
     {
       "path": "index.html",
-      "bytes": 1692,
-      "sha256": "12005a72458b8da721caedf355cd1e32983209e890d671e2e8356679065070ce"
+      "bytes": 1796,
+      "sha256": "40bbf561ac9c8e69bc0ef52d4971c0399a9d168d3cf1e49f9d1629a44f354a9b"
     },
     {
       "path": "manifest.webmanifest",
-      "bytes": 883,
-      "sha256": "3f459b47b9f5f833d943fac6919fb29ca0ea627473148f79c720a716e7c70740"
+      "bytes": 915,
+      "sha256": "5bbada05aceb97d4754e7eeea6f01de89899f14f43965d333d34784b5455d93a"
     },
     {
       "path": "runtime-config.json",
@@ -760,8 +760,8 @@
     },
     {
       "path": "service-worker.js",
-      "bytes": 8543,
-      "sha256": "79d1262354ce018495ef07836ee3ae5b070f8c2c9092f22fec5f22416e346f04"
+      "bytes": 8583,
+      "sha256": "8f905d74bfcb38c1adf18e0ff7989d41cd16659e75a6c6bac9aa094d5e46d5ae"
     },
     {
       "path": "styles/appearance.css",

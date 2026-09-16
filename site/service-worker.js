@@ -1,11 +1,11 @@
-const CACHE_NAME = "orion-0-1-0-development-12-19-static-v1";
+const CACHE_NAME = "orion-0-1-0-development-12-20-static-v1";
 const STATIC_PATHS = [
   "./",
-  "./assets/orion-icon-1254.png",
-  "./assets/orion-icon-180.png",
-  "./assets/orion-icon-192.png",
-  "./assets/orion-icon-512.png",
-  "./assets/orion-icon-maskable-512.png",
+  "./assets/orion-icon-rubi-v2-1254.png",
+  "./assets/orion-icon-rubi-v2-180.png",
+  "./assets/orion-icon-rubi-v2-192.png",
+  "./assets/orion-icon-rubi-v2-512.png",
+  "./assets/orion-icon-rubi-v2-maskable-512.png",
   "./dist/app/main.js",
   "./dist/app/version.js",
   "./dist/application/accounts/create-account.js",
