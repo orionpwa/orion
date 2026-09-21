@@ -1,4 +1,4 @@
-# Orion Finance — Cloudflare Pages — 12.23
+# Orion Finance — Cloudflare Pages — 12.24
 
 Este pacote é o repositório de publicação. O conteúdo público está em `site/`.
 
@@ -9,4 +9,4 @@ Configuração auditada:
 - Root directory: **vazio**
 - Production branch: **main**
 
-A 12.23 possui **uma única implementação visual ativa**. Não existem `src/ui`, `src/ui-v3`, `dist/ui` ou `dist/ui-v3` no projeto limpo/publicável.
+A 12.24 mantém **uma única implementação visual ativa**. Não existem `src/ui`, `src/ui-v3`, `dist/ui` ou `dist/ui-v3` no projeto limpo/publicável.

@@ -3,7 +3,8 @@ const LEGACY_STORAGE_KEY = 'orion_ui_appearance_v1';
 const DEFAULT_PREFERENCES = {
     theme: 'orion',
     autoByTime: false,
-    intensity: 'balanced'
+    intensity: 'balanced',
+    reduceEffects: false
 };
 export const APPEARANCE_THEMES = [
     { id: 'orion', label: 'Orion', support: 'Azul-noite e violeta', palette: ['#07182c', '#5f72ff', '#45c8ff'] },
@@ -42,7 +43,8 @@ function parsePreferences(raw) {
         return {
             theme: theme ?? DEFAULT_PREFERENCES.theme,
             autoByTime: parsed.autoByTime === true,
-            intensity: intensity ?? DEFAULT_PREFERENCES.intensity
+            intensity: intensity ?? DEFAULT_PREFERENCES.intensity,
+            reduceEffects: parsed.reduceEffects === true
         };
     }
     catch {
@@ -100,6 +102,7 @@ export function applyAppearance(preferences = loadAppearancePreferences(), now =
     root.dataset.orionTheme = theme;
     root.dataset.orionIntensity = preferences.intensity;
     root.dataset.orionThemeMode = preferences.autoByTime ? 'auto' : 'manual';
+    root.dataset.orionReduceEffects = preferences.reduceEffects ? 'true' : 'false';
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta)
         meta.content = themeColor(theme);

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "product": "Orion Finance",
-  "appVersion": "0.1.0-development.12.23",
+  "appVersion": "0.1.0-development.12.24",
   "phase": 12,
   "classification": "PWA TESTÁVEL — PODE IR AO GITHUB PARA TESTE",
   "runtimeOnly": true,
@@ -66,7 +66,7 @@
     {
       "path": "dist/app/version.js",
       "bytes": 190,
-      "sha256": "2ef5223d4abe97ec33358320463f71c77e3580ff1de8148fa16f2eee155d3687"
+      "sha256": "e2e2257def3078fa0753d3bc2bb00c994845b48e8e1c353efe1bfe886f0442d8"
     },
     {
       "path": "dist/application/accounts/create-account.js",
@@ -610,8 +610,8 @@
     },
     {
       "path": "dist/presentation/appearance.js",
-      "bytes": 5170,
-      "sha256": "009b112f04adc0225c75a0151eead21c4f284c4d1622f54de38165ca188447ed"
+      "bytes": 5338,
+      "sha256": "a9579182dd913877ba8514707517774e760fddfb1548502d32841a5078bb2d22"
     },
     {
       "path": "dist/presentation/brand.js",
@@ -665,8 +665,8 @@
     },
     {
       "path": "dist/presentation/icons.js",
-      "bytes": 1648,
-      "sha256": "94990b84114f214c8a150aa8ee44ca9bb525eea1b1ba326fa928466d3dfa3040"
+      "bytes": 2281,
+      "sha256": "bf473bd1e5fca950862ae794625239fb9dbe90d1bfe198a32608dae62697cbae"
     },
     {
       "path": "dist/presentation/institutions.js",
@@ -690,8 +690,8 @@
     },
     {
       "path": "dist/presentation/screens/movements.js",
-      "bytes": 8184,
-      "sha256": "4acb9dab58ae9a3752951cf336937ac4a5da20343c434af1b2788e11739e5e88"
+      "bytes": 18587,
+      "sha256": "f3c0a9e19d4f6fe707860604331415cc4ff5b633537d0eae4fa75e114a5e991f"
     },
     {
       "path": "dist/presentation/screens/new-transaction.js",
@@ -745,8 +745,8 @@
     },
     {
       "path": "dist/presentation/screens/settings.js",
-      "bytes": 16260,
-      "sha256": "3b794f8c52a142129ab10c8060313efd7d874ab28c192f4ff11939b49444d216"
+      "bytes": 18127,
+      "sha256": "ec5915f3387ff45b0584de3925745c002499a5579a6dcf5a841938bbf660f7ed"
     },
     {
       "path": "dist/presentation/settings.js",
@@ -791,12 +791,12 @@
     {
       "path": "service-worker.js",
       "bytes": 8946,
-      "sha256": "f5067eb20cd5a920d4a0ce2bf69b1b4a52d0bd6868a3efba8f0248fe0093bba5"
+      "sha256": "fab692371bef36b257b9df0329d913dce5121227e114fd60502e13a3f85f966b"
     },
     {
       "path": "styles/orion.css",
-      "bytes": 76874,
-      "sha256": "6e9ed69a880d008c6a6cf1cd7063a579009e42423e54c87c3ab6b04b3f3dca30"
+      "bytes": 86136,
+      "sha256": "adf529a468e6e08ad8bf6494d10f611c26d0932a2dde5341942c7e4893322538"
     }
   ]
 }
