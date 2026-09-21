@@ -1,10 +1,8 @@
-# Verificação rápida após deploy
+# Verificação depois do deploy
 
-1. Sobre o Orion mostra 0.1.0-development.12.21.
-2. Dock: Início | Mov. | + | Planejar | Ajustes.
-3. Home: somente contas com saldo; Ver todas abre sheet de Contas.
-4. Mov.: ícones por categoria e filtros.
-5. Configurações: temas em caixas compactas.
-6. Offline: cápsula pequena no topo e desaparece automaticamente.
-7. App switcher do iOS mantém pré-visualização da tela.
-8. Fechar/reabrir preserva os dados locais.
+1. Em Configurações > Sobre o Orion, confirme **0.1.0-development.12.23**.
+2. Confirme Início, Mov., Planejar e Contas.
+3. Confirme que contas zeradas não aparecem em Contas rápidas da Home.
+4. Confirme o dock aderido ao rodapé/safe-area do iPhone.
+5. Coloque o PWA em segundo plano e confirme a pré-visualização no alternador de apps.
+6. Faça um backup antes de adotar a versão como uso principal.

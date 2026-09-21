@@ -5,20 +5,19 @@ import { IndexedDbTransactionMutationGateway } from '../data/indexeddb/transacti
 import { IndexedDbEntityLifecycleMutationGateway } from '../data/indexeddb/entity-lifecycle-mutations.js';
 import { IndexedDbMarketDataCache } from '../data/indexeddb/market-cache.js';
 import { IndexedDbMetadataRepository } from '../data/indexeddb/metadata.js';
-import { clear } from '../ui/dom.js';
-import { createShell } from '../ui/shell.js';
-import { initializeAppearanceClock } from '../ui/appearance.js';
-import { renderHome } from '../ui/screens/home.js';
-import { renderMovements } from '../ui/screens/movements.js';
-import { renderPlanning } from '../ui/screens/planning.js';
-import { renderAccounts } from '../ui/screens/accounts.js';
-import { renderInvestments } from '../ui/screens/investments.js';
-import { renderSettings } from '../ui/screens/settings.js';
-import { showOnboarding } from '../ui/screens/onboarding.js';
-import { openNewTransactionSheet } from '../ui/screens/new-transaction.js';
-import { showActionToast, showToast } from '../ui/components/feedback.js';
-import { bindConnectivityStatus } from '../ui/components/system-status.js';
-import { errorState, fatalState, loadingState } from '../ui/components/states.js';
+import { clear } from '../presentation/dom.js';
+import { createShellV3 } from '../presentation/shell.js';
+import { initializeAppearanceClock } from '../presentation/appearance.js';
+import { renderHomeV3 } from '../presentation/home.js';
+import { renderMovementsV3 } from '../presentation/movements.js';
+import { renderPlanningV3 } from '../presentation/planning.js';
+import { renderAccountsV3 } from '../presentation/accounts.js';
+import { renderSettingsV3 } from '../presentation/settings.js';
+import { showOnboarding } from '../presentation/screens/onboarding.js';
+import { openNewTransactionSheet } from '../presentation/screens/new-transaction.js';
+import { showActionToast, showToast } from '../presentation/components/feedback.js';
+import { bindConnectivityStatus } from '../presentation/components/system-status.js';
+import { errorState, fatalState, loadingState } from '../presentation/components/states.js';
 import { recordDiagnostic } from '../diagnostics/session-log.js';
 import { LocalIdentityProvider } from '../identity/session.js';
 import { WebPlatformRuntime } from '../platform/web-runtime.js';
@@ -62,7 +61,7 @@ async function start() {
     let rendering = false;
     let marketCoordinator = null;
     let fundamentalCoordinator = null;
-    const shell = createShell(profile, (next) => { route = next; void render(); }, () => {
+    const shell = createShellV3(profile, (next) => { route = next; void render(); }, () => {
         void openNewTransactionSheet(repositories, profile, () => void render());
     });
     host.replaceChildren(shell.shell);
@@ -79,36 +78,15 @@ async function start() {
         try {
             let screen;
             if (route === 'home')
-                screen = await renderHome(repositories, profile, {
-                    onOpenAccounts: () => { route = 'accounts'; void render(); },
-                    onOpenPlanning: () => { route = 'planning'; void render(); }
-                });
+                screen = await renderHomeV3(repositories, profile, { onOpenPlanning: () => { route = 'planning'; void render(); } });
             else if (route === 'movements')
-                screen = await renderMovements(repositories, profile, transactionMutations, () => void render());
+                screen = await renderMovementsV3(repositories, profile, transactionMutations, () => void render());
             else if (route === 'planning')
-                screen = await renderPlanning(repositories, profile, entityLifecycle, () => void render(), () => { route = 'investments'; void render(); });
-            else if (route === 'investments')
-                screen = await renderInvestments(repositories, marketDataCache, profile, {
-                    onBack: () => { route = 'planning'; void render(); },
-                    onChanged: () => void render(),
-                    onRefreshMarket: marketCoordinator && fundamentalCoordinator ? async () => {
-                        const [quotes, fundamentals] = await Promise.all([
-                            marketCoordinator.refreshIfDue(true),
-                            fundamentalCoordinator.refreshIfDue(true)
-                        ]);
-                        if (!quotes && !fundamentals)
-                            return 'Sem conexão para atualizar';
-                        const quoteSummary = quotes ? `cotações ${quotes.fresh} novas · ${quotes.cached} cache` : 'cotações sem alteração';
-                        const fundamentalSummary = fundamentals
-                            ? `fundamentos ${fundamentals.fresh} novos · ${fundamentals.cached} cache · ${fundamentals.unsupported} n/a`
-                            : 'fundamentos sem alteração';
-                        return `${quoteSummary} · ${fundamentalSummary}`;
-                    } : null
-                });
+                screen = await renderPlanningV3(repositories, profile, entityLifecycle, () => void render());
             else if (route === 'accounts')
-                screen = await renderAccounts(repositories, profile, entityLifecycle, () => void render());
+                screen = await renderAccountsV3(repositories, profile, entityLifecycle, () => void render());
             else
-                screen = await renderSettings(repositories, profile, applyProfile, () => void render());
+                screen = await renderSettingsV3(repositories, profile, applyProfile, () => void render());
             clear(shell.content);
             shell.content.append(screen);
         }
