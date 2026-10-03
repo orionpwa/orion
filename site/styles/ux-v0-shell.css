@@ -9,6 +9,9 @@
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;
   background:#0a0a0a;
 }
+/* iOS standalone: 100dvh can stop above the physical home-indicator area.
+   Keep dynamic viewport in browsers, but fill the full installed-app viewport. */
+.pwa-standalone .app-shell-v0{height:100vh}
 .app-shell-v0.internal-route-v0{grid-template-rows:auto minmax(0,1fr)}
 .app-header-v0{
   min-height:calc(56px + var(--safe-top));
