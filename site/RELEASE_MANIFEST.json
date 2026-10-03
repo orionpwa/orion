@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "product": "Orion Finance",
-  "appVersion": "0.1.0-development.12.27",
+  "appVersion": "0.1.0-development.12.28",
   "phase": 12,
   "classification": "PWA TESTÁVEL — PODE IR AO GITHUB PARA TESTE",
   "runtimeOnly": true,
@@ -9,21 +9,11 @@
   "manifestCoversSelf": false,
   "coverage": "runtime-delta",
   "files": [
-    {"path":"index.html","bytes":1756,"sha256":"ccc481ce17e04a3829aac52a9a757062f14e5ca15ef132c53476bfa58c5ae2fe"},
-    {"path":"service-worker.js","bytes":9430,"sha256":"2941b0e97cfeb3c22b50e421ab3eea796afdbfa15023d51633ed52eeb6cb01fd"},
-    {"path":"dist/app/main.js","bytes":11547,"sha256":"236121bc49cfb36bc0919fafb3bc4d46b442795d9e470d762915b16108205cb8"},
-    {"path":"dist/app/version.js","bytes":190,"sha256":"f9c9f77d6021f57c312d08fbead8926c7376bc7732fe1d1d4fdb83da088d7b72"},
-    {"path":"dist/presentation/movements.js","bytes":443,"sha256":"212f27d55eae641017cb602d6dc7ebd1d3db34b024fc8b163b87866476748782"},
-    {"path":"dist/presentation/shell.js","bytes":3877,"sha256":"e6e4065382b8fbcb5edf2e285aefb6b4a06ad308dbc0fa1fff549c7e76afb239"},
-    {"path":"dist/presentation/screens/movements-v0/controls.js","bytes":3082,"sha256":"757b3227e7e416ecea4bb53da90d638f5eb93dbff53e8215e3ca297cbeacdd40"},
-    {"path":"dist/presentation/screens/movements-v0/detail.js","bytes":8070,"sha256":"7ab946973cf5792f0f3afca29d056caedc4e6694c03493025a0f6d17460affa0"},
-    {"path":"dist/presentation/screens/movements-v0/edit.js","bytes":9192,"sha256":"d0c226ee94899f36340172aa0dd059158b3989d9cca91ae55e9bdc4c7859f4e7"},
-    {"path":"dist/presentation/screens/movements-v0/filters.js","bytes":3568,"sha256":"a0323f168b44724aa8cd8c0acc46bda3a86641079712f0a3d33959d96278af59"},
-    {"path":"dist/presentation/screens/movements-v0/list.js","bytes":3248,"sha256":"2231ff08e9b18ba95b6525dc9187b72b645750119933802bddee5a3ff75203c7"},
-    {"path":"dist/presentation/screens/movements-v0/new.js","bytes":9872,"sha256":"9d52e852add47ca1c8ebe99f5ac8d20f1e836f9fa34cc5de15069fd9b5ad30ee"},
-    {"path":"dist/presentation/screens/movements-v0/shared.js","bytes":6340,"sha256":"9aed8c63ab8b471a6ae3fb5ab7f39d99983c21a24f9ac6c697fcbfd4a701e819"},
-    {"path":"styles/ux-v0-movements.css","bytes":7437,"sha256":"1b04a94f6e8ef171f60dcedf5044f3c32cb55a27fe37588312f50ddbec9157b6"},
-    {"path":"styles/ux-v0-shell.css","bytes":2740,"sha256":"9870a313a239a69e8ba940327789c09160765a22c59e66fa40f69630779bd6af"},
-    {"path":"styles/ux-v0-summary.css","bytes":2917,"sha256":"3314a4b6a047b8d5ff48ff3e81d1bb5b21d76b229a9828f3927e6f7e3a8d2e8b"}
+    {"path":"index.html","bytes":1817,"sha256":"91193a63d7d45449f87eef693f7b156c79f105745ab240775f5308641a8d319c"},
+    {"path":"service-worker.js","bytes":9463,"sha256":"7ab7f7392ddb63e8cff9576079519c20ccd90b677d75e48ec9875563da7e8d13"},
+    {"path":"dist/app/main.js","bytes":11505,"sha256":"848682bbe8f004e3896d19099564e86f9d2eee59c702dc002c3a1d5583ec3905"},
+    {"path":"dist/app/version.js","bytes":190,"sha256":"8e4f4a12769c3acd1b366a04a47c1f14d44f462f66f65c0a93d864a0e297d1c3"},
+    {"path":"dist/presentation/components/feedback.js","bytes":1871,"sha256":"72b3a91560386d6a8f59b24220c3cab974e62a4995670e04fc0632b1f097ca54"},
+    {"path":"styles/ux-v0-feedback.css","bytes":1628,"sha256":"61da7219c3c87ed3c3ea5d760de03eea4d36cf799d4df6ccaa7a763a9f971bd4"}
   ]
 }

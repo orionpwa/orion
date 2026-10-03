@@ -8,6 +8,7 @@ Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Quando h
 - Shell V0 validado no iPhone e congelado como `UX-V0-BASELINE-STABLE`.
 - Hotfix do rodapé validado: `ac4d8d256ac59ea2a384031f2c1e1321ef6ef037`.
 - Resumo V0 validado no iPhone e congelado como `RESUMO-STABLE`.
+- Movimentos V0 validado no iPhone e congelado como `MOVIMENTOS-STABLE`.
 - Data schema: 5.
 - Backup format: 2.
 - Financial Core, IndexedDB, migrations e contratos financeiros permanecem preservados.
@@ -51,7 +52,7 @@ Regras permanentes:
 ## Ordem da reconstrução
 1. `UX-V0-BASELINE-STABLE` ✅
 2. `RESUMO-STABLE` ✅
-3. Movimentos — `MOVIMENTOS-CANDIDATE` em 12.27, aguardando validação real no iPhone
+3. `MOVIMENTOS-STABLE` ✅
 4. Planejar
 5. Contas
 6. Limpeza segura da infraestrutura visual antiga
@@ -78,10 +79,10 @@ Não fazem parte do Resumo:
 - Contas rápidas
 - CTA genérica de nova movimentação
 
-## Movimentos V0 — candidato 12.27
-Estado: `MOVIMENTOS-CANDIDATE`.
+## Movimentos V0 — STABLE
+Estado: `MOVIMENTOS-STABLE`. Validado no iPhone em 12.27.
 QA da fonte: 164/164 testes aprovados + quality, presentation, gateway, security precheck, PWA, public, operational, investments, radar, RC, device, privacy/release, Cloudflare e beta aprovados.
-Browser smoke continua indisponível neste ambiente pelo timeout conhecido do Chromium headless em 12s; validação real deve ocorrer no iPhone.
+Browser smoke continua indisponível neste ambiente pelo timeout conhecido do Chromium headless em 12s; validação real no iPhone foi concluída.
 
 Estrutura candidata:
 - histórico e estado vazio
@@ -105,4 +106,15 @@ Proteções:
 - Financial Core, IndexedDB schema 5, backup v2 e migrations não foram alterados.
 - pacote final Cloudflare é montado e verificado pelo QA; todos os stylesheets referenciados pelo index precisam existir e estar no precache.
 
-Checkpoint esperado após validação real: `MOVIMENTOS-STABLE`.
+## Feedback de atualização V0 — candidato 12.28
+Estado: `UPDATE-BANNER-CANDIDATE`, aguardando validação visual no iPhone.
+QA da fonte: 166/166 testes aprovados + todos os gates executáveis. Browser smoke segue indisponível pelo timeout conhecido do Chromium headless em 12s.
+
+Regras candidatas:
+- O aviso de nova versão não usa mais o action-toast genérico.
+- Banner compacto dedicado, sem cápsula gigante e sem truncamento.
+- Texto padrão: `Atualização disponível`.
+- Ação explícita: `Atualizar`.
+- O banner permanece disponível até a ação, respeita safe-area e adapta a posição quando o dock está oculto.
+
+Após validação real no iPhone, congelar como `UPDATE-BANNER-STABLE` e preservar nas próximas etapas.

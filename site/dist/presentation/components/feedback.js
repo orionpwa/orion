@@ -27,3 +27,22 @@ export function showActionToast(message, actionLabel, onAction) {
     requestAnimationFrame(() => toast.classList.add('visible'));
     toastTimer = window.setTimeout(() => toast.remove(), 6000);
 }
+export function showUpdateBanner(actionLabel, onAction) {
+    const previous = document.querySelector('.update-banner-v0');
+    if (previous)
+        previous.remove();
+    const action = el('button', 'update-banner-action-v0', [actionLabel]);
+    action.type = 'button';
+    const banner = el('div', 'update-banner-v0', [
+        el('span', 'update-banner-message-v0', ['Atualização disponível']),
+        action
+    ]);
+    banner.setAttribute('role', 'status');
+    banner.setAttribute('aria-live', 'polite');
+    action.addEventListener('click', () => {
+        banner.remove();
+        onAction();
+    });
+    document.body.append(banner);
+    requestAnimationFrame(() => banner.classList.add('visible'));
+}

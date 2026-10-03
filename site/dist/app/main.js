@@ -14,7 +14,7 @@ import { renderPlanningV3 } from '../presentation/planning.js';
 import { renderAccountsV3 } from '../presentation/accounts.js';
 import { renderSettingsV3 } from '../presentation/settings.js';
 import { showOnboarding } from '../presentation/screens/onboarding.js';
-import { showActionToast, showToast } from '../presentation/components/feedback.js';
+import { showToast, showUpdateBanner } from '../presentation/components/feedback.js';
 import { bindConnectivityStatus } from '../presentation/components/system-status.js';
 import { errorState, fatalState, loadingState } from '../presentation/components/states.js';
 import { recordDiagnostic } from '../diagnostics/session-log.js';
@@ -187,7 +187,7 @@ async function start() {
         }).catch(() => recordDiagnostic('FUNDAMENTAL_REFRESH_FAILED', 'warning'));
     }
     const registration = await registerPwaUpdateFlow({
-        onUpdateReady: (applyUpdate) => showActionToast('Uma atualização do Orion está pronta.', 'Atualizar', applyUpdate),
+        onUpdateReady: (applyUpdate) => showUpdateBanner('Atualizar', applyUpdate),
         onError: () => {
             recordDiagnostic('PWA_SW_REGISTER', 'warning');
             showToast('Offline indisponível nesta sessão.', 'error');
