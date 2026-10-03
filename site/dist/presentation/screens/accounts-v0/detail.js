@@ -1,7 +1,7 @@
 import { getDashboardSnapshot } from '../../../application/dashboard/get-dashboard.js';
 import { formatBRL } from '../../../domain/money/money.js';
 import { el } from '../../dom.js';
-import { showToast } from '../../components/feedback.js';
+import { deactivateWithUndoFeedback } from '../../components/lifecycle-feedback.js';
 import { accountInstitutionLabel, accountMovementAmount, accountMovementLabel, accountMovements, accountTypeLabel, formatDateBR } from './shared.js';
 function detailRow(label, value) {
     return el('div', 'account-detail-row-v0', [
@@ -76,12 +76,7 @@ export async function renderAccountDetailV0(context, accountId, actions) {
     cancel.addEventListener('click', () => { confirm.hidden = true; deactivate.hidden = false; });
     confirmButton.addEventListener('click', () => {
         confirmButton.disabled = true;
-        void context.lifecycle.deactivate(context.profile.id, 'account', account.id)
-            .then(() => { showToast('Conta desativada.', 'success'); actions.onDeactivated(); })
-            .catch((failure) => {
-            confirmButton.disabled = false;
-            showToast(failure instanceof Error ? failure.message : 'Não foi possível desativar a conta.', 'error');
-        });
+        deactivateWithUndoFeedback(context.lifecycle, context.profile.id, 'account', account.id, 'Conta', actions.onDeactivated);
     });
     root.append(el('section', 'account-danger-zone-v0', [deactivate, confirm]));
     return root;
