@@ -7,6 +7,7 @@ Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Quando h
 - Branch: `main`.
 - Shell V0 validado no iPhone e congelado como `UX-V0-BASELINE-STABLE`.
 - Hotfix do rodapé validado: `ac4d8d256ac59ea2a384031f2c1e1321ef6ef037`.
+- Resumo V0 validado no iPhone e congelado como `RESUMO-STABLE`.
 - Data schema: 5.
 - Backup format: 2.
 - Financial Core, IndexedDB, migrations e contratos financeiros permanecem preservados.
@@ -49,7 +50,7 @@ Regras permanentes:
 
 ## Ordem da reconstrução
 1. `UX-V0-BASELINE-STABLE` ✅
-2. Resumo — `RESUMO-CANDIDATE` em 12.26, aguardando validação real no iPhone
+2. `RESUMO-STABLE` ✅
 3. Movimentos
 4. Planejar
 5. Contas
@@ -57,23 +58,48 @@ Regras permanentes:
 7. Refinamento UX
 8. Identidade visual Orion
 
-## Resumo V0 — candidato 12.26
+## Resumo V0 — STABLE
+Validado no iPhone em 12.26.
 QA da fonte: 157/157 testes aprovados + todos os gates.
 
-Estrutura:
+Estrutura preservada:
 - Livre para decidir
 - Disponível
 - Compromissos
 - Metas e reservas
-- Este mês: Entrou / Saiu / Resultado
+- Este mês: Entrou / Saiu / Resultado, ou estado vazio do mês
 - Próximos compromissos
 - Estado vazio encaminha para Movimentos sem duplicar criação
 
-Não fazem mais parte do Resumo:
+Não fazem parte do Resumo:
 - Disponível agora como hero legado
 - status de conforto
 - Próxima prioridade
 - Contas rápidas
 - CTA genérica de nova movimentação
 
-Checkpoint após validação real: `RESUMO-STABLE`.
+## Próxima etapa
+`MOVIMENTOS`
+
+Objetivo: reconstruir o fluxo vertical de Movimentos sem alterar Financial Core, persistência, Shell V0 ou Resumo estável.
+
+Ordem funcional:
+1. histórico e estado vazio
+2. Novo movimento
+3. Despesa
+4. Receita
+5. Transferência
+6. detalhe do movimento
+7. editar
+8. excluir
+9. filtros simples
+
+Regras desta etapa:
+- sem FAB global
+- sem pesquisa permanente nesta primeira versão
+- criação e edição em tela dedicada quando o fluxo crescer
+- detalhe do movimento sem menu de três pontos para ações primárias
+- transferência apresentada como fato neutro
+- bottom navigation somente na raiz Movimentos
+
+Checkpoint esperado após validação real: `MOVIMENTOS-STABLE`.
