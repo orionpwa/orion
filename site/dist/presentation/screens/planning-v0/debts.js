@@ -5,6 +5,7 @@ import { getFinancialPosition } from '../../../application/planning/get-financia
 import { formatBRL, sumCents, ZERO_CENTS } from '../../../domain/money/money.js';
 import { el } from '../../dom.js';
 import { showToast } from '../../components/feedback.js';
+import { deactivateWithUndoFeedback } from '../../components/lifecycle-feedback.js';
 import { planningChoiceFieldV0, planningErrorV0, planningInputFieldV0, planningMoneyFieldV0, planningSubmitV0 } from './controls.js';
 import { accountOptions, activeAccounts, centsToInput, detailRowsV0, emptyPlanningV0, formatDateBR, inlineConfirmV0, sectionHeadingV0, todayISO } from './shared.js';
 export async function renderDebtListV0(context, actions) {
@@ -93,9 +94,7 @@ export async function renderDebtDetailV0(context, debtId, actions) {
         root.append(list);
     }
     root.append(inlineConfirmV0('Desativar dívida', 'Os pagamentos já registrados serão preservados. A dívida deixará de aparecer no planejamento ativo.', 'Desativar', () => {
-        void context.lifecycle.deactivate(context.profile.id, 'debt', item.debt.id)
-            .then(() => { showToast('Dívida desativada.', 'success'); actions.onDeactivated(); })
-            .catch((error) => showToast(error instanceof Error ? error.message : 'Falha ao desativar dívida.', 'error'));
+        deactivateWithUndoFeedback(context.lifecycle, context.profile.id, 'debt', item.debt.id, 'Dívida', actions.onDeactivated);
     }));
     return root;
 }
