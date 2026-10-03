@@ -9,6 +9,8 @@ Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Quando h
 - Hotfix do rodapé validado: `ac4d8d256ac59ea2a384031f2c1e1321ef6ef037`.
 - Resumo V0 validado no iPhone e congelado como `RESUMO-STABLE`.
 - Movimentos V0 validado no iPhone e congelado como `MOVIMENTOS-STABLE`.
+- Banner de atualização V0 validado no iPhone e congelado como `UPDATE-BANNER-STABLE`.
+- Planejar V0 validado no iPhone e congelado como `PLANEJAR-STABLE`.
 - Data schema: 5.
 - Backup format: 2.
 - Financial Core, IndexedDB, migrations e contratos financeiros permanecem preservados.
@@ -53,8 +55,8 @@ Regras permanentes:
 1. `UX-V0-BASELINE-STABLE` ✅
 2. `RESUMO-STABLE` ✅
 3. `MOVIMENTOS-STABLE` ✅
-4. Planejar — `PLANEJAR-CANDIDATE` em 12.29, aguardando validação real no iPhone
-5. Contas
+4. `PLANEJAR-STABLE` ✅
+5. Contas — `CONTAS-CANDIDATE` em 12.30, aguardando validação real no iPhone
 6. Limpeza segura da infraestrutura visual antiga
 7. Refinamento UX
 8. Identidade visual Orion
@@ -84,7 +86,7 @@ Estado: `MOVIMENTOS-STABLE`. Validado no iPhone em 12.27.
 QA da fonte: 164/164 testes aprovados + quality, presentation, gateway, security precheck, PWA, public, operational, investments, radar, RC, device, privacy/release, Cloudflare e beta aprovados.
 Browser smoke continua indisponível neste ambiente pelo timeout conhecido do Chromium headless em 12s; validação real no iPhone foi concluída.
 
-Estrutura candidata:
+Estrutura preservada:
 - histórico e estado vazio
 - `Novo` somente no topo da raiz Movimentos
 - Despesa / Receita / Transferência em tela interna focada
@@ -106,25 +108,24 @@ Proteções:
 - Financial Core, IndexedDB schema 5, backup v2 e migrations não foram alterados.
 - pacote final Cloudflare é montado e verificado pelo QA; todos os stylesheets referenciados pelo index precisam existir e estar no precache.
 
-## Feedback de atualização V0 — candidato 12.28
-Estado: `UPDATE-BANNER-CANDIDATE`, aguardando validação visual no iPhone.
+## Feedback de atualização V0 — STABLE
+Estado: `UPDATE-BANNER-STABLE`. Validado no iPhone durante a atualização para 12.29.
 QA da fonte: 166/166 testes aprovados + todos os gates executáveis. Browser smoke segue indisponível pelo timeout conhecido do Chromium headless em 12s.
 
-Regras candidatas:
+Regras permanentes:
 - O aviso de nova versão não usa mais o action-toast genérico.
 - Banner compacto dedicado, sem cápsula gigante e sem truncamento.
 - Texto padrão: `Atualização disponível`.
 - Ação explícita: `Atualizar`.
 - O banner permanece disponível até a ação, respeita safe-area e adapta a posição quando o dock está oculto.
 
-Após validação real no iPhone, congelar como `UPDATE-BANNER-STABLE` e preservar nas próximas etapas.
 
 
-## Planejar V0 — candidato 12.29
-Estado: `PLANEJAR-CANDIDATE`, aguardando validação real no iPhone.
+## Planejar V0 — STABLE
+Estado: `PLANEJAR-STABLE`. Validado no iPhone em 12.29.
 QA da fonte: 172/172 testes aprovados + quality, presentation, gateway, security precheck, PWA, public, operational, investments, radar, RC, device, privacy/release, Cloudflare e beta aprovados. Browser smoke segue indisponível apenas pelo timeout conhecido do Chromium headless em 12s.
 
-Estrutura candidata:
+Estrutura preservada:
 - raiz Planejar com apenas Compromissos, Dívidas e Metas e reservas;
 - sem segunda dashboard, foco do momento, cartões, ativos ou Mais recursos na primeira camada;
 - listas, detalhes, criação e edição em telas dedicadas;
@@ -154,6 +155,26 @@ Metas e reservas:
 - edição de informações separada do ajuste do valor.
 
 Proteções:
-- `UX-V0-BASELINE-STABLE`, `RESUMO-STABLE` e `MOVIMENTOS-STABLE` não foram reabertos;
-- banner 12.28 permanece candidato até a primeira atualização real exibida no iPhone;
+- `UX-V0-BASELINE-STABLE`, `RESUMO-STABLE`, `MOVIMENTOS-STABLE` e `UPDATE-BANNER-STABLE` não foram reabertos;
+- Financial Core, IndexedDB schema 5, backup v2 e migrations permanecem intactos.
+
+
+## Contas V0 — candidato 12.30
+Estado: `CONTAS-CANDIDATE`, aguardando validação real no iPhone.
+QA da fonte: 178/178 testes aprovados + quality, presentation, gateway, security precheck, PWA, public, operational, investments, radar, RC, device, privacy/release, Cloudflare e beta aprovados. Browser smoke segue indisponível apenas pelo timeout conhecido do Chromium headless em 12s.
+
+Estrutura candidata:
+- raiz Contas lista somente contas ativas e seus saldos;
+- `Adicionar conta` pertence a Contas;
+- detalhe dedicado mostra saldo atual, instituição, tipo, disponibilidade e saldo inicial;
+- detalhe exibe até cinco movimentações da conta e encaminha o histórico completo para Movimentos com filtro da conta;
+- movimentação recente abre o detalhe oficial em Movimentos;
+- criação e edição em telas dedicadas, sem sheets empilhadas, três pontos ou `<select>` nativo;
+- saldo inicial não é editável após criação; ajustes de saldo continuam sendo fatos em Movimentos;
+- desativação explícita preserva o histórico;
+- Contas não oferece atalhos duplicados de Receita, Despesa ou Transferência;
+- 320 px protegido sem ellipsis.
+
+Proteções:
+- Shell, Resumo, Movimentos, Planejar e banner de atualização permanecem congelados;
 - Financial Core, IndexedDB schema 5, backup v2 e migrations permanecem intactos.

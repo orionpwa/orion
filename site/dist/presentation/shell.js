@@ -31,7 +31,10 @@ const TITLES = {
     'planning-allocation-new': 'Nova meta ou reserva',
     'planning-allocation-detail': 'Meta ou reserva',
     'planning-allocation-edit': 'Editar informações',
-    'planning-allocation-adjust': 'Ajustar valor reservado'
+    'planning-allocation-adjust': 'Ajustar valor reservado',
+    'account-new': 'Nova conta',
+    'account-detail': 'Conta',
+    'account-edit': 'Editar conta'
 };
 function parentRoute(route) {
     if (route === 'settings')
@@ -54,6 +57,10 @@ function parentRoute(route) {
         return 'planning-allocations';
     if (route === 'planning-allocation-edit' || route === 'planning-allocation-adjust')
         return 'planning-allocation-detail';
+    if (route === 'account-new' || route === 'account-detail')
+        return 'accounts';
+    if (route === 'account-edit')
+        return 'account-detail';
     return null;
 }
 function backLabel(route) {
@@ -69,6 +76,8 @@ function backLabel(route) {
         return '‹ Dívidas';
     if (route === 'planning-allocation-detail')
         return '‹ Metas';
+    if (route === 'account-detail')
+        return '‹ Contas';
     return 'Cancelar';
 }
 export function createShellV0(onNavigate, onCreateMovement) {

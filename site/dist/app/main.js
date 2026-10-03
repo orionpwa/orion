@@ -11,7 +11,7 @@ import { initializeAppearanceClock } from '../presentation/appearance.js';
 import { renderHomeV3 } from '../presentation/home.js';
 import { DEFAULT_MOVEMENT_FILTERS_V0, renderMovementDetailV0, renderMovementFiltersV0, renderMovementListV0, renderNewMovementV0, renderEditMovementV0 } from '../presentation/movements.js';
 import { renderPlanningRootV0, renderCommitmentListV0, renderCommitmentDetailV0, renderNewCommitmentV0, renderEditCommitmentV0, renderCommitmentPaymentV0, renderDebtListV0, renderDebtDetailV0, renderNewDebtV0, renderEditDebtV0, renderDebtPaymentV0, renderAllocationListV0, renderAllocationDetailV0, renderNewAllocationV0, renderEditAllocationV0, renderAdjustAllocationV0 } from '../presentation/planning.js';
-import { renderAccountsV3 } from '../presentation/accounts.js';
+import { renderAccountsRootV0, renderAccountDetailV0, renderNewAccountV0, renderEditAccountV0 } from '../presentation/accounts.js';
 import { renderSettingsV3 } from '../presentation/settings.js';
 import { showOnboarding } from '../presentation/screens/onboarding.js';
 import { showToast, showUpdateBanner } from '../presentation/components/feedback.js';
@@ -62,6 +62,7 @@ async function start() {
     let selectedCommitmentId = null;
     let selectedDebtId = null;
     let selectedAllocationId = null;
+    let selectedAccountId = null;
     let rendering = false;
     let marketCoordinator = null;
     let fundamentalCoordinator = null;
@@ -83,6 +84,8 @@ async function start() {
             route = 'planning-debts';
         if ((route === 'planning-allocation-detail' || route === 'planning-allocation-edit' || route === 'planning-allocation-adjust') && !selectedAllocationId)
             route = 'planning-allocations';
+        if ((route === 'account-detail' || route === 'account-edit') && !selectedAccountId)
+            route = 'accounts';
         shell.setActiveRoute(route);
         try {
             let screen;
@@ -239,7 +242,32 @@ async function start() {
                 });
             }
             else if (route === 'accounts') {
-                screen = await renderAccountsV3(repositories, profile, entityLifecycle, () => void render());
+                screen = await renderAccountsRootV0({ repositories, profile, lifecycle: entityLifecycle }, {
+                    onCreate: () => { route = 'account-new'; void render(); },
+                    onOpenDetail: (id) => { selectedAccountId = id; route = 'account-detail'; void render(); }
+                });
+            }
+            else if (route === 'account-new') {
+                screen = renderNewAccountV0({ repositories, profile, lifecycle: entityLifecycle }, {
+                    onSaved: (id) => { selectedAccountId = id; route = 'account-detail'; void render(); }
+                });
+            }
+            else if (route === 'account-detail') {
+                screen = await renderAccountDetailV0({ repositories, profile, lifecycle: entityLifecycle }, selectedAccountId, {
+                    onEdit: () => { route = 'account-edit'; void render(); },
+                    onDeactivated: () => { selectedAccountId = null; route = 'accounts'; void render(); },
+                    onOpenMovement: (id) => { selectedMovementId = id; route = 'movement-detail'; void render(); },
+                    onViewAllMovements: () => {
+                        movementFilters = { ...DEFAULT_MOVEMENT_FILTERS_V0, accountId: selectedAccountId };
+                        route = 'movements';
+                        void render();
+                    }
+                });
+            }
+            else if (route === 'account-edit') {
+                screen = await renderEditAccountV0({ repositories, profile, lifecycle: entityLifecycle }, selectedAccountId, {
+                    onSaved: () => { route = 'account-detail'; void render(); }
+                });
             }
             else {
                 screen = await renderSettingsV3(repositories, profile, applyProfile, () => void render());

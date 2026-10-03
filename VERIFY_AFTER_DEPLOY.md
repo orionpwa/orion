@@ -1,10 +1,10 @@
 # Verificação depois do deploy
 
-1. Em Ajustes > Sobre o Orion, confirme **0.1.0-development.12.29**.
-2. Confirme o novo banner compacto **Atualização disponível** com ação **Atualizar** ao instalar esta versão.
-3. Confirme que Shell, Resumo, Movimentos e o rodapé continuam iguais à base estável.
-4. Abra Planejar e confirme apenas Compromissos, Dívidas e Metas e reservas na raiz.
-5. Teste Compromissos: detalhe, ignorar/voltar, registrar ou vincular pagamento.
-6. Teste Dívidas: detalhe, pagamento, histórico e ausência de edição direta do saldo.
-7. Teste Metas e reservas: detalhe e Ajustar valor reservado sem criar movimentação.
+1. Em Ajustes > Sobre o Orion, confirme **0.1.0-development.12.30**.
+2. Confirme Shell, Resumo, Movimentos, Planejar, banner e rodapé sem regressão.
+3. Abra Contas e confirme contas ativas e saldos, sem atalhos de Receita/Despesa/Transferência.
+4. Abra o detalhe de uma conta e confira saldo atual, dados da conta e movimentações recentes.
+5. Abra uma movimentação pelo detalhe e confirme o detalhe oficial em Movimentos.
+6. Use Ver todos os movimentos e confirme Movimentos filtrado pela conta.
+7. Crie/edite uma conta e confirme saldo inicial protegido após criação.
 8. Faça reload e confirme persistência dos dados existentes.
