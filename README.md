@@ -1,6 +1,6 @@
-# Orion Finance — Cloudflare Pages — 12.28
+# Orion Finance — Cloudflare Pages — 12.29
 
-Pacote de teste da UX V0 com Shell, Resumo e Movimentos estáveis e banner de atualização revisado. O conteúdo público está em `site/`.
+Pacote de teste da UX V0 com Shell, Resumo e Movimentos estáveis e Planejar V0 candidato. O conteúdo público está em `site/`.
 
 Configuração:
 - Framework: **None**

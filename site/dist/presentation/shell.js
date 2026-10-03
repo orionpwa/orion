@@ -16,7 +16,22 @@ const TITLES = {
     'movement-new': 'Novo movimento',
     'movement-detail': 'Movimento',
     'movement-edit': 'Editar movimento',
-    'movement-filters': 'Filtros'
+    'movement-filters': 'Filtros',
+    'planning-commitments': 'Compromissos',
+    'planning-commitment-new': 'Novo compromisso',
+    'planning-commitment-detail': 'Compromisso',
+    'planning-commitment-edit': 'Editar compromisso',
+    'planning-commitment-payment': 'Registrar ocorrência',
+    'planning-debts': 'Dívidas',
+    'planning-debt-new': 'Nova dívida',
+    'planning-debt-detail': 'Dívida',
+    'planning-debt-edit': 'Editar dívida',
+    'planning-debt-payment': 'Registrar pagamento',
+    'planning-allocations': 'Metas e reservas',
+    'planning-allocation-new': 'Nova meta ou reserva',
+    'planning-allocation-detail': 'Meta ou reserva',
+    'planning-allocation-edit': 'Editar informações',
+    'planning-allocation-adjust': 'Ajustar valor reservado'
 };
 function parentRoute(route) {
     if (route === 'settings')
@@ -25,6 +40,20 @@ function parentRoute(route) {
         return 'movements';
     if (route === 'movement-edit')
         return 'movement-detail';
+    if (route === 'planning-commitments' || route === 'planning-debts' || route === 'planning-allocations')
+        return 'planning';
+    if (route === 'planning-commitment-new' || route === 'planning-commitment-detail')
+        return 'planning-commitments';
+    if (route === 'planning-commitment-edit' || route === 'planning-commitment-payment')
+        return 'planning-commitment-detail';
+    if (route === 'planning-debt-new' || route === 'planning-debt-detail')
+        return 'planning-debts';
+    if (route === 'planning-debt-edit' || route === 'planning-debt-payment')
+        return 'planning-debt-detail';
+    if (route === 'planning-allocation-new' || route === 'planning-allocation-detail')
+        return 'planning-allocations';
+    if (route === 'planning-allocation-edit' || route === 'planning-allocation-adjust')
+        return 'planning-allocation-detail';
     return null;
 }
 function backLabel(route) {
@@ -32,6 +61,14 @@ function backLabel(route) {
         return '‹ Resumo';
     if (route === 'movement-detail')
         return '‹ Movimentos';
+    if (route === 'planning-commitments' || route === 'planning-debts' || route === 'planning-allocations')
+        return '‹ Planejar';
+    if (route === 'planning-commitment-detail')
+        return '‹ Compromissos';
+    if (route === 'planning-debt-detail')
+        return '‹ Dívidas';
+    if (route === 'planning-allocation-detail')
+        return '‹ Metas';
     return 'Cancelar';
 }
 export function createShellV0(onNavigate, onCreateMovement) {

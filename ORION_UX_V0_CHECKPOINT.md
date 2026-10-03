@@ -53,7 +53,7 @@ Regras permanentes:
 1. `UX-V0-BASELINE-STABLE` ✅
 2. `RESUMO-STABLE` ✅
 3. `MOVIMENTOS-STABLE` ✅
-4. Planejar
+4. Planejar — `PLANEJAR-CANDIDATE` em 12.29, aguardando validação real no iPhone
 5. Contas
 6. Limpeza segura da infraestrutura visual antiga
 7. Refinamento UX
@@ -118,3 +118,42 @@ Regras candidatas:
 - O banner permanece disponível até a ação, respeita safe-area e adapta a posição quando o dock está oculto.
 
 Após validação real no iPhone, congelar como `UPDATE-BANNER-STABLE` e preservar nas próximas etapas.
+
+
+## Planejar V0 — candidato 12.29
+Estado: `PLANEJAR-CANDIDATE`, aguardando validação real no iPhone.
+QA da fonte: 172/172 testes aprovados + quality, presentation, gateway, security precheck, PWA, public, operational, investments, radar, RC, device, privacy/release, Cloudflare e beta aprovados. Browser smoke segue indisponível apenas pelo timeout conhecido do Chromium headless em 12s.
+
+Estrutura candidata:
+- raiz Planejar com apenas Compromissos, Dívidas e Metas e reservas;
+- sem segunda dashboard, foco do momento, cartões, ativos ou Mais recursos na primeira camada;
+- listas, detalhes, criação e edição em telas dedicadas;
+- sem menus de três pontos e sem sheets empilhadas;
+- seletores inline, sem `<select>` nativo em fluxos críticos;
+- 320 px protegido sem ellipsis.
+
+Compromissos:
+- previsão permanece separada de fato financeiro;
+- estados Previsto, Atrasado, Pago e Ignorado;
+- Ignorar e Voltar a considerar explícitos;
+- Registrar pagamento/recebimento contextual;
+- usar movimentação compatível existente ou registrar fato novo e vincular;
+- desvincular preserva a movimentação.
+
+Dívidas:
+- saldo restante, total pago e histórico no detalhe;
+- saldo não é editável diretamente;
+- pagamento em tela dedicada;
+- nenhuma conta é pré-selecionada arbitrariamente;
+- Core continua rejeitando pagamento acima do saldo.
+
+Metas e reservas:
+- ação oficial `Ajustar valor reservado`;
+- ajuste não cria movimentação bancária;
+- conta, objetivo, prazo e efeito sobre Livre ficam explícitos;
+- edição de informações separada do ajuste do valor.
+
+Proteções:
+- `UX-V0-BASELINE-STABLE`, `RESUMO-STABLE` e `MOVIMENTOS-STABLE` não foram reabertos;
+- banner 12.28 permanece candidato até a primeira atualização real exibida no iPhone;
+- Financial Core, IndexedDB schema 5, backup v2 e migrations permanecem intactos.

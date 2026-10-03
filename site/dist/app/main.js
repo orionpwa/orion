@@ -10,7 +10,7 @@ import { createShellV0 } from '../presentation/shell.js';
 import { initializeAppearanceClock } from '../presentation/appearance.js';
 import { renderHomeV3 } from '../presentation/home.js';
 import { DEFAULT_MOVEMENT_FILTERS_V0, renderMovementDetailV0, renderMovementFiltersV0, renderMovementListV0, renderNewMovementV0, renderEditMovementV0 } from '../presentation/movements.js';
-import { renderPlanningV3 } from '../presentation/planning.js';
+import { renderPlanningRootV0, renderCommitmentListV0, renderCommitmentDetailV0, renderNewCommitmentV0, renderEditCommitmentV0, renderCommitmentPaymentV0, renderDebtListV0, renderDebtDetailV0, renderNewDebtV0, renderEditDebtV0, renderDebtPaymentV0, renderAllocationListV0, renderAllocationDetailV0, renderNewAllocationV0, renderEditAllocationV0, renderAdjustAllocationV0 } from '../presentation/planning.js';
 import { renderAccountsV3 } from '../presentation/accounts.js';
 import { renderSettingsV3 } from '../presentation/settings.js';
 import { showOnboarding } from '../presentation/screens/onboarding.js';
@@ -59,6 +59,9 @@ async function start() {
     let route = 'summary';
     let selectedMovementId = null;
     let movementFilters = { ...DEFAULT_MOVEMENT_FILTERS_V0 };
+    let selectedCommitmentId = null;
+    let selectedDebtId = null;
+    let selectedAllocationId = null;
     let rendering = false;
     let marketCoordinator = null;
     let fundamentalCoordinator = null;
@@ -74,6 +77,12 @@ async function start() {
         rendering = true;
         if ((route === 'movement-detail' || route === 'movement-edit') && !selectedMovementId)
             route = 'movements';
+        if ((route === 'planning-commitment-detail' || route === 'planning-commitment-edit' || route === 'planning-commitment-payment') && !selectedCommitmentId)
+            route = 'planning-commitments';
+        if ((route === 'planning-debt-detail' || route === 'planning-debt-edit' || route === 'planning-debt-payment') && !selectedDebtId)
+            route = 'planning-debts';
+        if ((route === 'planning-allocation-detail' || route === 'planning-allocation-edit' || route === 'planning-allocation-adjust') && !selectedAllocationId)
+            route = 'planning-allocations';
         shell.setActiveRoute(route);
         try {
             let screen;
@@ -138,7 +147,96 @@ async function start() {
                 });
             }
             else if (route === 'planning') {
-                screen = await renderPlanningV3(repositories, profile, entityLifecycle, () => void render());
+                screen = await renderPlanningRootV0({ repositories, profile, lifecycle: entityLifecycle }, {
+                    onOpenCommitments: () => { route = 'planning-commitments'; void render(); },
+                    onOpenDebts: () => { route = 'planning-debts'; void render(); },
+                    onOpenAllocations: () => { route = 'planning-allocations'; void render(); }
+                });
+            }
+            else if (route === 'planning-commitments') {
+                screen = await renderCommitmentListV0({ repositories, profile, lifecycle: entityLifecycle }, {
+                    onCreate: () => { route = 'planning-commitment-new'; void render(); },
+                    onOpenDetail: (id) => { selectedCommitmentId = id; route = 'planning-commitment-detail'; void render(); }
+                });
+            }
+            else if (route === 'planning-commitment-new') {
+                screen = await renderNewCommitmentV0({ repositories, profile, lifecycle: entityLifecycle }, {
+                    onSaved: (id) => { selectedCommitmentId = id; route = 'planning-commitment-detail'; void render(); }
+                });
+            }
+            else if (route === 'planning-commitment-detail') {
+                screen = await renderCommitmentDetailV0({ repositories, profile, lifecycle: entityLifecycle }, selectedCommitmentId, {
+                    onEdit: () => { route = 'planning-commitment-edit'; void render(); },
+                    onPayment: () => { route = 'planning-commitment-payment'; void render(); },
+                    onChanged: () => { void render(); },
+                    onDeactivated: () => { selectedCommitmentId = null; route = 'planning-commitments'; void render(); }
+                });
+            }
+            else if (route === 'planning-commitment-edit') {
+                screen = await renderEditCommitmentV0({ repositories, profile, lifecycle: entityLifecycle }, selectedCommitmentId, {
+                    onSaved: () => { route = 'planning-commitment-detail'; void render(); }
+                });
+            }
+            else if (route === 'planning-commitment-payment') {
+                screen = await renderCommitmentPaymentV0({ repositories, profile, lifecycle: entityLifecycle }, selectedCommitmentId, {
+                    onCompleted: () => { route = 'planning-commitment-detail'; void render(); }
+                });
+            }
+            else if (route === 'planning-debts') {
+                screen = await renderDebtListV0({ repositories, profile, lifecycle: entityLifecycle }, {
+                    onCreate: () => { route = 'planning-debt-new'; void render(); },
+                    onOpenDetail: (id) => { selectedDebtId = id; route = 'planning-debt-detail'; void render(); }
+                });
+            }
+            else if (route === 'planning-debt-new') {
+                screen = renderNewDebtV0({ repositories, profile, lifecycle: entityLifecycle }, {
+                    onSaved: (id) => { selectedDebtId = id; route = 'planning-debt-detail'; void render(); }
+                });
+            }
+            else if (route === 'planning-debt-detail') {
+                screen = await renderDebtDetailV0({ repositories, profile, lifecycle: entityLifecycle }, selectedDebtId, {
+                    onEdit: () => { route = 'planning-debt-edit'; void render(); },
+                    onPayment: () => { route = 'planning-debt-payment'; void render(); },
+                    onDeactivated: () => { selectedDebtId = null; route = 'planning-debts'; void render(); }
+                });
+            }
+            else if (route === 'planning-debt-edit') {
+                screen = await renderEditDebtV0({ repositories, profile, lifecycle: entityLifecycle }, selectedDebtId, {
+                    onSaved: () => { route = 'planning-debt-detail'; void render(); }
+                });
+            }
+            else if (route === 'planning-debt-payment') {
+                screen = await renderDebtPaymentV0({ repositories, profile, lifecycle: entityLifecycle }, selectedDebtId, {
+                    onCompleted: () => { route = 'planning-debt-detail'; void render(); }
+                });
+            }
+            else if (route === 'planning-allocations') {
+                screen = await renderAllocationListV0({ repositories, profile, lifecycle: entityLifecycle }, {
+                    onCreate: () => { route = 'planning-allocation-new'; void render(); },
+                    onOpenDetail: (id) => { selectedAllocationId = id; route = 'planning-allocation-detail'; void render(); }
+                });
+            }
+            else if (route === 'planning-allocation-new') {
+                screen = await renderNewAllocationV0({ repositories, profile, lifecycle: entityLifecycle }, {
+                    onSaved: (id) => { selectedAllocationId = id; route = 'planning-allocation-detail'; void render(); }
+                });
+            }
+            else if (route === 'planning-allocation-detail') {
+                screen = await renderAllocationDetailV0({ repositories, profile, lifecycle: entityLifecycle }, selectedAllocationId, {
+                    onEdit: () => { route = 'planning-allocation-edit'; void render(); },
+                    onAdjust: () => { route = 'planning-allocation-adjust'; void render(); },
+                    onDeactivated: () => { selectedAllocationId = null; route = 'planning-allocations'; void render(); }
+                });
+            }
+            else if (route === 'planning-allocation-edit') {
+                screen = await renderEditAllocationV0({ repositories, profile, lifecycle: entityLifecycle }, selectedAllocationId, {
+                    onSaved: () => { route = 'planning-allocation-detail'; void render(); }
+                });
+            }
+            else if (route === 'planning-allocation-adjust') {
+                screen = await renderAdjustAllocationV0({ repositories, profile, lifecycle: entityLifecycle }, selectedAllocationId, {
+                    onCompleted: () => { route = 'planning-allocation-detail'; void render(); }
+                });
             }
             else if (route === 'accounts') {
                 screen = await renderAccountsV3(repositories, profile, entityLifecycle, () => void render());

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "product": "Orion Finance",
-  "appVersion": "0.1.0-development.12.28",
+  "appVersion": "0.1.0-development.12.29",
   "phase": 12,
   "classification": "PWA TESTÁVEL — PODE IR AO GITHUB PARA TESTE",
   "runtimeOnly": true,
@@ -9,11 +9,21 @@
   "manifestCoversSelf": false,
   "coverage": "runtime-delta",
   "files": [
-    {"path":"index.html","bytes":1817,"sha256":"91193a63d7d45449f87eef693f7b156c79f105745ab240775f5308641a8d319c"},
-    {"path":"service-worker.js","bytes":9463,"sha256":"7ab7f7392ddb63e8cff9576079519c20ccd90b677d75e48ec9875563da7e8d13"},
-    {"path":"dist/app/main.js","bytes":11505,"sha256":"848682bbe8f004e3896d19099564e86f9d2eee59c702dc002c3a1d5583ec3905"},
-    {"path":"dist/app/version.js","bytes":190,"sha256":"8e4f4a12769c3acd1b366a04a47c1f14d44f462f66f65c0a93d864a0e297d1c3"},
-    {"path":"dist/presentation/components/feedback.js","bytes":1871,"sha256":"72b3a91560386d6a8f59b24220c3cab974e62a4995670e04fc0632b1f097ca54"},
-    {"path":"styles/ux-v0-feedback.css","bytes":1628,"sha256":"61da7219c3c87ed3c3ea5d760de03eea4d36cf799d4df6ccaa7a763a9f971bd4"}
+    {"path":"index.html","bytes":1878,"sha256":"3760bb968bbfc1ca8cfb6910a73c05ea04968719011a5fa83fe28ab0681331d2"},
+    {"path":"service-worker.js","bytes":10038,"sha256":"0534c7c90c2cb8125c127814ff04a2b04198f07fa9b9dea01b9896df465b9d47"},
+    {"path":"dist/app/main.js","bytes":18541,"sha256":"22868c713790efb640eba0c3f27c947ac5698612fb45fc14665d5e199ac9cfaa"},
+    {"path":"dist/app/version.js","bytes":190,"sha256":"2bce0f0d8b39c27625df66a5b27ef7533b7bacc904c8f833fb87e3f88feab398"},
+    {"path":"dist/presentation/planning.js","bytes":570,"sha256":"8a835edcc4a9ae393cc1cc09f769166acc402738a38bd625dd04c5f2e40426ee"},
+    {"path":"dist/presentation/shell.js","bytes":5867,"sha256":"0d0550f11be7c6dd67b30d76a9af325af5365eeff0d38bfc695724611cdbc066"},
+    {"path":"dist/presentation/screens/planning-v0/root.js","bytes":1851,"sha256":"4a33526489dd5ceb57b10c7803ca03ef0b3328e22ac2314687ad450f3458161b"},
+    {"path":"dist/presentation/screens/planning-v0/controls.js","bytes":3454,"sha256":"6bf66100973119808752d4e83f211a6702c3a05a052f0e0f052db301a283ad25"},
+    {"path":"dist/presentation/screens/planning-v0/shared.js","bytes":3739,"sha256":"5706520e37553c40c6a79b4898d1b49e56768598baaa85cc4b8afeab2dfc2406"},
+    {"path":"dist/presentation/screens/planning-v0/commitments.js","bytes":252,"sha256":"6d2800b34ca0536b68dd4f7427b83cb352602d9601ddf6e6b0e10c85435d1255"},
+    {"path":"dist/presentation/screens/planning-v0/commitment-forms.js","bytes":5676,"sha256":"3ae5ead333dea7f5b4718aa1c2f00d4be8de8c6ebf878fc6d440ccc19b067a8e"},
+    {"path":"dist/presentation/screens/planning-v0/commitment-payment.js","bytes":6346,"sha256":"1c819aa6f2fc69e2f43ad583daac94cc2382566435bf19482e3d187a8a2f1382"},
+    {"path":"dist/presentation/screens/planning-v0/commitment-list-detail.js","bytes":8118,"sha256":"02491439ee9dc56dea3811a718b0f196e9a447f95129bc28a70b7db3057376e0"},
+    {"path":"dist/presentation/screens/planning-v0/debts.js","bytes":12744,"sha256":"3245985fb77cd78279cd085f5bd2c86dedb7bfc8da7514cd9c8e509691e7af91"},
+    {"path":"dist/presentation/screens/planning-v0/allocations.js","bytes":11485,"sha256":"e2b706aa47f35abc084728be729d7a4679335ae75c2a16fa028224e60d3f0fd4"},
+    {"path":"styles/ux-v0-planning.css","bytes":7966,"sha256":"da22a0c9b118693240cb6041c14b77c0cdc3b915965bcf89d81414dfc6ea8e4c"}
   ]
 }
