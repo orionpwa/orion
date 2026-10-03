@@ -34,7 +34,7 @@
   overflow-wrap:anywhere;
 }
 .update-banner-action-v0{
-  min-height:40px;
+  min-height:44px;
   padding:0 14px;
   border:0;
   border-radius:12px;
@@ -63,4 +63,80 @@ body:has(.app-shell-v0.internal-route-v0) .update-banner-v0{
   }
   .update-banner-message-v0{font-size:13px}
   .update-banner-action-v0{padding:0 12px;font-size:12px}
+}
+
+
+/* ===== UX V0 · Feedback geral ===== */
+.feedback-toast-v0{
+  position:fixed;
+  z-index:130;
+  left:50%;
+  bottom:calc(64px + var(--safe-bottom) + 12px);
+  width:min(420px,calc(100% - max(24px,calc(var(--safe-left) + var(--safe-right) + 16px))));
+  min-height:52px;
+  padding:10px 12px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  align-items:center;
+  gap:10px;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:14px;
+  background:rgba(20,20,20,.97);
+  color:#f4f4f4;
+  box-shadow:0 12px 34px rgba(0,0,0,.38);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  opacity:0;
+  transform:translate(-50%,8px);
+  transition:opacity .16s ease,transform .16s ease;
+}
+.feedback-toast-v0.action{
+  grid-template-columns:minmax(0,1fr) auto;
+  padding-right:8px;
+}
+.feedback-toast-v0.visible{opacity:1;transform:translate(-50%,0)}
+.feedback-toast-v0.success{border-color:rgba(255,255,255,.22)}
+.feedback-toast-v0.error{border-color:rgba(255,255,255,.34)}
+.feedback-toast-message-v0{
+  min-width:0;
+  font-size:14px;
+  line-height:1.35;
+  font-weight:500;
+  overflow-wrap:anywhere;
+}
+.feedback-toast-action-v0{
+  min-height:44px;
+  padding:0 14px;
+  border:0;
+  border-radius:10px;
+  background:rgba(255,255,255,.10);
+  color:#fff;
+  font:inherit;
+  font-size:13px;
+  line-height:1;
+  font-weight:700;
+  white-space:nowrap;
+  touch-action:manipulation;
+}
+.feedback-toast-action-v0:focus-visible{
+  outline:2px solid rgba(255,255,255,.72);
+  outline-offset:2px;
+}
+body:has(.app-shell-v0.internal-route-v0) .feedback-toast-v0{
+  bottom:calc(var(--safe-bottom) + 12px);
+}
+body:has(.update-banner-v0) .feedback-toast-v0{
+  bottom:calc(64px + var(--safe-bottom) + 78px);
+}
+body:has(.app-shell-v0.internal-route-v0):has(.update-banner-v0) .feedback-toast-v0{
+  bottom:calc(var(--safe-bottom) + 78px);
+}
+@media(max-width:340px){
+  .feedback-toast-v0{
+    width:calc(100% - max(16px,calc(var(--safe-left) + var(--safe-right) + 12px)));
+    padding-left:11px;
+  }
+  .feedback-toast-v0.action{gap:8px;padding-right:7px}
+  .feedback-toast-message-v0{font-size:13px}
+  .feedback-toast-action-v0{padding:0 12px;font-size:12px}
 }

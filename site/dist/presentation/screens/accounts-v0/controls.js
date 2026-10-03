@@ -8,6 +8,11 @@ export function accountChoiceFieldV0(label, options, value = '', placeholder = '
     const valueLabel = el('span', 'account-choice-value-v0');
     control.append(valueLabel, el('span', 'account-choice-chevron-v0', ['›']));
     const choices = el('div', 'account-choice-list-v0');
+    const choicesId = `account-choice-${crypto.randomUUID()}`;
+    choices.id = choicesId;
+    choices.setAttribute('role', 'radiogroup');
+    choices.setAttribute('aria-label', label);
+    control.setAttribute('aria-controls', choicesId);
     choices.hidden = true;
     const buttons = [];
     const labelFor = (next) => options.find((item) => item.value === next)?.label ?? placeholder;
@@ -32,15 +37,25 @@ export function accountChoiceFieldV0(label, options, value = '', placeholder = '
             control.value = item.value;
             sync();
             close();
+            control.focus();
             control.dispatchEvent(new Event('change'));
         });
         buttons.push(button);
         choices.append(button);
     }
     control.addEventListener('click', () => {
+        if (control.disabled)
+            return;
         const opening = choices.hidden;
         choices.hidden = !opening;
         control.setAttribute('aria-expanded', String(opening));
+    });
+    choices.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape')
+            return;
+        event.preventDefault();
+        close();
+        control.focus();
     });
     sync();
     return {
@@ -65,6 +80,9 @@ export function accountMoneyFieldV0(label, value = '') {
 }
 export function accountErrorV0() {
     const element = el('div', 'account-inline-error-v0');
+    element.setAttribute('role', 'alert');
+    element.setAttribute('aria-live', 'polite');
+    element.setAttribute('aria-atomic', 'true');
     element.hidden = true;
     return {
         element,

@@ -9,6 +9,11 @@ export function choiceFieldV0(label, options, value = '', placeholder) {
     const chevron = el('span', 'movement-choice-chevron-v0', ['›']);
     control.append(valueLabel, chevron);
     const choices = el('div', 'movement-choice-list-v0');
+    const choicesId = `movement-choice-${crypto.randomUUID()}`;
+    choices.id = choicesId;
+    choices.setAttribute('role', 'radiogroup');
+    choices.setAttribute('aria-label', label);
+    control.setAttribute('aria-controls', choicesId);
     choices.hidden = true;
     const choiceButtons = [];
     const labelFor = (next) => options.find((item) => item.value === next)?.label ?? placeholder ?? 'Selecione';
@@ -30,6 +35,7 @@ export function choiceFieldV0(label, options, value = '', placeholder) {
             control.value = item.value;
             sync();
             close();
+            control.focus();
             control.dispatchEvent(new Event('change'));
         });
         choiceButtons.push(button);
@@ -41,6 +47,13 @@ export function choiceFieldV0(label, options, value = '', placeholder) {
         const opening = choices.hidden;
         choices.hidden = !opening;
         control.setAttribute('aria-expanded', String(opening));
+    });
+    choices.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape')
+            return;
+        event.preventDefault();
+        close();
+        control.focus();
     });
     sync();
     return {

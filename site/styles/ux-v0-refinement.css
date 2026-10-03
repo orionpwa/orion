@@ -1,0 +1,46 @@
+/* ===== UX V0 · Refinamento funcional ===== */
+.app-shell-v0 button,
+.app-shell-v0 input{
+  -webkit-tap-highlight-color:transparent;
+}
+.app-shell-v0 button{touch-action:manipulation}
+
+.app-shell-v0 :where(
+  .shell-action-v0,.shell-back-v0,.nav-item-v0,
+  .movements-filter-button-v0,.movements-text-action-v0,.movement-row-v0,
+  .movement-button-primary-v0,.movement-button-secondary-v0,.movement-button-danger-v0,
+  .movement-kind-button-v0,.movement-choice-trigger-v0,.movement-choice-option-v0,
+  .planning-domain-row-v0,.planning-entity-row-v0,.planning-primary-action-v0,
+  .planning-secondary-action-v0,.planning-danger-action-v0,.planning-choice-trigger-v0,.planning-choice-option-v0,
+  .accounts-inline-primary-v0,.accounts-text-action-v0,.account-row-v0,.account-movement-row-v0,
+  .account-primary-action-v0,.account-secondary-action-v0,.account-danger-action-v0,.account-danger-confirm-v0,
+  .account-choice-trigger-v0,.account-choice-option-v0
+):focus-visible{
+  outline:2px solid rgba(255,255,255,.72);
+  outline-offset:2px;
+}
+
+.app-shell-v0.internal-route-v0 :where(
+  .movement-internal-screen-v0,
+  .planning-screen-v0,
+  .account-internal-screen-v0
+){
+  padding-bottom:max(28px,calc(var(--safe-bottom) + 18px));
+  scroll-padding-bottom:calc(var(--safe-bottom) + 72px);
+}
+
+.movements-screen-v0,
+.movement-internal-screen-v0,
+.planning-screen-v0,
+.accounts-screen-v0,
+.account-internal-screen-v0,
+.summary-screen-v0{
+  overscroll-behavior-y:contain;
+}
+
+@media(prefers-reduced-motion:reduce){
+  .update-banner-v0,
+  .feedback-toast-v0{
+    transition:none;
+  }
+}

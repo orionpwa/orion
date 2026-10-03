@@ -4,7 +4,7 @@
 Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Em conflito com layouts/documentação antigos, esta base vence salvo revisão explícita.
 
 ## Base técnica
-- Release candidata: `0.1.0-development.12.31`.
+- Release candidata: `0.1.0-development.12.32`.
 - Financial Core preservado.
 - IndexedDB schema 5.
 - Backup format 2.
@@ -18,7 +18,7 @@ Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Em confl
 - `UPDATE-BANNER-STABLE` ✅
 - `PLANEJAR-STABLE` ✅
 - `CONTAS-STABLE` ✅
-- `LEGACY-CLEANUP-CANDIDATE` em 12.31, aguardando validação real no iPhone.
+- `LEGACY-CLEANUP-STABLE` ✅
 
 ## Arquitetura V0 congelada
 Raízes da navegação:
@@ -83,8 +83,8 @@ Metas/reservas: ação `Ajustar valor reservado`; ajuste não cria movimentaçã
 - Compacto, responsivo, sem cápsula larga e sem ellipsis.
 - Permanece até a ação e respeita safe-area/dock oculto.
 
-## Limpeza segura — candidato 12.31
-Removido somente código sem consumidores reais:
+## Limpeza segura — STABLE
+Validado no iPhone em 12.31. Removido somente código sem consumidores reais:
 - branding visual antigo;
 - actions sheet genérica antiga;
 - telas antigas de criação/edição/lista de movimentações;
@@ -102,7 +102,17 @@ Ainda não remover:
 - `components/fields` e `components/sheets`, pois Ajustes/Onboarding ainda possuem consumidores reais;
 - CSS residual, até auditoria específica de seletores/consumidores.
 
+## Refinamento UX funcional — candidato 12.32
+- feedback geral V0 substitui toast residual antigo;
+- ação `Desfazer` permanece explícita e responsiva;
+- seletores inline ganham radiogroup, Escape e retorno de foco;
+- erros de formulário são anunciáveis;
+- telas internas respeitam safe-area inferior;
+- foco visível e `prefers-reduced-motion` protegidos;
+- nenhuma mudança no Financial Core ou na arquitetura V0.
+
+Checkpoint esperado após validação real: `UX-FUNCTIONAL-REFINEMENT-STABLE`.
+
 ## Próxima sequência
-1. Validar 12.31 no iPhone e congelar `LEGACY-CLEANUP-STABLE`.
-2. Refinamento UX funcional/acessibilidade/teclado/erros.
-3. Identidade visual Orion.
+1. Validar 12.32 no iPhone e congelar `UX-FUNCTIONAL-REFINEMENT-STABLE`.
+2. Identidade visual Orion.
