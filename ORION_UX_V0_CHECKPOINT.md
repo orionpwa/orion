@@ -1,19 +1,24 @@
 # Orion UX V0 — Checkpoint mestre
 
 ## Autoridade
-Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Quando houver conflito com layouts, documentação ou padrões visuais anteriores, esta base vence, salvo revisão explícita posterior.
+Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Em conflito com layouts/documentação antigos, esta base vence salvo revisão explícita.
 
-## Base técnica preservada
-- Branch: `main`.
-- Shell V0 validado no iPhone e congelado como `UX-V0-BASELINE-STABLE`.
-- Hotfix do rodapé validado: `ac4d8d256ac59ea2a384031f2c1e1321ef6ef037`.
-- Resumo V0 validado no iPhone e congelado como `RESUMO-STABLE`.
-- Movimentos V0 validado no iPhone e congelado como `MOVIMENTOS-STABLE`.
-- Banner de atualização V0 validado no iPhone e congelado como `UPDATE-BANNER-STABLE`.
-- Planejar V0 validado no iPhone e congelado como `PLANEJAR-STABLE`.
-- Data schema: 5.
-- Backup format: 2.
-- Financial Core, IndexedDB, migrations e contratos financeiros permanecem preservados.
+## Base técnica
+- Release candidata: `0.1.0-development.12.31`.
+- Financial Core preservado.
+- IndexedDB schema 5.
+- Backup format 2.
+- `src/application/`, `src/domain/`, `src/data/` e `src/migration/` permanecem congelados nesta reconstrução visual.
+- Build limpa `dist/` antes de recompilar para impedir artefatos JS órfãos.
+
+## Checkpoints estáveis
+- `UX-V0-BASELINE-STABLE` ✅
+- `RESUMO-STABLE` ✅
+- `MOVIMENTOS-STABLE` ✅
+- `UPDATE-BANNER-STABLE` ✅
+- `PLANEJAR-STABLE` ✅
+- `CONTAS-STABLE` ✅
+- `LEGACY-CLEANUP-CANDIDATE` em 12.31, aguardando validação real no iPhone.
 
 ## Arquitetura V0 congelada
 Raízes da navegação:
@@ -22,159 +27,82 @@ Raízes da navegação:
 3. Planejar
 4. Contas
 
-Ajustes é acessado por Resumo e não é uma quinta raiz.
+Ajustes pertence a Resumo e não é quinta raiz.
 
-## Shell V0 — STABLE
-Estado: `UX-V0-BASELINE-STABLE`.
-
-Regras permanentes:
+### Regras permanentes
 - Bottom navigation somente nas quatro telas-raiz.
 - Nenhum FAB global.
+- Telas internas escondem o dock e oferecem retorno explícito.
 - `Novo` pertence a Movimentos.
-- `Ajustes` pertence a Resumo.
-- Telas internas escondem a bottom navigation e oferecem retorno explícito.
-- Safe-area do iPhone é absorvida dentro da própria barra inferior.
-- A barra inferior fica visualmente encostada à base da tela, sem faixa, vão ou fundo externo abaixo dela.
-- Esse encaixe validado no PWA instalado não pode regredir em etapas futuras.
-- Navegador comum pode usar viewport dinâmico; o PWA instalado deve preencher a altura física completa disponível.
-
-## Princípios UX V0
-- Mobile-first para iPhone.
-- 320 px é largura mínima de stress test.
+- Safe-area do iPhone fica dentro da própria barra inferior.
+- Barra inferior visualmente encostada à base, sem faixa/vão externo.
+- PWA instalado preenche a altura física disponível.
+- Mobile-first; 320 px é stress test mínimo.
+- Sem truncamento por `...` em informação financeira importante.
+- Sem menus de três pontos para ações essenciais.
+- Sem sheets empilhadas nos fluxos V0 principais.
 - Uma função deve ter um único lugar.
-- Nada essencial depende de gesto oculto.
-- Nada essencial é escondido em menus de três pontos.
-- Sem truncamento por `...` em conteúdo financeiro importante.
-- Linhas e blocos podem crescer verticalmente.
-- Sem carrossel horizontal como estrutura principal.
-- Sem sheets empilhadas para fluxos que crescem; preferir tela dedicada.
-- Poucos cards e nenhuma complexidade de ERP.
-- Branding, cores finais e identidade Orion ficam depois da estrutura funcional.
+- Branding/identidade final só depois da estrutura e refinamento funcional.
 
-## Ordem da reconstrução
-1. `UX-V0-BASELINE-STABLE` ✅
-2. `RESUMO-STABLE` ✅
-3. `MOVIMENTOS-STABLE` ✅
-4. `PLANEJAR-STABLE` ✅
-5. Contas — `CONTAS-CANDIDATE` em 12.30, aguardando validação real no iPhone
-6. Limpeza segura da infraestrutura visual antiga
-7. Refinamento UX
-8. Identidade visual Orion
+## Resumo — STABLE
+- Livre para decidir.
+- Disponível, Compromissos, Metas e reservas.
+- Este mês: Entrou, Saiu e Resultado, ou estado vazio.
+- Próximos compromissos.
+- Não cria movimentação e não gerencia contas.
 
-## Resumo V0 — STABLE
-Validado no iPhone em 12.26.
-QA da fonte na etapa: 157/157 testes aprovados + todos os gates.
+## Movimentos — STABLE
+- Histórico e estado vazio.
+- Novo: Despesa, Receita e Transferência.
+- Detalhe, edição e exclusão/desfazer em telas dedicadas.
+- Filtros em tela própria; sem busca permanente.
+- Transferência é fato neutro.
 
-Estrutura preservada:
-- Livre para decidir
-- Disponível
+## Planejar — STABLE
+Raiz somente com:
 - Compromissos
+- Dívidas
 - Metas e reservas
-- Este mês: Entrou / Saiu / Resultado, ou estado vazio do mês
-- Próximos compromissos
-- Estado vazio encaminha para Movimentos sem duplicar criação
 
-Não fazem parte do Resumo:
-- Disponível agora como hero legado
-- status de conforto
-- Próxima prioridade
-- Contas rápidas
-- CTA genérica de nova movimentação
+Compromissos: previsão separada de fato; ignorar/voltar; registrar ou vincular pagamento/recebimento; desvincular preserva a movimentação.
 
-## Movimentos V0 — STABLE
-Estado: `MOVIMENTOS-STABLE`. Validado no iPhone em 12.27.
-QA da fonte: 164/164 testes aprovados + quality, presentation, gateway, security precheck, PWA, public, operational, investments, radar, RC, device, privacy/release, Cloudflare e beta aprovados.
-Browser smoke continua indisponível neste ambiente pelo timeout conhecido do Chromium headless em 12s; validação real no iPhone foi concluída.
+Dívidas: saldo restante e histórico; saldo não editável diretamente; pagamento dedicado; sem conta arbitrariamente pré-selecionada; Core rejeita pagamento acima do saldo.
 
-Estrutura preservada:
-- histórico e estado vazio
-- `Novo` somente no topo da raiz Movimentos
-- Despesa / Receita / Transferência em tela interna focada
-- detalhe dedicado do movimento
-- edição dedicada
-- exclusão/desfazer explícitos
-- filtros simples em tela dedicada
-- sem busca permanente
-- sem actions sheet como substituta de detalhe
-- sem `<select>` nativo em fluxos críticos
-- seletores inline dentro da própria tela, sem sheets empilhadas
-- transferência apresentada como fato neutro
-- bottom navigation somente na raiz Movimentos
-- 320 px sem ellipsis protegido por teste
+Metas/reservas: ação `Ajustar valor reservado`; ajuste não cria movimentação bancária; efeito sobre Livre explícito.
+
+## Contas — STABLE
+- Lista contas ativas e saldos.
+- `Adicionar conta` pertence a Contas.
+- Detalhe dedicado com saldo atual, instituição, tipo, disponibilidade e saldo inicial.
+- Até cinco movimentos recentes; histórico completo abre Movimentos filtrado pela conta.
+- Saldo inicial não é editável após criação.
+- Sem atalhos duplicados de Receita, Despesa ou Transferência.
+
+## Banner de atualização — STABLE
+- `Atualização disponível` + `Atualizar`.
+- Compacto, responsivo, sem cápsula larga e sem ellipsis.
+- Permanece até a ação e respeita safe-area/dock oculto.
+
+## Limpeza segura — candidato 12.31
+Removido somente código sem consumidores reais:
+- branding visual antigo;
+- actions sheet genérica antiga;
+- telas antigas de criação/edição/lista de movimentações;
+- árvore antiga de Planejar baseada em sheets/menus de três pontos;
+- JS compilado correspondente no pacote publicado.
 
 Proteções:
-- Shell V0 e Resumo V0 não foram reabertos.
-- Hotfix do rodapé do iPhone permanece congelado.
-- Financial Core, IndexedDB schema 5, backup v2 e migrations não foram alterados.
-- pacote final Cloudflare é montado e verificado pelo QA; todos os stylesheets referenciados pelo index precisam existir e estar no precache.
+- desativação V0 mantém ação `Desfazer` via gateway auditável;
+- presentation gate rejeita retorno de fonte/JS legado;
+- build sempre limpa `dist/` antes do TypeScript;
+- 178/178 testes + gates executáveis aprovados antes da publicação;
+- browser smoke segue indisponível somente pelo timeout conhecido do Chromium headless em 12s.
 
-## Feedback de atualização V0 — STABLE
-Estado: `UPDATE-BANNER-STABLE`. Validado no iPhone durante a atualização para 12.29.
-QA da fonte: 166/166 testes aprovados + todos os gates executáveis. Browser smoke segue indisponível pelo timeout conhecido do Chromium headless em 12s.
+Ainda não remover:
+- `components/fields` e `components/sheets`, pois Ajustes/Onboarding ainda possuem consumidores reais;
+- CSS residual, até auditoria específica de seletores/consumidores.
 
-Regras permanentes:
-- O aviso de nova versão não usa mais o action-toast genérico.
-- Banner compacto dedicado, sem cápsula gigante e sem truncamento.
-- Texto padrão: `Atualização disponível`.
-- Ação explícita: `Atualizar`.
-- O banner permanece disponível até a ação, respeita safe-area e adapta a posição quando o dock está oculto.
-
-
-
-## Planejar V0 — STABLE
-Estado: `PLANEJAR-STABLE`. Validado no iPhone em 12.29.
-QA da fonte: 172/172 testes aprovados + quality, presentation, gateway, security precheck, PWA, public, operational, investments, radar, RC, device, privacy/release, Cloudflare e beta aprovados. Browser smoke segue indisponível apenas pelo timeout conhecido do Chromium headless em 12s.
-
-Estrutura preservada:
-- raiz Planejar com apenas Compromissos, Dívidas e Metas e reservas;
-- sem segunda dashboard, foco do momento, cartões, ativos ou Mais recursos na primeira camada;
-- listas, detalhes, criação e edição em telas dedicadas;
-- sem menus de três pontos e sem sheets empilhadas;
-- seletores inline, sem `<select>` nativo em fluxos críticos;
-- 320 px protegido sem ellipsis.
-
-Compromissos:
-- previsão permanece separada de fato financeiro;
-- estados Previsto, Atrasado, Pago e Ignorado;
-- Ignorar e Voltar a considerar explícitos;
-- Registrar pagamento/recebimento contextual;
-- usar movimentação compatível existente ou registrar fato novo e vincular;
-- desvincular preserva a movimentação.
-
-Dívidas:
-- saldo restante, total pago e histórico no detalhe;
-- saldo não é editável diretamente;
-- pagamento em tela dedicada;
-- nenhuma conta é pré-selecionada arbitrariamente;
-- Core continua rejeitando pagamento acima do saldo.
-
-Metas e reservas:
-- ação oficial `Ajustar valor reservado`;
-- ajuste não cria movimentação bancária;
-- conta, objetivo, prazo e efeito sobre Livre ficam explícitos;
-- edição de informações separada do ajuste do valor.
-
-Proteções:
-- `UX-V0-BASELINE-STABLE`, `RESUMO-STABLE`, `MOVIMENTOS-STABLE` e `UPDATE-BANNER-STABLE` não foram reabertos;
-- Financial Core, IndexedDB schema 5, backup v2 e migrations permanecem intactos.
-
-
-## Contas V0 — candidato 12.30
-Estado: `CONTAS-CANDIDATE`, aguardando validação real no iPhone.
-QA da fonte: 178/178 testes aprovados + quality, presentation, gateway, security precheck, PWA, public, operational, investments, radar, RC, device, privacy/release, Cloudflare e beta aprovados. Browser smoke segue indisponível apenas pelo timeout conhecido do Chromium headless em 12s.
-
-Estrutura candidata:
-- raiz Contas lista somente contas ativas e seus saldos;
-- `Adicionar conta` pertence a Contas;
-- detalhe dedicado mostra saldo atual, instituição, tipo, disponibilidade e saldo inicial;
-- detalhe exibe até cinco movimentações da conta e encaminha o histórico completo para Movimentos com filtro da conta;
-- movimentação recente abre o detalhe oficial em Movimentos;
-- criação e edição em telas dedicadas, sem sheets empilhadas, três pontos ou `<select>` nativo;
-- saldo inicial não é editável após criação; ajustes de saldo continuam sendo fatos em Movimentos;
-- desativação explícita preserva o histórico;
-- Contas não oferece atalhos duplicados de Receita, Despesa ou Transferência;
-- 320 px protegido sem ellipsis.
-
-Proteções:
-- Shell, Resumo, Movimentos, Planejar e banner de atualização permanecem congelados;
-- Financial Core, IndexedDB schema 5, backup v2 e migrations permanecem intactos.
+## Próxima sequência
+1. Validar 12.31 no iPhone e congelar `LEGACY-CLEANUP-STABLE`.
+2. Refinamento UX funcional/acessibilidade/teclado/erros.
+3. Identidade visual Orion.

@@ -3,6 +3,7 @@ import { updateAllocationDetails } from '../../../application/allocations/update
 import { formatBRL } from '../../../domain/money/money.js';
 import { el } from '../../dom.js';
 import { showToast } from '../../components/feedback.js';
+import { deactivateWithUndoFeedback } from '../../components/lifecycle-feedback.js';
 import { planningChoiceFieldV0, planningErrorV0, planningInputFieldV0, planningMoneyFieldV0, planningSubmitV0 } from './controls.js';
 import { accountName, accountOptions, activeAccounts, centsToInput, detailRowsV0, emptyPlanningV0, formatDateBR, inlineConfirmV0 } from './shared.js';
 export async function renderAllocationListV0(context, actions) {
@@ -72,9 +73,7 @@ export async function renderAllocationDetailV0(context, allocationId, actions) {
     actionsBlock.append(adjust, edit);
     root.append(actionsBlock);
     root.append(inlineConfirmV0('Desativar meta ou reserva', 'O saldo da conta não será alterado. A meta deixará de reduzir o Livre para decidir.', 'Desativar', () => {
-        void context.lifecycle.deactivate(context.profile.id, 'allocation', allocation.id)
-            .then(() => { showToast('Meta ou reserva desativada.', 'success'); actions.onDeactivated(); })
-            .catch((error) => showToast(error instanceof Error ? error.message : 'Falha ao desativar meta ou reserva.', 'error'));
+        deactivateWithUndoFeedback(context.lifecycle, context.profile.id, 'allocation', allocation.id, 'Meta ou reserva', actions.onDeactivated);
     }));
     return root;
 }

@@ -3,6 +3,7 @@ import { unlinkRecurrencePayment } from '../../../application/recurrences/paymen
 import { formatBRL } from '../../../domain/money/money.js';
 import { el } from '../../dom.js';
 import { showToast } from '../../components/feedback.js';
+import { deactivateWithUndoFeedback } from '../../components/lifecycle-feedback.js';
 import { accountName, activeAccounts, commitmentStatusLabelV0, commitmentStatusV0, currentMonth, detailRowsV0, emptyPlanningV0, formatMonthBR, inlineConfirmV0 } from './shared.js';
 export async function renderCommitmentListV0(context, actions) {
     const [recurrences, monthStates] = await Promise.all([
@@ -118,9 +119,7 @@ export async function renderCommitmentDetailV0(context, recurrenceId, actions) {
     actionStack.append(edit);
     root.append(actionStack);
     root.append(inlineConfirmV0('Desativar compromisso', 'O histórico já registrado será preservado. O compromisso deixará de aparecer nos próximos planejamentos.', 'Desativar', () => {
-        void context.lifecycle.deactivate(context.profile.id, 'recurrence', recurrence.id)
-            .then(() => { showToast('Compromisso desativado.', 'success'); actions.onDeactivated(); })
-            .catch((error) => showToast(error instanceof Error ? error.message : 'Falha ao desativar compromisso.', 'error'));
+        deactivateWithUndoFeedback(context.lifecycle, context.profile.id, 'recurrence', recurrence.id, 'Compromisso', actions.onDeactivated);
     }));
     return root;
 }
