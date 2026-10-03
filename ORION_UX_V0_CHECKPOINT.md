@@ -51,7 +51,7 @@ Regras permanentes:
 ## Ordem da reconstrução
 1. `UX-V0-BASELINE-STABLE` ✅
 2. `RESUMO-STABLE` ✅
-3. Movimentos
+3. Movimentos — `MOVIMENTOS-CANDIDATE` em 12.27, aguardando validação real no iPhone
 4. Planejar
 5. Contas
 6. Limpeza segura da infraestrutura visual antiga
@@ -60,7 +60,7 @@ Regras permanentes:
 
 ## Resumo V0 — STABLE
 Validado no iPhone em 12.26.
-QA da fonte: 157/157 testes aprovados + todos os gates.
+QA da fonte na etapa: 157/157 testes aprovados + todos os gates.
 
 Estrutura preservada:
 - Livre para decidir
@@ -78,28 +78,31 @@ Não fazem parte do Resumo:
 - Contas rápidas
 - CTA genérica de nova movimentação
 
-## Próxima etapa
-`MOVIMENTOS`
+## Movimentos V0 — candidato 12.27
+Estado: `MOVIMENTOS-CANDIDATE`.
+QA da fonte: 164/164 testes aprovados + quality, presentation, gateway, security precheck, PWA, public, operational, investments, radar, RC, device, privacy/release, Cloudflare e beta aprovados.
+Browser smoke continua indisponível neste ambiente pelo timeout conhecido do Chromium headless em 12s; validação real deve ocorrer no iPhone.
 
-Objetivo: reconstruir o fluxo vertical de Movimentos sem alterar Financial Core, persistência, Shell V0 ou Resumo estável.
-
-Ordem funcional:
-1. histórico e estado vazio
-2. Novo movimento
-3. Despesa
-4. Receita
-5. Transferência
-6. detalhe do movimento
-7. editar
-8. excluir
-9. filtros simples
-
-Regras desta etapa:
-- sem FAB global
-- sem pesquisa permanente nesta primeira versão
-- criação e edição em tela dedicada quando o fluxo crescer
-- detalhe do movimento sem menu de três pontos para ações primárias
+Estrutura candidata:
+- histórico e estado vazio
+- `Novo` somente no topo da raiz Movimentos
+- Despesa / Receita / Transferência em tela interna focada
+- detalhe dedicado do movimento
+- edição dedicada
+- exclusão/desfazer explícitos
+- filtros simples em tela dedicada
+- sem busca permanente
+- sem actions sheet como substituta de detalhe
+- sem `<select>` nativo em fluxos críticos
+- seletores inline dentro da própria tela, sem sheets empilhadas
 - transferência apresentada como fato neutro
 - bottom navigation somente na raiz Movimentos
+- 320 px sem ellipsis protegido por teste
+
+Proteções:
+- Shell V0 e Resumo V0 não foram reabertos.
+- Hotfix do rodapé do iPhone permanece congelado.
+- Financial Core, IndexedDB schema 5, backup v2 e migrations não foram alterados.
+- pacote final Cloudflare é montado e verificado pelo QA; todos os stylesheets referenciados pelo index precisam existir e estar no precache.
 
 Checkpoint esperado após validação real: `MOVIMENTOS-STABLE`.

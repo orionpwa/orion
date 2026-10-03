@@ -1,6 +1,6 @@
-# Orion Finance — Cloudflare Pages — 12.26
+# Orion Finance — Cloudflare Pages — 12.27
 
-Pacote de teste do **Resumo UX V0** sobre o Shell V0 já validado no iPhone. O conteúdo público está em site/.
+Pacote de teste da UX V0 Movimentos sobre Shell e Resumo estáveis. O conteúdo público está em `site/`.
 
 Configuração:
 - Framework: **None**

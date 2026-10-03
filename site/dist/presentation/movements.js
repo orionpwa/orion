@@ -1,8 +1,6 @@
-import { renderMovements } from './screens/movements.js';
-export async function renderMovementsV3(repositories, profile, mutations, onChanged) {
-    const root = await renderMovements(repositories, profile, mutations, onChanged);
-    root.classList.remove('screen');
-    root.classList.add('screen-v3', 'movements-screen-v3');
-    root.querySelector('.screen-heading')?.remove();
-    return root;
-}
+export { renderMovementListV0 } from './screens/movements-v0/list.js';
+export { renderMovementFiltersV0 } from './screens/movements-v0/filters.js';
+export { renderNewMovementV0 } from './screens/movements-v0/new.js';
+export { renderEditMovementV0 } from './screens/movements-v0/edit.js';
+export { renderMovementDetailV0 } from './screens/movements-v0/detail.js';
+export { DEFAULT_MOVEMENT_FILTERS_V0 } from './screens/movements-v0/shared.js';

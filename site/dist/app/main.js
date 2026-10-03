@@ -9,12 +9,11 @@ import { clear } from '../presentation/dom.js';
 import { createShellV0 } from '../presentation/shell.js';
 import { initializeAppearanceClock } from '../presentation/appearance.js';
 import { renderHomeV3 } from '../presentation/home.js';
-import { renderMovementsV3 } from '../presentation/movements.js';
+import { DEFAULT_MOVEMENT_FILTERS_V0, renderMovementDetailV0, renderMovementFiltersV0, renderMovementListV0, renderNewMovementV0, renderEditMovementV0 } from '../presentation/movements.js';
 import { renderPlanningV3 } from '../presentation/planning.js';
 import { renderAccountsV3 } from '../presentation/accounts.js';
 import { renderSettingsV3 } from '../presentation/settings.js';
 import { showOnboarding } from '../presentation/screens/onboarding.js';
-import { openNewTransactionSheet } from '../presentation/screens/new-transaction.js';
 import { showActionToast, showToast } from '../presentation/components/feedback.js';
 import { bindConnectivityStatus } from '../presentation/components/system-status.js';
 import { errorState, fatalState, loadingState } from '../presentation/components/states.js';
@@ -58,12 +57,12 @@ async function start() {
     const session = await identityProvider.getSession();
     let profile = session.profile;
     let route = 'summary';
+    let selectedMovementId = null;
+    let movementFilters = { ...DEFAULT_MOVEMENT_FILTERS_V0 };
     let rendering = false;
     let marketCoordinator = null;
     let fundamentalCoordinator = null;
-    const shell = createShellV0((next) => { route = next; void render(); }, () => {
-        void openNewTransactionSheet(repositories, profile, () => void render());
-    });
+    const shell = createShellV0((next) => { route = next; void render(); }, () => { route = 'movement-new'; void render(); });
     host.replaceChildren(shell.shell);
     const applyProfile = (next) => {
         profile = next;
@@ -73,19 +72,80 @@ async function start() {
         if (rendering)
             return;
         rendering = true;
+        if ((route === 'movement-detail' || route === 'movement-edit') && !selectedMovementId)
+            route = 'movements';
         shell.setActiveRoute(route);
         try {
             let screen;
-            if (route === 'summary')
-                screen = await renderHomeV3(repositories, profile, { onOpenMovements: () => { route = 'movements'; void render(); } });
-            else if (route === 'movements')
-                screen = await renderMovementsV3(repositories, profile, transactionMutations, () => void render());
-            else if (route === 'planning')
+            if (route === 'summary') {
+                screen = await renderHomeV3(repositories, profile, {
+                    onOpenMovements: () => { route = 'movements'; void render(); }
+                });
+            }
+            else if (route === 'movements') {
+                screen = await renderMovementListV0(repositories, profile, movementFilters, {
+                    onOpenDetail: (transactionId) => {
+                        selectedMovementId = transactionId;
+                        route = 'movement-detail';
+                        void render();
+                    },
+                    onOpenFilters: () => { route = 'movement-filters'; void render(); },
+                    onClearFilters: () => {
+                        movementFilters = { ...DEFAULT_MOVEMENT_FILTERS_V0 };
+                        void render();
+                    }
+                });
+            }
+            else if (route === 'movement-new') {
+                screen = await renderNewMovementV0(repositories, profile, {
+                    onSaved: (transaction) => {
+                        selectedMovementId = transaction.id;
+                        route = 'movement-detail';
+                        void render();
+                    }
+                });
+            }
+            else if (route === 'movement-detail') {
+                screen = await renderMovementDetailV0(repositories, profile, transactionMutations, selectedMovementId, {
+                    onEdit: () => { route = 'movement-edit'; void render(); },
+                    onDeleted: () => {
+                        selectedMovementId = null;
+                        route = 'movements';
+                        void render();
+                    },
+                    onRestored: () => { void render(); }
+                });
+            }
+            else if (route === 'movement-edit') {
+                screen = await renderEditMovementV0(repositories, profile, transactionMutations, selectedMovementId, {
+                    onSaved: () => { route = 'movement-detail'; void render(); },
+                    onUnavailable: () => {
+                        setTimeout(() => {
+                            selectedMovementId = null;
+                            route = 'movements';
+                            void render();
+                        }, 0);
+                    }
+                });
+            }
+            else if (route === 'movement-filters') {
+                screen = await renderMovementFiltersV0(repositories, profile, movementFilters, {
+                    onApply: (next) => {
+                        movementFilters = next;
+                        route = 'movements';
+                        void render();
+                    }
+                });
+            }
+            else if (route === 'planning') {
                 screen = await renderPlanningV3(repositories, profile, entityLifecycle, () => void render());
-            else if (route === 'accounts')
+            }
+            else if (route === 'accounts') {
                 screen = await renderAccountsV3(repositories, profile, entityLifecycle, () => void render());
-            else
+            }
+            else {
                 screen = await renderSettingsV3(repositories, profile, applyProfile, () => void render());
+            }
             clear(shell.content);
             shell.content.append(screen);
         }

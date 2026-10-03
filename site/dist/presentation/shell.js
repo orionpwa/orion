@@ -6,18 +6,43 @@ const ROOT_NAVIGATION = [
     { route: 'planning', label: 'Planejar', icon: 'plan' },
     { route: 'accounts', label: 'Contas', icon: 'accounts' }
 ];
+const ROOT_ROUTES = new Set(ROOT_NAVIGATION.map((item) => item.route));
 const TITLES = {
     summary: 'Resumo',
     movements: 'Movimentos',
     planning: 'Planejar',
     accounts: 'Contas',
-    settings: 'Ajustes'
+    settings: 'Ajustes',
+    'movement-new': 'Novo movimento',
+    'movement-detail': 'Movimento',
+    'movement-edit': 'Editar movimento',
+    'movement-filters': 'Filtros'
 };
+function parentRoute(route) {
+    if (route === 'settings')
+        return 'summary';
+    if (route === 'movement-new' || route === 'movement-detail' || route === 'movement-filters')
+        return 'movements';
+    if (route === 'movement-edit')
+        return 'movement-detail';
+    return null;
+}
+function backLabel(route) {
+    if (route === 'settings')
+        return '‹ Resumo';
+    if (route === 'movement-detail')
+        return '‹ Movimentos';
+    return 'Cancelar';
+}
 export function createShellV0(onNavigate, onCreateMovement) {
     let route = 'summary';
-    const back = el('button', 'shell-back-v0', ['‹ Resumo']);
+    const back = el('button', 'shell-back-v0');
     back.type = 'button';
-    back.addEventListener('click', () => onNavigate('summary'));
+    back.addEventListener('click', () => {
+        const parent = parentRoute(route);
+        if (parent)
+            onNavigate(parent);
+    });
     const title = el('h1', 'shell-title-v0', [TITLES.summary]);
     const settings = el('button', 'shell-action-v0', ['Ajustes']);
     settings.type = 'button';
@@ -48,13 +73,16 @@ export function createShellV0(onNavigate, onCreateMovement) {
         shell.dataset.route = route;
         leading.replaceChildren();
         trailing.replaceChildren();
-        if (route === 'settings')
+        const parent = parentRoute(route);
+        if (parent) {
+            back.textContent = backLabel(route);
             leading.append(back);
+        }
         if (route === 'summary')
             trailing.append(settings);
         if (route === 'movements')
             trailing.append(createMovement);
-        const isRoot = route !== 'settings';
+        const isRoot = ROOT_ROUTES.has(route);
         navigation.hidden = !isRoot;
         shell.classList.toggle('internal-route-v0', !isRoot);
         for (const [itemRoute, button] of buttons) {
