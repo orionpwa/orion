@@ -4,14 +4,12 @@
 Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Quando houver conflito com layouts, documentação ou padrões visuais anteriores, esta base vence, salvo revisão explícita posterior.
 
 ## Base técnica preservada
-- Publicação atual: Orion 12.25
-- Branch: `main`
-- Shell V0 publicado a partir de `94ee56674a59e245e56d61cbf0083e43f2bd7cf4`
-- Hotfix do rodapé validado no iPhone: `ac4d8d256ac59ea2a384031f2c1e1321ef6ef037`
-- Data schema: 5
-- Backup format: 2
+- Branch: `main`.
+- Shell V0 validado no iPhone e congelado como `UX-V0-BASELINE-STABLE`.
+- Hotfix do rodapé validado: `ac4d8d256ac59ea2a384031f2c1e1321ef6ef037`.
+- Data schema: 5.
+- Backup format: 2.
 - Financial Core, IndexedDB, migrations e contratos financeiros permanecem preservados.
-- QA da fonte após o hotfix: 156/156 testes aprovados.
 
 ## Arquitetura V0 congelada
 Raízes da navegação:
@@ -23,7 +21,7 @@ Raízes da navegação:
 Ajustes é acessado por Resumo e não é uma quinta raiz.
 
 ## Shell V0 — STABLE
-Estado: `UX-V0-BASELINE-STABLE`
+Estado: `UX-V0-BASELINE-STABLE`.
 
 Regras permanentes:
 - Bottom navigation somente nas quatro telas-raiz.
@@ -31,10 +29,10 @@ Regras permanentes:
 - `Novo` pertence a Movimentos.
 - `Ajustes` pertence a Resumo.
 - Telas internas escondem a bottom navigation e oferecem retorno explícito.
-- Safe-area do iPhone deve ser absorvida dentro da própria barra inferior.
-- A barra inferior deve ficar visualmente encostada à base da tela, sem faixa, vão ou fundo externo abaixo dela.
-- O comportamento validado no PWA instalado não pode regredir em etapas futuras.
-- O navegador comum pode usar viewport dinâmico; o PWA instalado deve preencher a altura física completa disponível.
+- Safe-area do iPhone é absorvida dentro da própria barra inferior.
+- A barra inferior fica visualmente encostada à base da tela, sem faixa, vão ou fundo externo abaixo dela.
+- Esse encaixe validado no PWA instalado não pode regredir em etapas futuras.
+- Navegador comum pode usar viewport dinâmico; o PWA instalado deve preencher a altura física completa disponível.
 
 ## Princípios UX V0
 - Mobile-first para iPhone.
@@ -51,7 +49,7 @@ Regras permanentes:
 
 ## Ordem da reconstrução
 1. `UX-V0-BASELINE-STABLE` ✅
-2. Resumo
+2. Resumo — `RESUMO-CANDIDATE` em 12.26, aguardando validação real no iPhone
 3. Movimentos
 4. Planejar
 5. Contas
@@ -59,18 +57,23 @@ Regras permanentes:
 7. Refinamento UX
 8. Identidade visual Orion
 
-## Próxima etapa
-`RESUMO`
+## Resumo V0 — candidato 12.26
+QA da fonte: 157/157 testes aprovados + todos os gates.
 
-Objetivo: reconstruir a raiz Resumo sobre o Shell V0 estável, sem alterar Financial Core, persistência ou as demais raízes.
-
-Estrutura funcional prevista:
+Estrutura:
 - Livre para decidir
 - Disponível
 - Compromissos
 - Metas e reservas
 - Este mês: Entrou / Saiu / Resultado
 - Próximos compromissos
-- Estado vazio sem CTA duplicada de criação
+- Estado vazio encaminha para Movimentos sem duplicar criação
 
-Checkpoint esperado após validação real: `RESUMO-STABLE`.
+Não fazem mais parte do Resumo:
+- Disponível agora como hero legado
+- status de conforto
+- Próxima prioridade
+- Contas rápidas
+- CTA genérica de nova movimentação
+
+Checkpoint após validação real: `RESUMO-STABLE`.

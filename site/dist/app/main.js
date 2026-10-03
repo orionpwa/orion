@@ -77,7 +77,7 @@ async function start() {
         try {
             let screen;
             if (route === 'summary')
-                screen = await renderHomeV3(repositories, profile, { onOpenPlanning: () => { route = 'planning'; void render(); } });
+                screen = await renderHomeV3(repositories, profile, { onOpenMovements: () => { route = 'movements'; void render(); } });
             else if (route === 'movements')
                 screen = await renderMovementsV3(repositories, profile, transactionMutations, () => void render());
             else if (route === 'planning')

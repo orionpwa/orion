@@ -1,46 +1,21 @@
 {
   "schemaVersion": 1,
   "product": "Orion Finance",
-  "appVersion": "0.1.0-development.12.25",
+  "appVersion": "0.1.0-development.12.26",
   "phase": 12,
   "classification": "PWA TESTÁVEL — PODE IR AO GITHUB PARA TESTE",
   "runtimeOnly": true,
   "generatedFromSourcePackage": true,
   "manifestCoversSelf": false,
-  "manifestMode": "delta",
-  "baseAppVersion": "0.1.0-development.12.24",
-  "baseCommit": "82d169c1127af8c35b75c37e4ee85b15ce200e05",
-  "filesScope": "changed-and-added",
+  "coverage": "runtime-delta",
   "files": [
-    {
-      "path": "dist/app/main.js",
-      "bytes": 8845,
-      "sha256": "a812e2809df07a56cb336c4662ea5f2c8977229c440127c2e97d93b7f02b606a"
-    },
-    {
-      "path": "dist/app/version.js",
-      "bytes": 190,
-      "sha256": "737b054ea25561a2ce47fa2736a33981bfcd2b59bc43b276da285203a2424484"
-    },
-    {
-      "path": "dist/presentation/shell.js",
-      "bytes": 3017,
-      "sha256": "52f6a20da0e37c41b88c1981213a802a1400d8ffec48e921ebaa8b012a994e1e"
-    },
-    {
-      "path": "index.html",
-      "bytes": 1634,
-      "sha256": "972a5aad73d5f2a9a025c7845e5bfc2a4d79b23e98d6c3ae487c24fb6bda4656"
-    },
-    {
-      "path": "service-worker.js",
-      "bytes": 8976,
-      "sha256": "fc5972ac4d895d0ccaad9380c23c47b53e88a5ee8f1ba0fc1a4dc909e18e281a"
-    },
-    {
-      "path": "styles/ux-v0-shell.css",
-      "bytes": 2538,
-      "sha256": "0755e6b062e0a9aa69fdad97934bb3d53695c62490374004e239e49f7897bb58"
-    }
+    {"path":"index.html","bytes":1694,"sha256":"4d9be27121410d521fd45bcc8771e55ed0e7e626eadc64f50c4ab50cc3c10d2a"},
+    {"path":"service-worker.js","bytes":9008,"sha256":"c764c17ff059a3f7726056303e572c0f5df2ca249af7965e72387c9703a03fc0"},
+    {"path":"dist/app/main.js","bytes":8847,"sha256":"e9c699d7c19b40db6a1cc7d6f6b5485ca22850bb08849aad51a373a52eec6ad0"},
+    {"path":"dist/app/version.js","bytes":190,"sha256":"59aea2e361a93a15a057facaeffc5772cec2bbffebb6ef28b9b94aed08051fb6"},
+    {"path":"dist/application/dashboard/get-dashboard.js","bytes":3616,"sha256":"d284dd914d5ca4a4d34937bf818508e383e4817cff116e6aaab01d647eb208a3"},
+    {"path":"dist/presentation/home.js","bytes":3867,"sha256":"73c9da1fc67f1e7d5621247e48d4367eec08345b7ceccd8be6d778b38ff7c4b8"},
+    {"path":"styles/ux-v0-shell.css","bytes":2740,"sha256":"9870a313a239a69e8ba940327789c09160765a22c59e66fa40f69630779bd6af"},
+    {"path":"styles/ux-v0-summary.css","bytes":3191,"sha256":"f8c9cd06515397678825d7ac8640b1377abce6c6c65db8278ff8693b2871c358"}
   ]
 }
