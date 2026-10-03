@@ -6,7 +6,7 @@ import { IndexedDbEntityLifecycleMutationGateway } from '../data/indexeddb/entit
 import { IndexedDbMarketDataCache } from '../data/indexeddb/market-cache.js';
 import { IndexedDbMetadataRepository } from '../data/indexeddb/metadata.js';
 import { clear } from '../presentation/dom.js';
-import { createShellV3 } from '../presentation/shell.js';
+import { createShellV0 } from '../presentation/shell.js';
 import { initializeAppearanceClock } from '../presentation/appearance.js';
 import { renderHomeV3 } from '../presentation/home.js';
 import { renderMovementsV3 } from '../presentation/movements.js';
@@ -57,17 +57,16 @@ async function start() {
     const runtimeConfigPromise = loadRuntimeConfig();
     const session = await identityProvider.getSession();
     let profile = session.profile;
-    let route = 'home';
+    let route = 'summary';
     let rendering = false;
     let marketCoordinator = null;
     let fundamentalCoordinator = null;
-    const shell = createShellV3(profile, (next) => { route = next; void render(); }, () => {
+    const shell = createShellV0((next) => { route = next; void render(); }, () => {
         void openNewTransactionSheet(repositories, profile, () => void render());
     });
     host.replaceChildren(shell.shell);
     const applyProfile = (next) => {
         profile = next;
-        shell.setProfile(next);
         void render();
     };
     async function render() {
@@ -77,7 +76,7 @@ async function start() {
         shell.setActiveRoute(route);
         try {
             let screen;
-            if (route === 'home')
+            if (route === 'summary')
                 screen = await renderHomeV3(repositories, profile, { onOpenPlanning: () => { route = 'planning'; void render(); } });
             else if (route === 'movements')
                 screen = await renderMovementsV3(repositories, profile, transactionMutations, () => void render());

@@ -1,12 +1,11 @@
-# Orion Finance — Cloudflare Pages — 12.24
+# Orion Finance — Cloudflare Pages — 12.25
 
-Este pacote é o repositório de publicação. O conteúdo público está em `site/`.
+Pacote de teste da UX V0 Shell Baseline. O conteúdo público está em `site/`.
 
-Configuração auditada:
+Configuração:
 - Framework: **None**
 - Build command: **exit 0**
 - Build output directory: **site**
-- Root directory: **vazio**
 - Production branch: **main**
 
-A 12.24 mantém **uma única implementação visual ativa**. Não existem `src/ui`, `src/ui-v3`, `dist/ui` ou `dist/ui-v3` no projeto limpo/publicável.
+Este pacote altera somente a camada estrutural de navegação. Financial Core, IndexedDB schema 5, backup v2 e migrations permanecem preservados.

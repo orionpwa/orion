@@ -1,4 +1,4 @@
-const CACHE_NAME = "orion-0-1-0-development-12-24-static-v1";
+const CACHE_NAME = "orion-0-1-0-development-12-25-static-v1";
 const STATIC_PATHS = [
   "./",
   "./assets/institutions/bradesco.png",
@@ -155,7 +155,8 @@ const STATIC_PATHS = [
   "./dist/product/capabilities.js",
   "./index.html",
   "./manifest.webmanifest",
-  "./styles/orion.css"
+  "./styles/orion.css",
+  "./styles/ux-v0-shell.css"
 ];
 
 self.addEventListener('install', (event) => {
