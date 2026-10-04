@@ -1,6 +1,6 @@
-# Orion Finance — Cloudflare Pages — 12.32
+# Orion Finance — Cloudflare Pages — 12.33
 
-Pacote de teste da UX V0 com todas as quatro raízes estáveis e refinamento funcional/acessibilidade. O conteúdo público está em `site/`.
+Pacote de teste da UX V0 com quatro raízes estáveis e Ajustes V0 candidato. O conteúdo público está em `site/`.
 
 Configuração:
 - Framework: **None**

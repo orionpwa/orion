@@ -1,8 +1,6 @@
-import { renderSettings } from './screens/settings.js';
-export async function renderSettingsV3(repositories, profile, onProfileChanged, onDataChanged) {
-    const root = await renderSettings(repositories, profile, onProfileChanged, onDataChanged);
-    root.classList.remove('screen');
-    root.classList.add('screen-v3', 'settings-screen-v3');
-    root.querySelector('.screen-heading')?.remove();
-    return root;
-}
+export { renderSettingsRootV0 } from './screens/settings-v0/root.js';
+export { renderSettingsProfileV0 } from './screens/settings-v0/profile.js';
+export { renderSettingsDataV0 } from './screens/settings-v0/data.js';
+export { renderSettingsPrivacyV0 } from './screens/settings-v0/privacy.js';
+export { renderSettingsAboutV0 } from './screens/settings-v0/about.js';
+export { renderSettingsRestartV0 } from './screens/settings-v0/restart.js';

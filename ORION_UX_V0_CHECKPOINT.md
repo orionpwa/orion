@@ -4,7 +4,7 @@
 Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Em conflito com layouts/documentação antigos, esta base vence salvo revisão explícita.
 
 ## Base técnica
-- Release candidata: `0.1.0-development.12.32`.
+- Release candidata: `0.1.0-development.12.33`.
 - Financial Core preservado.
 - IndexedDB schema 5.
 - Backup format 2.
@@ -19,6 +19,7 @@ Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Em confl
 - `PLANEJAR-STABLE` ✅
 - `CONTAS-STABLE` ✅
 - `LEGACY-CLEANUP-STABLE` ✅
+- `UX-FUNCTIONAL-REFINEMENT-STABLE` ✅
 
 ## Arquitetura V0 congelada
 Raízes da navegação:
@@ -99,20 +100,30 @@ Proteções:
 - browser smoke segue indisponível somente pelo timeout conhecido do Chromium headless em 12s.
 
 Ainda não remover:
-- `components/fields` e `components/sheets`, pois Ajustes/Onboarding ainda possuem consumidores reais;
+- `components/fields` e `components/sheets`, pois Onboarding ainda possui consumidor real;
 - CSS residual, até auditoria específica de seletores/consumidores.
 
-## Refinamento UX funcional — candidato 12.32
+## Refinamento UX funcional — STABLE
+Validado no iPhone em 12.32.
 - feedback geral V0 substitui toast residual antigo;
 - ação `Desfazer` permanece explícita e responsiva;
-- seletores inline ganham radiogroup, Escape e retorno de foco;
+- seletores inline têm radiogroup, Escape e retorno de foco;
 - erros de formulário são anunciáveis;
 - telas internas respeitam safe-area inferior;
-- foco visível e `prefers-reduced-motion` protegidos;
-- nenhuma mudança no Financial Core ou na arquitetura V0.
+- foco visível e `prefers-reduced-motion` protegidos.
 
-Checkpoint esperado após validação real: `UX-FUNCTIONAL-REFINEMENT-STABLE`.
+## Ajustes V0 — candidato 12.33
+- Ajustes continua fora do dock e pertence a Resumo;
+- raiz simples: Perfil, Dados e backup, Privacidade, Sobre o Orion e Recomeçar com uma base nova;
+- Perfil, Dados e backup, Privacidade, Sobre e Recomeçar usam telas dedicadas;
+- nenhuma sheet é usada pela área Ajustes;
+- backup, restauração, importação e reset seguro permanecem funcionais;
+- suporte/diagnóstico fica em Sobre o Orion;
+- `Aparência` não é transportada da UX antiga: preferências locais são preservadas no código, mas a escolha visual será redesenhada na fase de identidade;
+- 320 px, safe-area e ausência de ellipsis protegidos por testes.
+
+Checkpoint esperado após validação real: `AJUSTES-STABLE`.
 
 ## Próxima sequência
-1. Validar 12.32 no iPhone e congelar `UX-FUNCTIONAL-REFINEMENT-STABLE`.
+1. Validar 12.33 no iPhone e congelar `AJUSTES-STABLE`.
 2. Identidade visual Orion.

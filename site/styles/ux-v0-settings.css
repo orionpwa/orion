@@ -1,0 +1,43 @@
+/* ===== UX V0 · Ajustes ===== */
+.settings-screen-v0{display:grid;align-content:start;gap:18px;width:100%;max-width:760px;margin:0 auto;padding:20px max(18px,var(--safe-left)) calc(28px + var(--safe-bottom)) max(18px,var(--safe-right));color:#f4f4f4}
+.settings-profile-summary-v0{display:grid;gap:4px;padding:0 2px 18px;border-bottom:1px solid rgba(255,255,255,.12)}
+.settings-profile-summary-v0 strong{font-size:24px;line-height:1.2;overflow-wrap:anywhere}
+.settings-profile-summary-v0 span,.settings-intro-v0{margin:0;color:#9b9b9b;font-size:14px;line-height:1.45}
+.settings-list-v0,.settings-data-action-host-v0,.settings-info-list-v0{display:grid;border-top:1px solid rgba(255,255,255,.12)}
+.settings-row-v0,.settings-action-v0{width:100%;min-height:70px;padding:14px 2px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,auto) 18px;align-items:center;gap:12px;border:0;border-bottom:1px solid rgba(255,255,255,.12);background:transparent;color:inherit;text-align:left;font:inherit;touch-action:manipulation}
+.settings-action-v0{grid-template-columns:minmax(0,1fr) 18px}
+.settings-row-copy-v0{min-width:0;display:grid;gap:4px}
+.settings-row-copy-v0 strong{font-size:16px;line-height:1.3;overflow-wrap:anywhere}
+.settings-row-copy-v0 small{color:#9b9b9b;font-size:13px;line-height:1.4;overflow-wrap:anywhere}
+.settings-row-value-v0{max-width:180px;color:#c8c8c8;font-size:13px;line-height:1.35;text-align:right;white-space:normal;overflow-wrap:anywhere}
+.settings-row-chevron-v0{font-size:25px;line-height:1;color:#909090;text-align:right}
+.settings-row-v0.danger .settings-row-copy-v0 strong,.settings-danger-zone-v0 .settings-row-copy-v0 strong{color:#ff9c98}
+.settings-row-v0:focus-visible,.settings-action-v0:focus-visible,.settings-primary-action-v0:focus-visible,.settings-secondary-action-v0:focus-visible,.settings-field-control-v0:focus-visible{outline:2px solid rgba(255,255,255,.72);outline-offset:3px}
+.settings-danger-zone-v0{margin-top:2px;border-top:1px solid rgba(255,255,255,.12)}
+.settings-internal-v0{gap:20px}
+.settings-form-v0{display:grid;gap:18px}
+.settings-field-v0{display:grid;gap:8px}
+.settings-field-label-v0,.settings-info-label-v0{color:#a8a8a8;font-size:13px;line-height:1.3}
+.settings-field-control-v0{width:100%;min-height:52px;padding:0 14px;border:1px solid rgba(255,255,255,.18);border-radius:12px;background:#111;color:#f5f5f5;font:inherit;font-size:16px}
+.settings-primary-action-v0,.settings-secondary-action-v0{min-height:50px;padding:0 16px;border-radius:12px;font:inherit;font-size:14px;font-weight:700;touch-action:manipulation}
+.settings-primary-action-v0{border:1px solid rgba(255,255,255,.22);background:#f1f1f1;color:#111}
+.settings-primary-action-v0.danger{background:#2a1212;color:#ffd2cf;border-color:rgba(255,156,152,.32)}
+.settings-secondary-action-v0{border:1px solid rgba(255,255,255,.16);background:transparent;color:#f1f1f1}
+.settings-primary-action-v0:disabled,.settings-secondary-action-v0:disabled,.settings-row-v0:disabled,.settings-action-v0:disabled{opacity:.5}
+.settings-error-v0{padding:12px 14px;border:1px solid rgba(255,140,135,.35);border-radius:12px;background:rgba(115,20,20,.18);color:#ffbbb7;font-size:13px;line-height:1.4}
+.settings-info-block-v0{display:grid;gap:5px;padding:15px 2px;border-bottom:1px solid rgba(255,255,255,.12)}
+.settings-info-value-v0{font-size:16px;line-height:1.35;overflow-wrap:anywhere}
+.settings-info-support-v0{color:#9b9b9b;font-size:13px;line-height:1.45;overflow-wrap:anywhere}
+.settings-support-v0{display:grid;gap:10px;margin-top:4px}
+.settings-support-v0 h2{margin:0;font-size:18px}
+.settings-confirmation-v0,.settings-warning-v0{display:grid;gap:10px;padding:16px 0;border-top:1px solid rgba(255,255,255,.12);border-bottom:1px solid rgba(255,255,255,.12)}
+.settings-confirmation-v0 strong,.settings-warning-v0 strong{font-size:18px;line-height:1.3}
+.settings-confirmation-v0 p,.settings-warning-v0 p{margin:0;color:#aaa;font-size:14px;line-height:1.5}
+.settings-confirmation-actions-v0{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+@media(max-width:370px){
+  .settings-screen-v0{padding-left:max(14px,var(--safe-left));padding-right:max(14px,var(--safe-right))}
+  .settings-row-v0{grid-template-columns:minmax(0,1fr) 16px;gap:8px}
+  .settings-row-value-v0{grid-column:1;grid-row:2;text-align:left;max-width:none}
+  .settings-row-chevron-v0{grid-column:2;grid-row:1/3;align-self:center}
+  .settings-confirmation-actions-v0{grid-template-columns:1fr}
+}

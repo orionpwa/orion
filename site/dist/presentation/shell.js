@@ -13,6 +13,11 @@ const TITLES = {
     planning: 'Planejar',
     accounts: 'Contas',
     settings: 'Ajustes',
+    'settings-profile': 'Perfil',
+    'settings-data': 'Dados e backup',
+    'settings-privacy': 'Privacidade',
+    'settings-about': 'Sobre o Orion',
+    'settings-restart': 'Recomeçar',
     'movement-new': 'Novo movimento',
     'movement-detail': 'Movimento',
     'movement-edit': 'Editar movimento',
@@ -39,6 +44,8 @@ const TITLES = {
 function parentRoute(route) {
     if (route === 'settings')
         return 'summary';
+    if (route === 'settings-profile' || route === 'settings-data' || route === 'settings-privacy' || route === 'settings-about' || route === 'settings-restart')
+        return 'settings';
     if (route === 'movement-new' || route === 'movement-detail' || route === 'movement-filters')
         return 'movements';
     if (route === 'movement-edit')
@@ -66,6 +73,8 @@ function parentRoute(route) {
 function backLabel(route) {
     if (route === 'settings')
         return '‹ Resumo';
+    if (route === 'settings-profile' || route === 'settings-data' || route === 'settings-privacy' || route === 'settings-about' || route === 'settings-restart')
+        return '‹ Ajustes';
     if (route === 'movement-detail')
         return '‹ Movimentos';
     if (route === 'planning-commitments' || route === 'planning-debts' || route === 'planning-allocations')

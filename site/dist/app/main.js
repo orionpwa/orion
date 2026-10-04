@@ -12,7 +12,7 @@ import { renderHomeV3 } from '../presentation/home.js';
 import { DEFAULT_MOVEMENT_FILTERS_V0, renderMovementDetailV0, renderMovementFiltersV0, renderMovementListV0, renderNewMovementV0, renderEditMovementV0 } from '../presentation/movements.js';
 import { renderPlanningRootV0, renderCommitmentListV0, renderCommitmentDetailV0, renderNewCommitmentV0, renderEditCommitmentV0, renderCommitmentPaymentV0, renderDebtListV0, renderDebtDetailV0, renderNewDebtV0, renderEditDebtV0, renderDebtPaymentV0, renderAllocationListV0, renderAllocationDetailV0, renderNewAllocationV0, renderEditAllocationV0, renderAdjustAllocationV0 } from '../presentation/planning.js';
 import { renderAccountsRootV0, renderAccountDetailV0, renderNewAccountV0, renderEditAccountV0 } from '../presentation/accounts.js';
-import { renderSettingsV3 } from '../presentation/settings.js';
+import { renderSettingsRootV0, renderSettingsProfileV0, renderSettingsDataV0, renderSettingsPrivacyV0, renderSettingsAboutV0, renderSettingsRestartV0 } from '../presentation/settings.js';
 import { showOnboarding } from '../presentation/screens/onboarding.js';
 import { showToast, showUpdateBanner } from '../presentation/components/feedback.js';
 import { bindConnectivityStatus } from '../presentation/components/system-status.js';
@@ -269,8 +269,32 @@ async function start() {
                     onSaved: () => { route = 'account-detail'; void render(); }
                 });
             }
+            else if (route === 'settings') {
+                screen = renderSettingsRootV0(profile.displayName, {
+                    onProfile: () => { route = 'settings-profile'; void render(); },
+                    onData: () => { route = 'settings-data'; void render(); },
+                    onPrivacy: () => { route = 'settings-privacy'; void render(); },
+                    onAbout: () => { route = 'settings-about'; void render(); },
+                    onRestart: () => { route = 'settings-restart'; void render(); }
+                });
+            }
+            else if (route === 'settings-profile') {
+                screen = renderSettingsProfileV0({ repositories, profile, onProfileChanged: applyProfile, onDataChanged: () => void render() }, () => {
+                    route = 'settings';
+                    void render();
+                });
+            }
+            else if (route === 'settings-data') {
+                screen = renderSettingsDataV0({ repositories, profile, onProfileChanged: applyProfile, onDataChanged: () => void render() });
+            }
+            else if (route === 'settings-privacy') {
+                screen = renderSettingsPrivacyV0();
+            }
+            else if (route === 'settings-about') {
+                screen = renderSettingsAboutV0();
+            }
             else {
-                screen = await renderSettingsV3(repositories, profile, applyProfile, () => void render());
+                screen = renderSettingsRestartV0({ repositories, profile, onProfileChanged: applyProfile, onDataChanged: () => void render() });
             }
             clear(shell.content);
             shell.content.append(screen);
