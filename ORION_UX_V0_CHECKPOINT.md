@@ -4,7 +4,7 @@
 Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Em conflito com layouts/documentação antigos, esta base vence salvo revisão explícita.
 
 ## Base técnica
-- Release candidata: `0.1.0-development.12.33`.
+- Release candidata: `0.1.0-development.12.34`.
 - Financial Core preservado.
 - IndexedDB schema 5.
 - Backup format 2.
@@ -20,6 +20,7 @@ Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Em confl
 - `CONTAS-STABLE` ✅
 - `LEGACY-CLEANUP-STABLE` ✅
 - `UX-FUNCTIONAL-REFINEMENT-STABLE` ✅
+- `AJUSTES-STABLE` ✅
 
 ## Arquitetura V0 congelada
 Raízes da navegação:
@@ -43,7 +44,7 @@ Ajustes pertence a Resumo e não é quinta raiz.
 - Sem menus de três pontos para ações essenciais.
 - Sem sheets empilhadas nos fluxos V0 principais.
 - Uma função deve ter um único lugar.
-- Branding/identidade final só depois da estrutura e refinamento funcional.
+- Arquitetura/fluxos V0 permanecem congelados durante a identidade visual.
 
 ## Resumo — STABLE
 - Livre para decidir.
@@ -112,18 +113,28 @@ Validado no iPhone em 12.32.
 - telas internas respeitam safe-area inferior;
 - foco visível e `prefers-reduced-motion` protegidos.
 
-## Ajustes V0 — candidato 12.33
-- Ajustes continua fora do dock e pertence a Resumo;
-- raiz simples: Perfil, Dados e backup, Privacidade, Sobre o Orion e Recomeçar com uma base nova;
-- Perfil, Dados e backup, Privacidade, Sobre e Recomeçar usam telas dedicadas;
-- nenhuma sheet é usada pela área Ajustes;
-- backup, restauração, importação e reset seguro permanecem funcionais;
-- suporte/diagnóstico fica em Sobre o Orion;
-- `Aparência` não é transportada da UX antiga: preferências locais são preservadas no código, mas a escolha visual será redesenhada na fase de identidade;
-- 320 px, safe-area e ausência de ellipsis protegidos por testes.
+## Ajustes V0 — STABLE
+Validado no iPhone em 12.33.
+- Ajustes fora do dock e pertencente a Resumo;
+- Perfil, Dados e backup, Privacidade, Sobre o Orion e Recomeçar com uma base nova;
+- telas dedicadas, sem sheets;
+- backup, restauração, importação e reset seguro preservados;
+- Aparência antiga não foi transportada para a V0.
 
-Checkpoint esperado após validação real: `AJUSTES-STABLE`.
+## Identidade visual V1 — candidato 12.34
+Direção oficial candidata: **grafite profundo + azul safira frio**.
+- identidade única, sem múltiplos temas nesta primeira entrega;
+- sem estrelas, planetas ou gradientes decorativos;
+- azul safira reservado para navegação ativa, links, foco e ações primárias;
+- verde/vermelho usados somente como semântica financeira/estado;
+- antigo motor de temas deixa de controlar o runtime, mas preferências salvas não são apagadas;
+- theme/background do PWA passam a `#080b10`;
+- ícone atual permanece temporariamente até a identidade dentro do app ser validada;
+- Core, schema 5, backup v2 e arquitetura V0 permanecem congelados.
+
+Checkpoint esperado após validação real: `IDENTIDADE-V1-STABLE`.
 
 ## Próxima sequência
-1. Validar 12.33 no iPhone e congelar `AJUSTES-STABLE`.
-2. Identidade visual Orion.
+1. Validar identidade V1 12.34 no iPhone.
+2. Congelar `IDENTIDADE-V1-STABLE`.
+3. Desenhar ícone/marca e decidir se Aparência volta como controle da identidade oficial.
