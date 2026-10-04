@@ -1,7 +1,8 @@
 # Verificação depois do deploy
 
-1. Em Ajustes > Sobre o Orion, confirme **0.1.0-development.12.33**.
-2. Abra Ajustes e confirme Perfil, Dados e backup, Privacidade, Sobre o Orion e Recomeçar com uma base nova.
-3. Confirme que Aparência não aparece nesta etapa e que não há texto truncado com reticências.
-4. Abra as telas internas e confirme dock oculto e retorno para Ajustes.
-5. Em Dados e backup, confirme backup, restauração e importação; depois passe pelas quatro raízes e confirme ausência de regressões.
+1. Em Ajustes > Sobre o Orion, confirme **0.1.0-development.12.34**.
+2. Confira Resumo, Movimentos, Planejar, Contas e Ajustes sem mudança estrutural.
+3. Confirme fundo grafite, texto claro e azul safira apenas em navegação ativa/ações/foco.
+4. Confirme verde para entradas/positivos e vermelho para saídas/negativos.
+5. Confirme ausência de estrelas, planetas e gradientes decorativos.
+6. Feche e reabra o PWA e confirme persistência dos dados.
