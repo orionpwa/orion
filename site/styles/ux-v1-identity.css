@@ -1,0 +1,303 @@
+/* ===== Orion · Identidade visual V1 =====
+   Direção: grafite profundo + safira fria. Sem decoração cósmica literal. */
+:root{
+  color-scheme:dark;
+  --orion-id-bg:#080b10;
+  --orion-id-bg-2:#0b0f15;
+  --orion-id-surface:#10161f;
+  --orion-id-surface-2:#151d28;
+  --orion-id-line:rgba(166,184,208,.16);
+  --orion-id-line-strong:rgba(124,166,255,.44);
+  --orion-id-text:#f3f6fa;
+  --orion-id-muted:#9aa6b5;
+  --orion-id-muted-2:#707d8e;
+  --orion-id-accent:#7ca6ff;
+  --orion-id-accent-strong:#5f88ff;
+  --orion-id-accent-soft:rgba(124,166,255,.12);
+  --orion-id-positive:#63d79e;
+  --orion-id-negative:#ff8c86;
+  --orion-id-warning:#dfc477;
+  --orion-id-shadow:0 16px 38px rgba(0,0,0,.30);
+  --orion-id-radius:13px;
+
+  /* Compatibilidade com componentes compartilhados ainda ativos. */
+  --bg:var(--orion-id-bg);
+  --bg-deep:#06080c;
+  --surface:var(--orion-id-surface);
+  --surface-2:var(--orion-id-surface-2);
+  --surface-3:#1a2431;
+  --line:var(--orion-id-line);
+  --line-strong:var(--orion-id-line-strong);
+  --text:var(--orion-id-text);
+  --muted:var(--orion-id-muted);
+  --muted-2:var(--orion-id-muted-2);
+  --blue:var(--orion-id-accent);
+  --cyan:#9bb8ff;
+  --gold:var(--orion-id-warning);
+  --green:var(--orion-id-positive);
+  --red:var(--orion-id-negative);
+}
+
+html,body,#app{background:var(--orion-id-bg)}
+body{color:var(--orion-id-text)}
+
+/* Shell */
+.app-shell-v0,
+.summary-screen-v0,
+.movements-screen-v0,
+.movement-internal-screen-v0,
+.planning-screen-v0,
+.accounts-screen-v0,
+.account-internal-screen-v0{
+  background:var(--orion-id-bg);
+  color:var(--orion-id-text);
+}
+.app-header-v0,
+.bottom-nav-v0{
+  background:rgba(8,11,16,.98);
+  border-color:var(--orion-id-line);
+}
+.shell-title-v0{letter-spacing:-.025em}
+.shell-action-v0,.shell-back-v0{color:var(--orion-id-accent)}
+.nav-item-v0{color:#7f8a99}
+.nav-item-v0.active{color:var(--orion-id-accent)}
+.nav-item-v0.active .nav-icon-v0{filter:drop-shadow(0 0 7px rgba(124,166,255,.18))}
+
+/* Resumo */
+.summary-period-v0,
+.summary-amount-label-v0,
+.summary-empty-v0,
+.summary-commitment-meta-v0{color:var(--orion-id-muted)}
+.summary-kicker-v0{color:var(--orion-id-accent)}
+.summary-free-v0,
+.summary-amount-row-v0,
+.summary-commitment-row-v0,
+.summary-empty-v0{border-color:var(--orion-id-line)}
+.summary-free-value-v0,
+.summary-section-title-v0,
+.summary-amount-value-v0{color:var(--orion-id-text)}
+.summary-inline-action-v0{color:var(--orion-id-accent)}
+.summary-amount-row-v0.positive .summary-amount-value-v0{color:var(--orion-id-positive)}
+.summary-amount-row-v0.negative .summary-amount-value-v0{color:var(--orion-id-negative)}
+.summary-commitment-meta-v0.overdue{color:var(--orion-id-warning)}
+
+/* Ações textuais comuns */
+.movements-filter-button-v0,
+.movements-text-action-v0,
+.accounts-inline-primary-v0,
+.accounts-text-action-v0,
+.planning-inline-primary-v0{color:var(--orion-id-accent)}
+
+/* Linhas e listas */
+.movement-row-v0,
+.movement-detail-heading-v0,
+.movement-detail-row-v0,
+.planning-domain-row-v0,
+.planning-entity-row-v0,
+.planning-detail-hero-v0,
+.planning-detail-row-v0,
+.planning-static-field-v0,
+.planning-section-heading-v0,
+.account-row-v0,
+.account-detail-hero-v0,
+.account-detail-row-v0,
+.account-movement-row-v0,
+.account-section-heading-v0,
+.account-static-field-v0,
+.settings-profile-summary-v0,
+.settings-list-v0,
+.settings-data-action-host-v0,
+.settings-info-list-v0,
+.settings-row-v0,
+.settings-action-v0,
+.settings-danger-zone-v0,
+.settings-info-block-v0,
+.settings-confirmation-v0,
+.settings-warning-v0{
+  border-color:var(--orion-id-line);
+}
+
+/* Texto secundário */
+.movement-row-meta-v0,
+.movement-detail-kind-v0,
+.movement-detail-label-v0,
+.movement-detail-note-v0,
+.movement-field-label-v0,
+.movements-empty-v0,
+.planning-root-intro-v0,
+.planning-empty-v0,
+.planning-detail-hero-v0 small,
+.planning-detail-hero-v0 span,
+.planning-detail-row-v0 dt,
+.planning-detail-note-v0,
+.planning-field-label-v0,
+.planning-form-support-v0,
+.planning-static-field-v0 small,
+.planning-section-heading-v0 p,
+.account-row-copy-v0 small,
+.account-row-chevron-v0,
+.accounts-empty-v0,
+.account-detail-hero-v0 small,
+.account-detail-hero-v0 span,
+.account-detail-row-v0 dt,
+.account-movement-row-v0 small,
+.account-confirm-v0 p,
+.account-field-label-v0,
+.account-static-field-v0 small,
+.settings-profile-summary-v0 span,
+.settings-intro-v0,
+.settings-row-copy-v0 small,
+.settings-row-value-v0,
+.settings-row-chevron-v0,
+.settings-field-label-v0,
+.settings-info-label-v0,
+.settings-info-support-v0,
+.settings-confirmation-v0 p,
+.settings-warning-v0 p{
+  color:var(--orion-id-muted);
+}
+
+/* Campos */
+.movement-field-control-v0,
+.planning-field-control-v0,
+.account-field-control-v0,
+.settings-field-control-v0,
+.field-input,
+.selector-trigger{
+  border-color:var(--orion-id-line);
+  background:var(--orion-id-surface);
+  color:var(--orion-id-text);
+  border-radius:var(--orion-id-radius);
+}
+.movement-field-control-v0:focus,
+.planning-field-control-v0:focus-visible,
+.account-field-control-v0:focus,
+.account-field-control-v0:focus-visible,
+.settings-field-control-v0:focus-visible,
+.field-input:focus,
+.selector-trigger:focus-visible{
+  border-color:var(--orion-id-line-strong);
+  box-shadow:0 0 0 3px var(--orion-id-accent-soft);
+  outline:none;
+}
+
+/* Seletores inline */
+.movement-choice-list-v0,
+.planning-choice-list-v0,
+.account-choice-list-v0{border-color:var(--orion-id-line);background:var(--orion-id-surface)}
+.movement-choice-option-v0,
+.planning-choice-option-v0,
+.account-choice-option-v0{background:var(--orion-id-surface);border-color:var(--orion-id-line)}
+.movement-choice-option-v0[aria-checked="true"],
+.planning-choice-option-v0[aria-checked="true"],
+.account-choice-option-v0[aria-checked="true"]{
+  background:var(--orion-id-accent-soft);
+  color:var(--orion-id-accent);
+}
+.movement-choice-chevron-v0,
+.planning-choice-chevron-v0,
+.account-choice-chevron-v0{color:var(--orion-id-muted)}
+
+/* Botões principais */
+.movement-button-primary-v0,
+.planning-primary-action-v0,
+.account-primary-action-v0,
+.settings-primary-action-v0,
+.btn.primary{
+  border-color:var(--orion-id-accent-strong);
+  background:var(--orion-id-accent-strong);
+  color:#07101e;
+  box-shadow:none;
+}
+.movement-button-secondary-v0,
+.planning-secondary-action-v0,
+.account-secondary-action-v0,
+.settings-secondary-action-v0,
+.btn.secondary{
+  border-color:var(--orion-id-line);
+  background:transparent;
+  color:var(--orion-id-text);
+}
+.movement-button-danger-v0,
+.planning-danger-action-v0,
+.planning-danger-confirm-v0,
+.account-danger-action-v0,
+.account-danger-confirm-v0{
+  border-color:rgba(255,140,134,.26);
+  color:var(--orion-id-negative);
+  background:transparent;
+}
+.settings-primary-action-v0.danger{
+  border-color:rgba(255,140,134,.30);
+  background:rgba(255,140,134,.10);
+  color:#ffc4c0;
+}
+
+/* Segmentos de tipo */
+.movement-kind-picker-v0{border-color:var(--orion-id-line);background:var(--orion-id-bg-2)}
+.movement-kind-button-v0{color:var(--orion-id-muted)}
+.movement-kind-button-v0.active{background:var(--orion-id-accent-soft);color:var(--orion-id-accent)}
+
+/* Valores semânticos */
+.movement-row-value-v0.positive,
+.movement-detail-amount-v0.positive,
+.account-movement-value-v0.positive{color:var(--orion-id-positive)}
+.movement-row-value-v0.negative,
+.movement-detail-amount-v0.negative,
+.account-movement-value-v0.negative{color:var(--orion-id-negative)}
+.movement-row-value-v0.neutral,
+.movement-detail-amount-v0.neutral,
+.account-movement-value-v0.neutral{color:#cbd3dd}
+
+/* Conta */
+.account-logo-v0{background:var(--orion-id-surface-2);border-color:var(--orion-id-line)}
+
+/* Ajustes */
+.settings-screen-v0{color:var(--orion-id-text)}
+.settings-row-v0.danger .settings-row-copy-v0 strong,
+.settings-danger-zone-v0 .settings-row-copy-v0 strong{color:var(--orion-id-negative)}
+.settings-error-v0,
+.movement-form-error-v0,
+.planning-inline-error-v0,
+.account-inline-error-v0{
+  border-color:rgba(255,140,134,.28);
+  background:rgba(255,140,134,.08);
+  color:#ffc4c0;
+}
+
+/* Feedback */
+.update-banner-v0,
+.feedback-toast-v0{
+  border-color:var(--orion-id-line-strong);
+  background:rgba(16,22,31,.97);
+  color:var(--orion-id-text);
+  box-shadow:var(--orion-id-shadow);
+}
+.update-banner-action-v0,
+.feedback-toast-action-v0{background:var(--orion-id-accent-soft);color:var(--orion-id-accent)}
+.feedback-toast-v0.success{border-color:rgba(99,215,158,.42)}
+.feedback-toast-v0.error{border-color:rgba(255,140,134,.46)}
+
+/* Componentes compartilhados ainda usados por onboarding/infraestrutura */
+.btn{border-radius:var(--orion-id-radius)}
+.field-label{color:var(--orion-id-muted)}
+.segmented-control{border-color:var(--orion-id-line);background:var(--orion-id-bg-2)}
+.segment{color:var(--orion-id-muted)}
+.segment.active{background:var(--orion-id-accent-soft);color:var(--orion-id-accent);box-shadow:inset 0 0 0 1px var(--orion-id-line-strong)}
+.sheet-overlay{background:rgba(2,5,9,.70)}
+.sheet-panel{border-color:var(--orion-id-line);background:var(--orion-id-surface);box-shadow:0 -24px 60px rgba(0,0,0,.52)}
+.sheet-header{border-color:var(--orion-id-line)}
+.icon-button{border-color:var(--orion-id-line);background:var(--orion-id-bg-2);color:var(--orion-id-muted)}
+.selection-row{border-color:var(--orion-id-line);background:var(--orion-id-bg-2)}
+.selection-copy small,.selection-row em{color:var(--orion-id-muted)}
+.selection-check{color:var(--orion-id-accent)}
+.inline-warning{border-color:rgba(223,196,119,.28);background:rgba(223,196,119,.08);color:#e8d9aa}
+.boot-state,.fatal-state,.error-state{color:var(--orion-id-muted)}
+.fatal-state strong,.error-state strong{color:var(--orion-id-text)}
+
+/* Foco unificado */
+.app-shell-v0 :where(button,input):focus-visible,
+.sheet-panel :where(button,input):focus-visible{
+  outline:2px solid var(--orion-id-accent);
+  outline-offset:2px;
+}
