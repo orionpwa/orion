@@ -48,9 +48,8 @@ function parsePreferences(raw) {
         };
     }
     catch {
-        // Aparência é opcional; falhas de storage nunca bloqueiam o Orion.
+        return null;
     }
-    return null;
 }
 export function loadAppearancePreferences() {
     try {
