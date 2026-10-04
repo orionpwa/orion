@@ -1,6 +1,6 @@
-# Orion Finance — Cloudflare Pages — 12.33
+# Orion Finance — Cloudflare Pages — 12.34
 
-Pacote de teste da UX V0 com quatro raízes estáveis e Ajustes V0 candidato. O conteúdo público está em `site/`.
+Orion Finance v0.1 — Fase 12.34: identidade visual V1 candidata; Core congelado. O conteúdo público está em `site/`.
 
 Configuração:
 - Framework: **None**
