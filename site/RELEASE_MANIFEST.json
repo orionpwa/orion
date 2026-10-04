@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "product": "Orion Finance",
-  "appVersion": "0.1.0-development.12.33",
+  "appVersion": "0.1.0-development.12.34",
   "phase": 12,
   "classification": "PWA TESTÁVEL — PODE IR AO GITHUB PARA TESTE",
   "runtimeOnly": true,
@@ -9,19 +9,11 @@
   "manifestCoversSelf": false,
   "coverage": "runtime-delta",
   "files": [
-    {"path":"index.html","bytes":2063,"sha256":"ac81d3334d50370aa1d526a048eeabe53a86765620264bdd1bb0da76749c7728"},
-    {"path":"service-worker.js","bytes":10110,"sha256":"1529584e1a427bf234235e350ca2376606cb36757d55e4fb21512a381ad3ce89"},
-    {"path":"dist/app/main.js","bytes":21810,"sha256":"92ecab31aa4f4b4a12b3bf6dd93d8fea1ad15151412efd97268ddf258435937e"},
-    {"path":"dist/app/version.js","bytes":190,"sha256":"71e66b2f694f9a7712141004eca504f1c8c2865958f32fb2138cf44a91647f2d"},
-    {"path":"dist/presentation/settings.js","bytes":440,"sha256":"2d744cea7bc075fcb36f50a547db5dd2b119782a03c851e8242dcefc8a08398c"},
-    {"path":"dist/presentation/shell.js","bytes":6757,"sha256":"d3c9e7ffeec5bdd2ab6821425c78b55b2d380bee209694d95d1ede7bc43b2b52"},
-    {"path":"dist/presentation/screens/settings-v0/about.js","bytes":2758,"sha256":"6e59135fd4d6378859e79b3f40b64a276b6da5ecf30a283fe4b8d2a065de9c8d"},
-    {"path":"dist/presentation/screens/settings-v0/data.js","bytes":5586,"sha256":"2a6caadfb65a08d6667933ed771e0ce8c61331d3bc783042a8f67aa9dc226bef"},
-    {"path":"dist/presentation/screens/settings-v0/privacy.js","bytes":782,"sha256":"65aa10739e2a4cd72e5411edb8e1a2664141430bc15e00ce7632e50f7058b463"},
-    {"path":"dist/presentation/screens/settings-v0/profile.js","bytes":1738,"sha256":"d6a5194fb02a4c0fe02e435cfe2abbda21e9c056b55589e9cb03fcd47353e230"},
-    {"path":"dist/presentation/screens/settings-v0/restart.js","bytes":1740,"sha256":"9ee8bfd016e4bffb074ab0134f2c61098a9bd7f5ea3bbc9c7e5613f3e47c9a9b"},
-    {"path":"dist/presentation/screens/settings-v0/root.js","bytes":1154,"sha256":"176eacfa5808ba8129bf9be0d4e5e04d32ec74995df79af0604347c8c1ab3f1b"},
-    {"path":"dist/presentation/screens/settings-v0/shared.js","bytes":2405,"sha256":"e022594467357450b4a8f1089bda6acc78368e01320846fa30904b5ac7322323"},
-    {"path":"styles/ux-v0-settings.css","bytes":4493,"sha256":"0b5b5b57fe06db2b819519b4ffa2c5cb11271977041b86227748bd67f8b3e491"}
+    {"path":"index.html","bytes":2124,"sha256":"3e9a289ae3df159b7c32174406a80660f0474e481d3c873fb5298169c5980d28"},
+    {"path":"manifest.webmanifest","bytes":915,"sha256":"f4b88dae340a6ff9a5991b77d48cf1ad5c7fc3bdc049688679d2a468a3ec54b1"},
+    {"path":"service-worker.js","bytes":10143,"sha256":"55f3a48a5836aacab4f09576825033e9bf8f87b186f169ee0d19ffa02531499d"},
+    {"path":"dist/app/version.js","bytes":190,"sha256":"a914578a61a1cf678070c9df1ccb4d6f6981d205ba834190f4dce80e67086d02"},
+    {"path":"dist/presentation/appearance.js","bytes":4476,"sha256":"78fb28ef913075db236a4dc2c4874b976df5617f9723c4edfb6171389537b99c"},
+    {"path":"styles/ux-v1-identity.css","bytes":9792,"sha256":"69566755c65abfab1f7dfc2d03c47257f4fabac22c2a18d2ac6440e6b9e1517f"}
   ]
 }
