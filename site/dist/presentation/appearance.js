@@ -81,32 +81,25 @@ export function themeForHour(hour) {
 export function resolvedAppearanceTheme(preferences, now = new Date()) {
     return preferences.autoByTime ? themeForHour(now.getHours()) : preferences.theme;
 }
-function themeColor(theme) {
-    if (theme === 'aurora')
-        return '#03110f';
-    if (theme === 'ruby')
-        return '#12050b';
-    if (theme === 'cosmic')
-        return '#09071a';
-    if (theme === 'copper')
-        return '#0d0d0a';
-    if (theme === 'glacial')
-        return '#041221';
-    if (theme === 'noir')
-        return '#080808';
-    return '#020912';
+function themeColor(_theme) {
+    return '#080b10';
 }
-export function applyAppearance(preferences = loadAppearancePreferences(), now = new Date()) {
-    const theme = resolvedAppearanceTheme(preferences, now);
+/**
+ * Compatibilidade temporária da antiga API de Aparência.
+ * Preferências continuam persistidas para uma futura Aparência V1, mas não
+ * podem mais alterar a identidade visual oficial durante esta fase.
+ */
+export function applyAppearance(_preferences = loadAppearancePreferences(), _now = new Date()) {
     const root = document.documentElement;
-    root.dataset.orionTheme = theme;
-    root.dataset.orionIntensity = preferences.intensity;
-    root.dataset.orionThemeMode = preferences.autoByTime ? 'auto' : 'manual';
-    root.dataset.orionReduceEffects = preferences.reduceEffects ? 'true' : 'false';
+    delete root.dataset.orionTheme;
+    delete root.dataset.orionIntensity;
+    delete root.dataset.orionThemeMode;
+    delete root.dataset.orionReduceEffects;
+    root.dataset.orionIdentity = 'v1';
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta)
-        meta.content = themeColor(theme);
-    return theme;
+        meta.content = themeColor('orion');
+    return 'orion';
 }
 export function saveAppearancePreferences(preferences) {
     try {
@@ -118,23 +111,6 @@ export function saveAppearancePreferences(preferences) {
     return applyAppearance(preferences);
 }
 export function initializeAppearanceClock() {
-    let current = applyAppearance();
-    const refresh = () => {
-        const preferences = loadAppearancePreferences();
-        if (!preferences.autoByTime)
-            return;
-        const next = resolvedAppearanceTheme(preferences);
-        if (next !== current)
-            current = applyAppearance(preferences);
-    };
-    const timer = window.setInterval(refresh, 60_000);
-    const onVisibility = () => {
-        if (document.visibilityState === 'visible')
-            refresh();
-    };
-    document.addEventListener('visibilitychange', onVisibility);
-    return () => {
-        window.clearInterval(timer);
-        document.removeEventListener('visibilitychange', onVisibility);
-    };
+    applyAppearance();
+    return () => undefined;
 }
