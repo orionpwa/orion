@@ -1,15 +1,15 @@
 # Orion UX V0 — Checkpoint mestre
 
 ## Autoridade
-Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Em conflito com layouts/documentação antigos, esta base vence salvo revisão explícita.
+Este arquivo é a fonte de recuperação da reconstrução UX e da evolução pós-V0 do Orion. Em conflito com layouts/documentação antigos, esta base vence salvo revisão explícita.
 
 ## Base técnica
-- Release candidata: `0.1.0-development.12.40`.
+- Release candidata: `0.1.0-development.12.41`.
 - Financial Core preservado.
 - IndexedDB schema 5.
 - Backup format 2.
-- `src/application/`, `src/domain/`, `src/data/` e `src/migration/` permanecem congelados nesta reconstrução visual.
-- Build limpa `dist/` antes de recompilar para impedir artefatos JS órfãos.
+- Database: `orion_finance_v01_rebuild`.
+- Build publicado em `site/`; produção via Cloudflare Pages a partir de `main`.
 
 ## Checkpoints estáveis
 - `UX-V0-BASELINE-STABLE` ✅
@@ -26,6 +26,7 @@ Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Em confl
 - `APARENCIA-LEGACY-REMOVED` ✅
 - `UX-V0-FINAL-STABLE` ✅
 - `CARTOES-CONTAS-STABLE` ✅
+- `PATRIMONIO-LEITURA-STABLE` ✅
 
 ## Arquitetura V0 congelada
 Raízes da navegação:
@@ -41,143 +42,81 @@ Ajustes pertence a Resumo e não é quinta raiz.
 - Nenhum FAB global.
 - Telas internas escondem o dock e oferecem retorno explícito.
 - `Novo` pertence a Movimentos.
-- Safe-area do iPhone fica dentro da própria barra inferior.
-- Barra inferior visualmente encostada à base, sem faixa/vão externo.
+- Safe-area do iPhone fica dentro da barra inferior.
 - PWA instalado preenche a altura física disponível.
 - Mobile-first; 320 px é stress test mínimo.
-- Sem truncamento por `...` em informação financeira importante.
+- Sem `...` em informação financeira importante.
 - Sem menus de três pontos para ações essenciais.
-- Sem sheets empilhadas nos fluxos V0 principais.
+- Sem sheets empilhadas nos fluxos principais.
 - Uma função deve ter um único lugar.
-- Arquitetura/fluxos V0 permanecem congelados durante a identidade visual.
+- Transferência é fato neutro e não altera resultado nem patrimônio líquido.
 
-## Resumo — STABLE
-- Livre para decidir.
-- Disponível, Compromissos, Metas e reservas.
-- Este mês: Entrou, Saiu e Resultado, ou estado vazio.
+## Mapa funcional estável
+### Resumo
+- Livre para decidir, Disponível, Compromissos, Metas e reservas.
+- Este mês: Entrou, Saiu e Resultado.
 - Próximos compromissos.
+- Mais recursos contém Patrimônio.
 - Não cria movimentação e não gerencia contas.
 
-## Movimentos — STABLE
-- Histórico e estado vazio.
+### Movimentos
+- Histórico, filtros e estados vazios.
 - Novo: Despesa, Receita e Transferência.
-- Detalhe, edição e exclusão/desfazer em telas dedicadas.
-- Filtros em tela própria; sem busca permanente.
-- Transferência é fato neutro.
+- Detalhe, edição, exclusão e desfazer em telas dedicadas.
+- Compras no cartão pertencem a `Movimentos > Novo`.
 
-## Planejar — STABLE
-Raiz somente com:
-- Compromissos
-- Dívidas
-- Metas e reservas
+### Planejar
+- Compromissos, Dívidas, Metas e reservas.
+- Previsão permanece separada de fato.
+- Pagamentos/vínculos preservam histórico.
+- Dívidas têm pagamento dedicado e Core bloqueia pagamento acima do saldo.
+- Ajuste de reserva não cria movimentação bancária.
 
-Compromissos: previsão separada de fato; ignorar/voltar; registrar ou vincular pagamento/recebimento; desvincular preserva a movimentação.
+### Contas
+- Contas ativas, saldos, detalhe e histórico recente.
+- Adicionar conta pertence a Contas.
+- Saldo inicial não é editável.
+- Cartões de crédito são cadastrados e administrados dentro de Contas.
+- Pagamento de fatura exige conta escolhida e não excede a fatura aberta.
 
-Dívidas: saldo restante e histórico; saldo não editável diretamente; pagamento dedicado; sem conta arbitrariamente pré-selecionada; Core rejeita pagamento acima do saldo.
+### Ajustes
+- Perfil, Dados e backup, Privacidade, Sobre o Orion e Recomeçar.
+- Aparência antiga não retorna: identidade oficial é única.
 
-Metas/reservas: ação `Ajustar valor reservado`; ajuste não cria movimentação bancária; efeito sobre Livre explícito.
-
-## Contas — STABLE
-- Lista contas ativas e saldos.
-- `Adicionar conta` pertence a Contas.
-- Detalhe dedicado com saldo atual, instituição, tipo, disponibilidade e saldo inicial.
-- Até cinco movimentos recentes; histórico completo abre Movimentos filtrado pela conta.
-- Saldo inicial não é editável após criação.
-- Sem atalhos duplicados de Receita, Despesa ou Transferência.
-
-## Banner de atualização — STABLE
-- `Atualização disponível` + `Atualizar`.
-- Compacto, responsivo, sem cápsula larga e sem ellipsis.
-- Permanece até a ação e respeita safe-area/dock oculto.
-
-## Limpeza segura — STABLE
-Validado no iPhone em 12.31. Removido somente código sem consumidores reais:
-- branding visual antigo;
-- actions sheet genérica antiga;
-- telas antigas de criação/edição/lista de movimentações;
-- árvore antiga de Planejar baseada em sheets/menus de três pontos;
-- JS compilado correspondente no pacote publicado.
-
-Proteções:
-- desativação V0 mantém ação `Desfazer` via gateway auditável;
-- presentation gate rejeita retorno de fonte/JS legado;
-- build sempre limpa `dist/` antes do TypeScript;
-- 178/178 testes + gates executáveis aprovados antes da publicação;
-- browser smoke segue indisponível somente pelo timeout conhecido do Chromium headless em 12s.
-
-Ainda não remover:
-- `components/fields` e `components/sheets`, pois Onboarding ainda possui consumidor real.
-
-Auditoria 12.38 concluída:
-- CSS residual de Aparência/V3 sem consumidores reais foi removido;
-- presentation gate passa a bloquear o retorno desses resíduos.
-
-## Refinamento UX funcional — STABLE
-Validado no iPhone em 12.32.
-- feedback geral V0 substitui toast residual antigo;
-- ação `Desfazer` permanece explícita e responsiva;
-- seletores inline têm radiogroup, Escape e retorno de foco;
-- erros de formulário são anunciáveis;
-- telas internas respeitam safe-area inferior;
-- foco visível e `prefers-reduced-motion` protegidos.
-
-## Ajustes V0 — STABLE
-Validado no iPhone em 12.33.
-- Ajustes fora do dock e pertencente a Resumo;
-- Perfil, Dados e backup, Privacidade, Sobre o Orion e Recomeçar com uma base nova;
-- telas dedicadas, sem sheets;
-- backup, restauração, importação e reset seguro preservados;
-- Aparência antiga não foi transportada para a V0.
-
-## Identidade visual V1 — STABLE
-Direção oficial candidata: **grafite profundo + azul safira frio**.
-- identidade única, sem múltiplos temas nesta primeira entrega;
-- sem estrelas, planetas ou gradientes decorativos;
-- azul safira reservado para navegação ativa, links, foco e ações primárias;
-- verde/vermelho usados somente como semântica financeira/estado;
-- antigo motor de temas deixa de controlar o runtime, mas preferências salvas não são apagadas;
-- theme/background do PWA passam a `#080b10`;
-- identidade interna validada; marca V1 passa a usar anel + três barras ascendentes em grafite + safira;
-- Core, schema 5, backup v2 e arquitetura V0 permanecem congelados.
-
-Validado visualmente no iPhone em 12.34. `IDENTIDADE-V1-STABLE` ✅
-
-## Marca V1 — STABLE
-- símbolo oficial: anel contínuo + três barras ascendentes;
-- nome completo: Orion Finance; nome curto no dispositivo: Orion;
-- Apple touch icon, favicon e PWA usam assets V1;
-- ícones Rubi anteriores deixam de ser referenciados pelo runtime;
-- fonte vetorial em `brand/orion-icon-v1-master.svg`;
-- sem alteração em UX, Core ou persistência.
-
-Validado no iPhone após exclusão e reinstalação do PWA em 12.37. `MARCA-V1-STABLE` ✅
-
-## Decisão de Aparência — 12.38
-- A identidade oficial permanece única: grafite profundo + azul safira frio.
-- Aparência não retorna como seletor de temas na UX V0.
-- O motor legado de temas foi removido do runtime e do CSS.
-- Preferências antigas já gravadas não são apagadas, evitando mutação desnecessária de dados locais.
-- `prefers-reduced-motion` continua protegido pela camada V0.
+## Identidade e marca — STABLE
+- Grafite profundo + azul safira frio.
+- Verde/vermelho somente para semântica financeira/estado.
+- Símbolo: anel contínuo + três barras ascendentes.
+- Nome completo: Orion Finance; nome curto: Orion.
+- Marca validada no iPhone após reinstalação do PWA.
+- Sem estrelas, planetas ou gradientes decorativos.
 
 ## Pós-V0 — Cartões em Contas · STABLE
-- cartões são cadastrados e administrados dentro de Contas;
-- criação, edição, fatura em aberto, limite, fechamento, vencimento, conta de pagamento e desativação em telas dedicadas;
-- pagamento de fatura usa conta escolhida explicitamente e não pode exceder a fatura aberta;
-- compras no cartão continuam exclusivamente em `Movimentos > Novo > Despesa > Cartão de crédito`;
-- nenhuma nova raiz, FAB ou atalho duplicado;
-- validado no iPhone em 12.39. `CARTOES-CONTAS-STABLE` ✅
+Validado no iPhone em 12.39. `CARTOES-CONTAS-STABLE` ✅
 
-## Pós-V0 — Patrimônio em Resumo · candidato 12.40
-- `Patrimônio` entra em `Resumo > Mais recursos`, sem criar nova raiz;
-- tela dedicada somente leitura com Patrimônio líquido, Ativos e Passivos;
-- composição diferencia dinheiro em contas, outros ativos, investimentos, dívidas, cartões e saldos negativos quando existirem;
-- usa a mesma posição financeira já consolidada pelo Core, sem nova regra de cálculo;
-- metas e reservas continuam organização de caixa e não reduzem patrimônio líquido;
-- nenhuma operação de cadastro/edição de ativos é adicionada nesta etapa.
+## Pós-V0 — Patrimônio em Resumo · STABLE
+Validado no iPhone em 12.40. `PATRIMONIO-LEITURA-STABLE` ✅
+- `Resumo > Mais recursos > Patrimônio`.
+- Patrimônio líquido, Ativos e Passivos em leitura.
+- Composição distingue dinheiro em contas, outros ativos, investimentos, dívidas, cartões e saldos negativos.
+- Usa a posição financeira consolidada existente.
+- Metas e reservas organizam caixa e não reduzem patrimônio líquido.
 
-Checkpoint esperado após validação real: `PATRIMONIO-LEITURA-STABLE`.
+## Pós-V0 — Outros ativos · candidato 12.41
+- gerenciamento dentro de `Patrimônio`, sem nova raiz;
+- cadastra bens e outros valores que não são contas, investimentos, metas ou reservas;
+- valor inicial entra no patrimônio sem movimentar saldo bancário;
+- nome pode ser editado sem reescrever histórico;
+- `Atualizar valor` registra somente a diferença como evento de valorização/desvalorização;
+- atualização de valor não cria entrada ou saída em conta;
+- histórico das atualizações permanece auditável;
+- desativação preserva histórico e oferece `Desfazer`;
+- ativos técnicos de garantia (`kind: guarantee`) não aparecem nesta gestão genérica;
+- Financial Core, schema 5, backup v2 e migrations permanecem preservados.
+
+Checkpoint esperado após validação real: `OUTROS-ATIVOS-STABLE`.
 
 ## Próxima sequência
-1. Validar 12.40 no iPhone.
-2. Se aprovado, congelar `PATRIMONIO-LEITURA-STABLE`.
-3. Só então decidir se o próximo passo é cadastro de outros ativos ou outra necessidade de uso real.
+1. Validar 12.41 no iPhone.
+2. Se aprovado, congelar `OUTROS-ATIVOS-STABLE`.
+3. Escolher a próxima lacuna funcional pelo uso real, sem abrir nova raiz desnecessariamente.

@@ -13,6 +13,11 @@ const TITLES = {
     planning: 'Planejar',
     accounts: 'Contas',
     patrimony: 'Patrimônio',
+    'patrimony-assets': 'Outros ativos',
+    'patrimony-asset-new': 'Novo ativo',
+    'patrimony-asset-detail': 'Ativo',
+    'patrimony-asset-edit': 'Editar ativo',
+    'patrimony-asset-value': 'Atualizar valor',
     settings: 'Ajustes',
     'settings-profile': 'Perfil',
     'settings-data': 'Dados e backup',
@@ -49,6 +54,12 @@ const TITLES = {
 function parentRoute(route) {
     if (route === 'patrimony' || route === 'settings')
         return 'summary';
+    if (route === 'patrimony-assets')
+        return 'patrimony';
+    if (route === 'patrimony-asset-new' || route === 'patrimony-asset-detail')
+        return 'patrimony-assets';
+    if (route === 'patrimony-asset-edit' || route === 'patrimony-asset-value')
+        return 'patrimony-asset-detail';
     if (route === 'settings-profile' || route === 'settings-data' || route === 'settings-privacy' || route === 'settings-about' || route === 'settings-restart')
         return 'settings';
     if (route === 'movement-new' || route === 'movement-detail' || route === 'movement-filters')
@@ -82,6 +93,10 @@ function parentRoute(route) {
 function backLabel(route) {
     if (route === 'patrimony' || route === 'settings')
         return '‹ Resumo';
+    if (route === 'patrimony-assets')
+        return '‹ Patrimônio';
+    if (route === 'patrimony-asset-detail')
+        return '‹ Ativos';
     if (route === 'settings-profile' || route === 'settings-data' || route === 'settings-privacy' || route === 'settings-about' || route === 'settings-restart')
         return '‹ Ajustes';
     if (route === 'movement-detail')

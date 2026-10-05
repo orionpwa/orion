@@ -18,11 +18,76 @@
 .patrimony-totals-v1 .patrimony-row-value-v1{display:block;font-size:18px;text-align:left}
 .patrimony-empty-v1{min-height:50px;display:grid;align-content:center;border-top:1px solid rgba(255,255,255,.10);color:#9e9e9e;font-size:13px;line-height:1.45}
 .patrimony-note-v1{margin:22px 0 0;color:#8f8f8f;font-size:12px;line-height:1.5;overflow-wrap:anywhere}
+.patrimony-manage-action-v1{
+  width:100%;min-height:44px;margin-top:12px;border:1px solid var(--orion-id-line-strong);
+  border-radius:12px;background:var(--orion-id-accent-soft);color:var(--orion-id-accent);
+  font:inherit;font-size:14px;font-weight:700;
+}
+.patrimony-assets-screen-v1,.patrimony-asset-detail-v1{
+  width:100%;min-height:100%;padding:14px max(16px,var(--safe-right)) 28px max(16px,var(--safe-left));
+  color:var(--orion-id-text);
+}
+.patrimony-assets-support-v1,.patrimony-form-support-v1{
+  margin:0 0 16px;color:var(--orion-id-muted);font-size:13px;line-height:1.5;
+}
+.patrimony-primary-action-v1{
+  width:100%;min-height:46px;border:0;border-radius:12px;background:var(--orion-id-accent-strong);
+  color:#fff;font:inherit;font-size:14px;font-weight:750;
+}
+.patrimony-assets-empty-v1{
+  margin-top:18px;padding:18px 0;border-top:1px solid var(--orion-id-line);
+  color:var(--orion-id-muted);font-size:13px;line-height:1.5;
+}
+.patrimony-assets-list-v1{margin-top:18px;border-top:1px solid var(--orion-id-line)}
+.patrimony-asset-row-v1{
+  width:100%;min-height:64px;display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;
+  gap:10px;padding:10px 0;border:0;border-bottom:1px solid var(--orion-id-line);background:transparent;
+  color:var(--orion-id-text);text-align:left;font:inherit;
+}
+.patrimony-asset-copy-v1{min-width:0;display:grid;gap:3px}
+.patrimony-asset-copy-v1 strong{font-size:14px;line-height:1.35;overflow-wrap:anywhere}
+.patrimony-asset-copy-v1 small{color:var(--orion-id-muted);font-size:12px;line-height:1.35}
+.patrimony-asset-value-v1{font-size:14px;line-height:1.35;text-align:right;overflow-wrap:anywhere}
+.patrimony-asset-chevron-v1{color:var(--orion-id-muted);font-size:22px}
+.patrimony-asset-hero-v1{
+  display:grid;gap:5px;padding:4px 0 18px;border-bottom:1px solid var(--orion-id-line);
+}
+.patrimony-asset-hero-v1 small{color:var(--orion-id-muted);font-size:11px;font-weight:700;letter-spacing:.11em}
+.patrimony-asset-hero-v1 strong{font-size:clamp(30px,9vw,42px);line-height:1.05;letter-spacing:-.04em;overflow-wrap:anywhere}
+.patrimony-asset-hero-v1 span{color:var(--orion-id-muted);font-size:14px}
+.patrimony-asset-detail-list-v1{margin:0;padding:8px 0 0}
+.patrimony-asset-detail-row-v1{
+  min-height:48px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;
+  border-bottom:1px solid var(--orion-id-line);
+}
+.patrimony-asset-detail-row-v1 dt{color:var(--orion-id-muted);font-size:13px}
+.patrimony-asset-detail-row-v1 dd{margin:0;font-size:13px;font-weight:650;text-align:right;overflow-wrap:anywhere}
+.patrimony-asset-actions-v1{display:grid;gap:10px;padding:18px 0}
+.patrimony-asset-section-heading-v1{padding:6px 0 8px;border-bottom:1px solid var(--orion-id-line)}
+.patrimony-asset-section-heading-v1 h2{margin:0;font-size:15px}
+.patrimony-asset-history-v1{display:grid}
+.patrimony-asset-history-row-v1{
+  min-height:58px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;
+  border-bottom:1px solid var(--orion-id-line);
+}
+.patrimony-asset-history-row-v1 span{min-width:0;display:grid;gap:3px}
+.patrimony-asset-history-row-v1 span strong{font-size:13px;line-height:1.35;overflow-wrap:anywhere}
+.patrimony-asset-history-row-v1 span small{color:var(--orion-id-muted);font-size:12px}
+.patrimony-asset-history-row-v1>strong{font-size:13px;text-align:right}
+.patrimony-asset-history-row-v1>strong.positive{color:var(--orion-id-positive)}
+.patrimony-asset-history-row-v1>strong.negative{color:var(--orion-id-negative)}
 @media(max-width:340px){
-  .patrimony-screen-v1{padding-left:max(12px,var(--safe-left));padding-right:max(12px,var(--safe-right))}
+  .patrimony-screen-v1,.patrimony-assets-screen-v1,.patrimony-asset-detail-v1{
+    padding-left:max(12px,var(--safe-left));padding-right:max(12px,var(--safe-right))
+  }
   .patrimony-net-v1{font-size:34px}
   .patrimony-totals-v1{grid-template-columns:1fr;gap:10px}
   .patrimony-row-v1{grid-template-columns:1fr;gap:3px;padding:9px 0}
   .patrimony-row-value-v1{text-align:left}
   .patrimony-totals-v1 .patrimony-row-v1{padding:0}
+  .patrimony-asset-row-v1{grid-template-columns:minmax(0,1fr) auto}
+  .patrimony-asset-value-v1{grid-column:1;text-align:left}
+  .patrimony-asset-chevron-v1{grid-column:2;grid-row:1 / span 2}
+  .patrimony-asset-detail-row-v1{grid-template-columns:1fr;gap:3px;padding:9px 0}
+  .patrimony-asset-detail-row-v1 dd{text-align:left}
 }

@@ -1,6 +1,6 @@
-# Orion Finance — Cloudflare Pages — 12.40
+# Orion Finance — Cloudflare Pages — 12.41
 
-Orion Finance v0.1 — Fase 12.40: Patrimônio em leitura dentro de Resumo; cartões estáveis; Core e schema preservados. O conteúdo público está em `site/`.
+Orion Finance v0.1 — Fase 12.41: cadastro e manutenção de outros ativos dentro de Patrimônio; UX V0, cartões e leitura patrimonial estáveis. O conteúdo público está em `site/`.
 
 Configuração:
 - Framework: **None**
