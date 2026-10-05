@@ -1,6 +1,6 @@
-# Orion Finance — Cloudflare Pages — 12.34
+# Orion Finance — Cloudflare Pages — 12.35
 
-Orion Finance v0.1 — Fase 12.34: identidade visual V1 candidata; Core congelado. O conteúdo público está em `site/`.
+Orion Finance v0.1 — Fase 12.35: identidade visual V1 estável e correção da versão exibida; Core congelado. O conteúdo público está em `site/`.
 
 Configuração:
 - Framework: **None**

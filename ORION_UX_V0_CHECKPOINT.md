@@ -4,7 +4,7 @@
 Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Em conflito com layouts/documentação antigos, esta base vence salvo revisão explícita.
 
 ## Base técnica
-- Release candidata: `0.1.0-development.12.34`.
+- Release candidata: `0.1.0-development.12.35`.
 - Financial Core preservado.
 - IndexedDB schema 5.
 - Backup format 2.
@@ -21,6 +21,7 @@ Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Em confl
 - `LEGACY-CLEANUP-STABLE` ✅
 - `UX-FUNCTIONAL-REFINEMENT-STABLE` ✅
 - `AJUSTES-STABLE` ✅
+- `IDENTIDADE-V1-STABLE` ✅
 
 ## Arquitetura V0 congelada
 Raízes da navegação:
@@ -121,7 +122,7 @@ Validado no iPhone em 12.33.
 - backup, restauração, importação e reset seguro preservados;
 - Aparência antiga não foi transportada para a V0.
 
-## Identidade visual V1 — candidato 12.34
+## Identidade visual V1 — STABLE
 Direção oficial candidata: **grafite profundo + azul safira frio**.
 - identidade única, sem múltiplos temas nesta primeira entrega;
 - sem estrelas, planetas ou gradientes decorativos;
@@ -132,9 +133,9 @@ Direção oficial candidata: **grafite profundo + azul safira frio**.
 - ícone atual permanece temporariamente até a identidade dentro do app ser validada;
 - Core, schema 5, backup v2 e arquitetura V0 permanecem congelados.
 
-Checkpoint esperado após validação real: `IDENTIDADE-V1-STABLE`.
+Validado visualmente no iPhone em 12.34. `IDENTIDADE-V1-STABLE` ✅
 
 ## Próxima sequência
-1. Validar identidade V1 12.34 no iPhone.
-2. Congelar `IDENTIDADE-V1-STABLE`.
-3. Desenhar ícone/marca e decidir se Aparência volta como controle da identidade oficial.
+1. Corrigir exibição da versão em Ajustes (`12.12.34` → `12.35`).
+2. Desenhar ícone/marca.
+3. Decidir se Aparência volta como controle da identidade oficial.
