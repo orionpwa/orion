@@ -1,6 +1,6 @@
 # Orion Finance — Cloudflare Pages — 12.38
 
-Orion Finance v0.1 — Fase 12.38: candidato de fechamento da UX V0; marca V1 estável; runtime legado de Aparência desconectado; Core congelado. O conteúdo público está em `site/`.
+Orion Finance v0.1 — Fase 12.38: **UX V0 FINAL STABLE**; marca V1 estável; identidade grafite + safira congelada; Core preservado. O conteúdo público está em `site/`.
 
 Configuração:
 - Framework: **None**
@@ -9,3 +9,5 @@ Configuração:
 - Production branch: **main**
 
 Financial Core, IndexedDB schema 5, backup v2 e migrations permanecem preservados.
+
+Novos trabalhos devem entrar como escopo funcional explícito, sem reabrir incidentalmente a UX V0 aprovada.
