@@ -4,7 +4,7 @@
 Este arquivo é a fonte de recuperação da reconstrução UX e da evolução pós-V0 do Orion. Em conflito com layouts/documentação antigos, esta base vence salvo revisão explícita.
 
 ## Base técnica
-- Release candidata: `0.1.0-development.12.42`.
+- Release candidata: `0.1.0-development.12.43`.
 - Financial Core preservado.
 - IndexedDB schema 5.
 - Backup format 2.
@@ -28,6 +28,7 @@ Este arquivo é a fonte de recuperação da reconstrução UX e da evolução p�
 - `CARTOES-CONTAS-STABLE` ✅
 - `PATRIMONIO-LEITURA-STABLE` ✅
 - `OUTROS-ATIVOS-STABLE` ✅
+- `SITUACAO-MES-STABLE` ✅
 
 ## Arquitetura V0 congelada
 Raízes da navegação:
@@ -56,6 +57,7 @@ Ajustes pertence a Resumo e não é quinta raiz.
 ### Resumo
 - Livre para decidir, Disponível, Compromissos, Metas e reservas.
 - Este mês: Entrou, Saiu e Resultado.
+- Situação do mês: Confortável, Atenção ou Apertado.
 - Próximos compromissos.
 - Mais recursos contém Patrimônio.
 - Não cria movimentação e não gerencia contas.
@@ -110,20 +112,28 @@ Validado no iPhone em 12.41. `OUTROS-ATIVOS-STABLE` ✅
 - edição e desativação preservam histórico;
 - ativos técnicos de garantia não aparecem na gestão genérica.
 
-## Pós-V0 — Situação do mês · candidato 12.42
-- entra diretamente no Resumo, sem nova tela ou nova raiz;
+## Pós-V0 — Situação do mês · STABLE
+Validado no iPhone em 12.42. `SITUACAO-MES-STABLE` ✅
+- entra diretamente no Resumo;
 - reutiliza o status financeiro já calculado pelo dashboard;
-- estados: `Confortável`, `Atenção` e `Apertado`;
 - `Apertado`: Disponível ou Livre abaixo de zero;
 - `Atenção`: resultado mensal negativo, ou Livre zerado com compromissos/reservas;
 - `Confortável`: nenhuma das condições anteriores;
-- somente leitura, sem criar nova regra financeira;
-- cores seguem semântica de estado: verde, atenção e vermelho;
-- Core, schema 5, backup v2 e migrations permanecem preservados.
+- somente leitura e sem nova regra financeira.
 
-Checkpoint esperado após validação real: `SITUACAO-MES-STABLE`.
+## Pós-V0 — Investimentos em Patrimônio · candidato 12.43
+- `Patrimônio > Ver investimentos`, sem nova raiz;
+- tela somente leitura nesta etapa;
+- mostra valor da carteira, custo, resultado e posições;
+- quantidade e participação de cada posição ficam visíveis;
+- quando não houver cotação, o valor usa o custo e isso é informado;
+- cotações desatualizadas também são sinalizadas;
+- cadastro, compra e venda não entram nesta etapa;
+- Financial Core, schema 5, backup v2 e migrations permanecem preservados.
+
+Checkpoint esperado após validação real: `INVESTIMENTOS-LEITURA-STABLE`.
 
 ## Próxima sequência
-1. Validar 12.42 no iPhone.
-2. Se aprovado, congelar `SITUACAO-MES-STABLE`.
-3. Escolher a próxima lacuna funcional pelo uso real, sem abrir nova raiz desnecessariamente.
+1. Validar 12.43 no iPhone.
+2. Se aprovado, congelar `INVESTIMENTOS-LEITURA-STABLE`.
+3. Só então liberar gestão da carteira em uma etapa separada.

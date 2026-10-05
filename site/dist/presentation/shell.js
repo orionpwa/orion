@@ -1,5 +1,6 @@
 import { el } from './dom.js';
 import { icon } from './icons.js';
+
 const ROOT_NAVIGATION = [
     { route: 'summary', label: 'Resumo', icon: 'home' },
     { route: 'movements', label: 'Movimentos', icon: 'movement' },
@@ -13,6 +14,7 @@ const TITLES = {
     planning: 'Planejar',
     accounts: 'Contas',
     patrimony: 'Patrimônio',
+    'patrimony-investments': 'Investimentos',
     'patrimony-assets': 'Outros ativos',
     'patrimony-asset-new': 'Novo ativo',
     'patrimony-asset-detail': 'Ativo',
@@ -51,10 +53,11 @@ const TITLES = {
     'card-edit': 'Editar cartão',
     'card-payment': 'Pagar fatura'
 };
+
 function parentRoute(route) {
     if (route === 'patrimony' || route === 'settings')
         return 'summary';
-    if (route === 'patrimony-assets')
+    if (route === 'patrimony-assets' || route === 'patrimony-investments')
         return 'patrimony';
     if (route === 'patrimony-asset-new' || route === 'patrimony-asset-detail')
         return 'patrimony-assets';
@@ -90,10 +93,11 @@ function parentRoute(route) {
         return 'card-detail';
     return null;
 }
+
 function backLabel(route) {
     if (route === 'patrimony' || route === 'settings')
         return '‹ Resumo';
-    if (route === 'patrimony-assets')
+    if (route === 'patrimony-assets' || route === 'patrimony-investments')
         return '‹ Patrimônio';
     if (route === 'patrimony-asset-detail')
         return '‹ Ativos';
@@ -113,6 +117,7 @@ function backLabel(route) {
         return '‹ Contas';
     return 'Cancelar';
 }
+
 export function createShellV0(onNavigate, onCreateMovement) {
     let route = 'summary';
     const back = el('button', 'shell-back-v0');
