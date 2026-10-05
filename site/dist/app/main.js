@@ -7,8 +7,7 @@ import { IndexedDbMarketDataCache } from '../data/indexeddb/market-cache.js';
 import { IndexedDbMetadataRepository } from '../data/indexeddb/metadata.js';
 import { clear } from '../presentation/dom.js';
 import { createShellV0 } from '../presentation/shell.js';
-import { initializeAppearanceClock } from '../presentation/appearance.js';
-import { renderHomeV3 } from '../presentation/home.js';
+import { renderHomeV0 } from '../presentation/home.js';
 import { DEFAULT_MOVEMENT_FILTERS_V0, renderMovementDetailV0, renderMovementFiltersV0, renderMovementListV0, renderNewMovementV0, renderEditMovementV0 } from '../presentation/movements.js';
 import { renderPlanningRootV0, renderCommitmentListV0, renderCommitmentDetailV0, renderNewCommitmentV0, renderEditCommitmentV0, renderCommitmentPaymentV0, renderDebtListV0, renderDebtDetailV0, renderNewDebtV0, renderEditDebtV0, renderDebtPaymentV0, renderAllocationListV0, renderAllocationDetailV0, renderNewAllocationV0, renderEditAllocationV0, renderAdjustAllocationV0 } from '../presentation/planning.js';
 import { renderAccountsRootV0, renderAccountDetailV0, renderNewAccountV0, renderEditAccountV0 } from '../presentation/accounts.js';
@@ -29,7 +28,6 @@ import { FundamentalRefreshCoordinator } from '../application/market-data/fundam
 const platformRuntime = new WebPlatformRuntime();
 const marketDataCache = new IndexedDbMarketDataCache();
 document.documentElement.classList.toggle('pwa-standalone', platformRuntime.isStandalone());
-initializeAppearanceClock();
 const repositories = {
     profiles: new IndexedDbProfileRepository(),
     accounts: new IndexedDbAccountRepository(),
@@ -90,7 +88,7 @@ async function start() {
         try {
             let screen;
             if (route === 'summary') {
-                screen = await renderHomeV3(repositories, profile, {
+                screen = await renderHomeV0(repositories, profile, {
                     onOpenMovements: () => { route = 'movements'; void render(); }
                 });
             }

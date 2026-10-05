@@ -1,6 +1,6 @@
-# Orion Finance — Cloudflare Pages — 12.37
+# Orion Finance — Cloudflare Pages — 12.38
 
-Orion Finance v0.1 — Fase 12.37: hotfix de integridade da marca V1 e PWA; UX e Core congelados. O conteúdo público está em `site/`.
+Orion Finance v0.1 — Fase 12.38: candidato de fechamento da UX V0; marca V1 estável; runtime legado de Aparência desconectado; Core congelado. O conteúdo público está em `site/`.
 
 Configuração:
 - Framework: **None**

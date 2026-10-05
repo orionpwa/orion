@@ -3,10 +3,10 @@ import { updateAccountDetails } from '../../../application/accounts/update-accou
 import { ACCOUNT_TYPE_OPTIONS } from '../../../catalog/account-types.js';
 import { getInstitution, listInstitutions } from '../../../catalog/institutions.js';
 import { el } from '../../dom.js';
-import { V3_VISIBLE_INSTITUTIONS } from '../../institutions.js';
+import { VISIBLE_INSTITUTIONS_V0 } from '../../institutions.js';
 import { accountChoiceFieldV0, accountErrorV0, accountInputFieldV0, accountMoneyFieldV0 } from './controls.js';
 function availableInstitutions() {
-    return listInstitutions().filter((item) => V3_VISIBLE_INSTITUTIONS.includes(item.id));
+    return listInstitutions().filter((item) => VISIBLE_INSTITUTIONS_V0.includes(item.id));
 }
 export function renderNewAccountV0(context, actions) {
     const institutions = availableInstitutions();

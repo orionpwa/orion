@@ -4,8 +4,8 @@ const PATHS = {
     'mercado-pago': './assets/institutions/mercado-pago.png',
     'caju': './assets/institutions/caju.png'
 };
-export const V3_VISIBLE_INSTITUTIONS = ['bradesco', 'inter', 'mercado-pago', 'caju', 'custom'];
-export function institutionLogo(id, fallback, className = 'institution-logo-v3') {
+export const VISIBLE_INSTITUTIONS_V0 = ['bradesco', 'inter', 'mercado-pago', 'caju', 'custom'];
+export function institutionLogo(id, fallback, className) {
     const path = id ? PATHS[id] : undefined;
     if (path) {
         const img = document.createElement('img');
@@ -16,7 +16,7 @@ export function institutionLogo(id, fallback, className = 'institution-logo-v3')
         return img;
     }
     const span = document.createElement('span');
-    span.className = `${className} institution-fallback-v3`;
+    span.className = className;
     span.textContent = fallback.trim().slice(0, 2).toUpperCase() || 'O';
     return span;
 }

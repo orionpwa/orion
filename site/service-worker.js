@@ -1,4 +1,4 @@
-const CACHE_NAME = "orion-0-1-0-development-12-37-static-v1";
+const CACHE_NAME = "orion-0-1-0-development-12-38-static-v1";
 const STATIC_PATHS = [
   "./",
   "./assets/institutions/bradesco.png",
@@ -120,7 +120,6 @@ const STATIC_PATHS = [
   "./dist/platform/pwa-update.js",
   "./dist/platform/web-runtime.js",
   "./dist/presentation/accounts.js",
-  "./dist/presentation/appearance.js",
   "./dist/presentation/components/feedback.js",
   "./dist/presentation/components/fields.js",
   "./dist/presentation/components/lifecycle-feedback.js",

@@ -33,7 +33,7 @@ function commitmentRow(item) {
         el('strong', 'summary-commitment-value-v0', [formatBRL(item.amount)])
     ]);
 }
-export async function renderHomeV3(repositories, profile, actions) {
+export async function renderHomeV0(repositories, profile, actions) {
     const snapshot = await getDashboardSnapshot(repositories, profile.id);
     const root = el('div', 'summary-screen-v0');
     root.append(el('div', 'summary-period-v0', [monthLabel()]));
