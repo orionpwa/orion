@@ -1,4 +1,4 @@
-const CACHE_NAME = "orion-0-1-0-development-12-38-static-v1";
+const CACHE_NAME = "orion-0-1-0-development-12-39-static-v1";
 const STATIC_PATHS = [
   "./",
   "./assets/institutions/bradesco.png",
@@ -11,6 +11,11 @@ const STATIC_PATHS = [
   "./assets/orion-icon-v1-64.png",
   "./assets/orion-icon-v1-maskable-512.png",
   "./dist/app/main.js",
+  "./dist/app/routes/accounts.js",
+  "./dist/app/routes/movements.js",
+  "./dist/app/routes/planning.js",
+  "./dist/app/routes/settings.js",
+  "./dist/app/routes/state.js",
   "./dist/app/version.js",
   "./dist/application/accounts/create-account.js",
   "./dist/application/accounts/update-account.js",
@@ -133,6 +138,7 @@ const STATIC_PATHS = [
   "./dist/presentation/institutions.js",
   "./dist/presentation/movements.js",
   "./dist/presentation/planning.js",
+  "./dist/presentation/screens/accounts-v0/cards.js",
   "./dist/presentation/screens/accounts-v0/controls.js",
   "./dist/presentation/screens/accounts-v0/detail.js",
   "./dist/presentation/screens/accounts-v0/forms.js",

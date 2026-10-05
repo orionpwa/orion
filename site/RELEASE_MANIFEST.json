@@ -1,46 +1,29 @@
 {
   "schemaVersion": 1,
   "product": "Orion Finance",
-  "appVersion": "0.1.0-development.12.38",
+  "appVersion": "0.1.0-development.12.39",
   "phase": 12,
   "classification": "PWA TESTÁVEL — PODE IR AO GITHUB PARA TESTE",
   "runtimeOnly": true,
   "generatedFromSourcePackage": true,
   "manifestCoversSelf": false,
   "manifestMode": "delta",
-  "baseAppVersion": "0.1.0-development.12.37",
-  "baseCommit": "a888e44729fa04a1ac43b668de024e741dd6129c",
+  "baseAppVersion": "0.1.0-development.12.38",
+  "baseCommit": "0975a69e80690de36230771e0bb661650e5ac8f6",
   "filesScope": "changed-and-added",
   "files": [
-    {
-      "path": "dist/app/main.js",
-      "bytes": 21706,
-      "sha256": "c16b1733198f607f05f8fa5e4d7a352e265925a1f1beea43882a02a11015b1e2"
-    },
-    {
-      "path": "dist/app/version.js",
-      "bytes": 190,
-      "sha256": "d42436df0c8e22f0260965cdf5ba98bfd8740be2e7b808c8a1eed8b39778ad53"
-    },
-    {
-      "path": "dist/presentation/home.js",
-      "bytes": 3867,
-      "sha256": "1ec488c0eca8b2df43322b193a5ff5a2fcdbbafdbb88c96a1288ec28db346607"
-    },
-    {
-      "path": "dist/presentation/institutions.js",
-      "bytes": 806,
-      "sha256": "28eb2f7003f7479912530740dc282ba96d33b14b025161f55780c537b4e212a8"
-    },
-    {
-      "path": "dist/presentation/screens/accounts-v0/forms.js",
-      "bytes": 5780,
-      "sha256": "a84bc00a0f04a5f244322aa512495726f51f27a2930612b6f15d59036a57893c"
-    },
-    {
-      "path": "service-worker.js",
-      "bytes": 10077,
-      "sha256": "ac3a448831d4152337bed0434f57bae8601b848ddcc888044df20e220f898ab3"
-    }
+    {"path":"dist/app/main.js","bytes":9059,"sha256":"428975101dbd404b8db1e2262f92cf9461b06b526ddab3aa49c7ccff9cbc1905"},
+    {"path":"dist/app/routes/accounts.js","bytes":3428,"sha256":"da668f2c774a05e7e2d55bf009fd16928d259194535e327724b72bf19c814057"},
+    {"path":"dist/app/routes/movements.js","bytes":2546,"sha256":"a42118f1ecf47ed964c4193328196c31a31c7db48f2263b5a7d4c467bdcb7122"},
+    {"path":"dist/app/routes/planning.js","bytes":6411,"sha256":"fa7fdd952ca2fcfed680b561ffad07b20e7906905fee3b7c0cda0284f807aa0c"},
+    {"path":"dist/app/routes/settings.js","bytes":1543,"sha256":"e7dcc68c0857138c7bf9045dee1e2b324269e3d6046f04d3dd10846c6623932c"},
+    {"path":"dist/app/routes/state.js","bytes":11,"sha256":"8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"},
+    {"path":"dist/app/version.js","bytes":190,"sha256":"4f341ca650f2e1e60c2ffd001157ed70a8eb3bd0a5527d62c382ce8caf3d4092"},
+    {"path":"dist/presentation/accounts.js","bytes":376,"sha256":"5446f7a659f79cb6c675b73838f8270e97fff56579dbb3023d044d17af7dbae5"},
+    {"path":"dist/presentation/screens/accounts-v0/cards.js","bytes":17212,"sha256":"f36380f7464379b07f23c17dc945b838be2d9ec9b168f44cc8f2af984d24cf4b"},
+    {"path":"dist/presentation/screens/accounts-v0/root.js","bytes":2311,"sha256":"5b04629909880fcba18770122b3a7955c8c386d02a107f8552942e2145dce872"},
+    {"path":"dist/presentation/shell.js","bytes":7090,"sha256":"15401a70b1660b5bfd221f15ed58a43d4b243e2039c1537fdac37c139cf3876a"},
+    {"path":"service-worker.js","bytes":10304,"sha256":"44bbbddf18fda77845bb781ecad4b2771f9ea7e4a767a62b89ae555248361223"},
+    {"path":"styles/ux-v0-accounts.css","bytes":7548,"sha256":"662a748f6c58d001fb3b6e8a4624ff455c0229e7d5b4e4363f04416e0119d1d4"}
   ]
 }

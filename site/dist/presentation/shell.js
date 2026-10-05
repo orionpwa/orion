@@ -39,7 +39,11 @@ const TITLES = {
     'planning-allocation-adjust': 'Ajustar valor reservado',
     'account-new': 'Nova conta',
     'account-detail': 'Conta',
-    'account-edit': 'Editar conta'
+    'account-edit': 'Editar conta',
+    'card-new': 'Novo cartão',
+    'card-detail': 'Cartão',
+    'card-edit': 'Editar cartão',
+    'card-payment': 'Pagar fatura'
 };
 function parentRoute(route) {
     if (route === 'settings')
@@ -68,6 +72,10 @@ function parentRoute(route) {
         return 'accounts';
     if (route === 'account-edit')
         return 'account-detail';
+    if (route === 'card-new' || route === 'card-detail')
+        return 'accounts';
+    if (route === 'card-edit' || route === 'card-payment')
+        return 'card-detail';
     return null;
 }
 function backLabel(route) {
@@ -85,7 +93,7 @@ function backLabel(route) {
         return '‹ Dívidas';
     if (route === 'planning-allocation-detail')
         return '‹ Metas';
-    if (route === 'account-detail')
+    if (route === 'account-detail' || route === 'card-detail')
         return '‹ Contas';
     return 'Cancelar';
 }

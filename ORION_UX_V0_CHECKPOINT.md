@@ -4,7 +4,7 @@
 Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Em conflito com layouts/documentação antigos, esta base vence salvo revisão explícita.
 
 ## Base técnica
-- Release estável: `0.1.0-development.12.38`.
+- Release candidata: `0.1.0-development.12.39`.
 - Financial Core preservado.
 - IndexedDB schema 5.
 - Backup format 2.
@@ -48,6 +48,7 @@ Ajustes pertence a Resumo e não é quinta raiz.
 - Sem menus de três pontos para ações essenciais.
 - Sem sheets empilhadas nos fluxos V0 principais.
 - Uma função deve ter um único lugar.
+- Arquitetura/fluxos V0 permanecem congelados durante a identidade visual.
 
 ## Resumo — STABLE
 - Livre para decidir.
@@ -100,45 +101,74 @@ Proteções:
 - desativação V0 mantém ação `Desfazer` via gateway auditável;
 - presentation gate rejeita retorno de fonte/JS legado;
 - build sempre limpa `dist/` antes do TypeScript;
+- 178/178 testes + gates executáveis aprovados antes da publicação;
 - browser smoke segue indisponível somente pelo timeout conhecido do Chromium headless em 12s.
 
-Preservar:
+Ainda não remover:
 - `components/fields` e `components/sheets`, pois Onboarding ainda possui consumidor real.
 
-Auditoria 12.38:
-- CSS residual de Aparência/V3 sem consumidores reais removido;
-- motor legado de temas removido do runtime;
-- preferências antigas já gravadas não são apagadas;
-- `prefers-reduced-motion` permanece protegido pela camada V0.
+Auditoria 12.38 concluída:
+- CSS residual de Aparência/V3 sem consumidores reais foi removido;
+- presentation gate passa a bloquear o retorno desses resíduos.
+
+## Refinamento UX funcional — STABLE
+Validado no iPhone em 12.32.
+- feedback geral V0 substitui toast residual antigo;
+- ação `Desfazer` permanece explícita e responsiva;
+- seletores inline têm radiogroup, Escape e retorno de foco;
+- erros de formulário são anunciáveis;
+- telas internas respeitam safe-area inferior;
+- foco visível e `prefers-reduced-motion` protegidos.
 
 ## Ajustes V0 — STABLE
+Validado no iPhone em 12.33.
 - Ajustes fora do dock e pertencente a Resumo;
 - Perfil, Dados e backup, Privacidade, Sobre o Orion e Recomeçar com uma base nova;
 - telas dedicadas, sem sheets;
 - backup, restauração, importação e reset seguro preservados;
-- Aparência antiga não faz parte da UX V0.
+- Aparência antiga não foi transportada para a V0.
 
-## Identidade visual e Marca V1 — STABLE
-- grafite profundo + azul safira frio;
-- identidade única, sem múltiplos temas nesta entrega;
+## Identidade visual V1 — STABLE
+Direção oficial candidata: **grafite profundo + azul safira frio**.
+- identidade única, sem múltiplos temas nesta primeira entrega;
 - sem estrelas, planetas ou gradientes decorativos;
 - azul safira reservado para navegação ativa, links, foco e ações primárias;
-- verde/vermelho somente como semântica financeira/estado;
+- verde/vermelho usados somente como semântica financeira/estado;
+- antigo motor de temas deixa de controlar o runtime, mas preferências salvas não são apagadas;
+- theme/background do PWA passam a `#080b10`;
+- identidade interna validada; marca V1 passa a usar anel + três barras ascendentes em grafite + safira;
+- Core, schema 5, backup v2 e arquitetura V0 permanecem congelados.
+
+Validado visualmente no iPhone em 12.34. `IDENTIDADE-V1-STABLE` ✅
+
+## Marca V1 — STABLE
 - símbolo oficial: anel contínuo + três barras ascendentes;
 - nome completo: Orion Finance; nome curto no dispositivo: Orion;
 - Apple touch icon, favicon e PWA usam assets V1;
-- fonte vetorial em `brand/orion-icon-v1-master.svg`.
+- ícones Rubi anteriores deixam de ser referenciados pelo runtime;
+- fonte vetorial em `brand/orion-icon-v1-master.svg`;
+- sem alteração em UX, Core ou persistência.
 
-Identidade validada no iPhone em 12.34. Marca V1 validada após reinstalação do PWA em 12.37.
+Validado no iPhone após exclusão e reinstalação do PWA em 12.37. `MARCA-V1-STABLE` ✅
 
-## Fechamento UX V0 — 12.38
-- 12.38 validada para avanço ao próximo estágio;
-- `UX-V0-FINAL-STABLE` congelado;
-- nenhuma mudança futura deve reabrir arquitetura, identidade ou fluxos V0 incidentalmente;
-- novos trabalhos entram como escopo funcional explícito, com impacto delimitado e preservação dos checkpoints estáveis;
-- Financial Core, schema 5, backup v2, IndexedDB e migrations permanecem protegidos.
+## Decisão de Aparência — 12.38
+- A identidade oficial permanece única: grafite profundo + azul safira frio.
+- Aparência não retorna como seletor de temas na UX V0.
+- O motor legado de temas foi removido do runtime e do CSS.
+- Preferências antigas já gravadas não são apagadas, evitando mutação desnecessária de dados locais.
+- `prefers-reduced-motion` continua protegido pela camada V0.
+
+## Pós-V0 — Cartões em Contas · candidato 12.39
+- cartões passam a ser cadastrados e administrados dentro de Contas;
+- criação, edição, fatura em aberto, limite, fechamento, vencimento, conta de pagamento e desativação em telas dedicadas;
+- pagamento de fatura usa conta escolhida explicitamente e não pode exceder a fatura aberta;
+- compras no cartão continuam exclusivamente em `Movimentos > Novo > Despesa > Cartão de crédito`;
+- nenhuma nova raiz, FAB ou atalho duplicado;
+- Financial Core, IndexedDB schema 5, backup v2 e migrations permanecem preservados.
+
+Checkpoint esperado após validação real: `CARTOES-CONTAS-STABLE`.
 
 ## Próxima sequência
-1. Definir o primeiro novo escopo funcional pós-V0.
-2. Implementar de forma incremental, preservando a base `UX-V0-FINAL-STABLE`.
-3. Só alterar Core ou persistência quando o novo recurso realmente exigir e após auditoria específica.
+1. Validar 12.39 no iPhone.
+2. Se aprovado, congelar `CARTOES-CONTAS-STABLE`.
+3. Escolher o próximo recurso pós-V0 pela prioridade de uso real.

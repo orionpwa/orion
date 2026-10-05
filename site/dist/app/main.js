@@ -8,10 +8,7 @@ import { IndexedDbMetadataRepository } from '../data/indexeddb/metadata.js';
 import { clear } from '../presentation/dom.js';
 import { createShellV0 } from '../presentation/shell.js';
 import { renderHomeV0 } from '../presentation/home.js';
-import { DEFAULT_MOVEMENT_FILTERS_V0, renderMovementDetailV0, renderMovementFiltersV0, renderMovementListV0, renderNewMovementV0, renderEditMovementV0 } from '../presentation/movements.js';
-import { renderPlanningRootV0, renderCommitmentListV0, renderCommitmentDetailV0, renderNewCommitmentV0, renderEditCommitmentV0, renderCommitmentPaymentV0, renderDebtListV0, renderDebtDetailV0, renderNewDebtV0, renderEditDebtV0, renderDebtPaymentV0, renderAllocationListV0, renderAllocationDetailV0, renderNewAllocationV0, renderEditAllocationV0, renderAdjustAllocationV0 } from '../presentation/planning.js';
-import { renderAccountsRootV0, renderAccountDetailV0, renderNewAccountV0, renderEditAccountV0 } from '../presentation/accounts.js';
-import { renderSettingsRootV0, renderSettingsProfileV0, renderSettingsDataV0, renderSettingsPrivacyV0, renderSettingsAboutV0, renderSettingsRestartV0 } from '../presentation/settings.js';
+import { DEFAULT_MOVEMENT_FILTERS_V0 } from '../presentation/movements.js';
 import { showOnboarding } from '../presentation/screens/onboarding.js';
 import { showToast, showUpdateBanner } from '../presentation/components/feedback.js';
 import { bindConnectivityStatus } from '../presentation/components/system-status.js';
@@ -25,6 +22,10 @@ import { checkGatewayHealth } from '../infrastructure/market-data/gateway-health
 import { ResilientMarketDataGateway } from '../application/market-data/resilient-gateway.js';
 import { MarketRefreshCoordinator } from '../application/market-data/refresh-coordinator.js';
 import { FundamentalRefreshCoordinator } from '../application/market-data/fundamental-refresh-coordinator.js';
+import { renderMovementRoute } from './routes/movements.js';
+import { renderPlanningRoute } from './routes/planning.js';
+import { renderAccountRoute } from './routes/accounts.js';
+import { renderSettingsRoute } from './routes/settings.js';
 const platformRuntime = new WebPlatformRuntime();
 const marketDataCache = new IndexedDbMarketDataCache();
 document.documentElement.classList.toggle('pwa-standalone', platformRuntime.isStandalone());
@@ -53,247 +54,47 @@ async function start() {
     bindConnectivityStatus();
     const runtimeConfigPromise = loadRuntimeConfig();
     const session = await identityProvider.getSession();
-    let profile = session.profile;
-    let route = 'summary';
-    let selectedMovementId = null;
-    let movementFilters = { ...DEFAULT_MOVEMENT_FILTERS_V0 };
-    let selectedCommitmentId = null;
-    let selectedDebtId = null;
-    let selectedAllocationId = null;
-    let selectedAccountId = null;
+    const state = {
+        profile: session.profile,
+        route: 'summary',
+        selectedMovementId: null,
+        movementFilters: { ...DEFAULT_MOVEMENT_FILTERS_V0 },
+        selectedCommitmentId: null,
+        selectedDebtId: null,
+        selectedAllocationId: null,
+        selectedAccountId: null,
+        selectedCardId: null
+    };
     let rendering = false;
     let marketCoordinator = null;
     let fundamentalCoordinator = null;
-    const shell = createShellV0((next) => { route = next; void render(); }, () => { route = 'movement-new'; void render(); });
+    const rerender = () => { void render(); };
+    const shell = createShellV0((next) => { state.route = next; rerender(); }, () => { state.route = 'movement-new'; rerender(); });
     host.replaceChildren(shell.shell);
-    const applyProfile = (next) => {
-        profile = next;
-        void render();
-    };
+    const applyProfile = (next) => { state.profile = next; rerender(); };
     async function render() {
         if (rendering)
             return;
         rendering = true;
-        if ((route === 'movement-detail' || route === 'movement-edit') && !selectedMovementId)
-            route = 'movements';
-        if ((route === 'planning-commitment-detail' || route === 'planning-commitment-edit' || route === 'planning-commitment-payment') && !selectedCommitmentId)
-            route = 'planning-commitments';
-        if ((route === 'planning-debt-detail' || route === 'planning-debt-edit' || route === 'planning-debt-payment') && !selectedDebtId)
-            route = 'planning-debts';
-        if ((route === 'planning-allocation-detail' || route === 'planning-allocation-edit' || route === 'planning-allocation-adjust') && !selectedAllocationId)
-            route = 'planning-allocations';
-        if ((route === 'account-detail' || route === 'account-edit') && !selectedAccountId)
-            route = 'accounts';
-        shell.setActiveRoute(route);
+        shell.setActiveRoute(state.route);
         try {
-            let screen;
-            if (route === 'summary') {
-                screen = await renderHomeV0(repositories, profile, {
-                    onOpenMovements: () => { route = 'movements'; void render(); }
+            let screen = null;
+            if (state.route === 'summary') {
+                screen = await renderHomeV0(repositories, state.profile, {
+                    onOpenMovements: () => { state.route = 'movements'; rerender(); }
                 });
             }
-            else if (route === 'movements') {
-                screen = await renderMovementListV0(repositories, profile, movementFilters, {
-                    onOpenDetail: (transactionId) => {
-                        selectedMovementId = transactionId;
-                        route = 'movement-detail';
-                        void render();
-                    },
-                    onOpenFilters: () => { route = 'movement-filters'; void render(); },
-                    onClearFilters: () => {
-                        movementFilters = { ...DEFAULT_MOVEMENT_FILTERS_V0 };
-                        void render();
-                    }
-                });
-            }
-            else if (route === 'movement-new') {
-                screen = await renderNewMovementV0(repositories, profile, {
-                    onSaved: (transaction) => {
-                        selectedMovementId = transaction.id;
-                        route = 'movement-detail';
-                        void render();
-                    }
-                });
-            }
-            else if (route === 'movement-detail') {
-                screen = await renderMovementDetailV0(repositories, profile, transactionMutations, selectedMovementId, {
-                    onEdit: () => { route = 'movement-edit'; void render(); },
-                    onDeleted: () => {
-                        selectedMovementId = null;
-                        route = 'movements';
-                        void render();
-                    },
-                    onRestored: () => { void render(); }
-                });
-            }
-            else if (route === 'movement-edit') {
-                screen = await renderEditMovementV0(repositories, profile, transactionMutations, selectedMovementId, {
-                    onSaved: () => { route = 'movement-detail'; void render(); },
-                    onUnavailable: () => {
-                        setTimeout(() => {
-                            selectedMovementId = null;
-                            route = 'movements';
-                            void render();
-                        }, 0);
-                    }
-                });
-            }
-            else if (route === 'movement-filters') {
-                screen = await renderMovementFiltersV0(repositories, profile, movementFilters, {
-                    onApply: (next) => {
-                        movementFilters = next;
-                        route = 'movements';
-                        void render();
-                    }
-                });
-            }
-            else if (route === 'planning') {
-                screen = await renderPlanningRootV0({ repositories, profile, lifecycle: entityLifecycle }, {
-                    onOpenCommitments: () => { route = 'planning-commitments'; void render(); },
-                    onOpenDebts: () => { route = 'planning-debts'; void render(); },
-                    onOpenAllocations: () => { route = 'planning-allocations'; void render(); }
-                });
-            }
-            else if (route === 'planning-commitments') {
-                screen = await renderCommitmentListV0({ repositories, profile, lifecycle: entityLifecycle }, {
-                    onCreate: () => { route = 'planning-commitment-new'; void render(); },
-                    onOpenDetail: (id) => { selectedCommitmentId = id; route = 'planning-commitment-detail'; void render(); }
-                });
-            }
-            else if (route === 'planning-commitment-new') {
-                screen = await renderNewCommitmentV0({ repositories, profile, lifecycle: entityLifecycle }, {
-                    onSaved: (id) => { selectedCommitmentId = id; route = 'planning-commitment-detail'; void render(); }
-                });
-            }
-            else if (route === 'planning-commitment-detail') {
-                screen = await renderCommitmentDetailV0({ repositories, profile, lifecycle: entityLifecycle }, selectedCommitmentId, {
-                    onEdit: () => { route = 'planning-commitment-edit'; void render(); },
-                    onPayment: () => { route = 'planning-commitment-payment'; void render(); },
-                    onChanged: () => { void render(); },
-                    onDeactivated: () => { selectedCommitmentId = null; route = 'planning-commitments'; void render(); }
-                });
-            }
-            else if (route === 'planning-commitment-edit') {
-                screen = await renderEditCommitmentV0({ repositories, profile, lifecycle: entityLifecycle }, selectedCommitmentId, {
-                    onSaved: () => { route = 'planning-commitment-detail'; void render(); }
-                });
-            }
-            else if (route === 'planning-commitment-payment') {
-                screen = await renderCommitmentPaymentV0({ repositories, profile, lifecycle: entityLifecycle }, selectedCommitmentId, {
-                    onCompleted: () => { route = 'planning-commitment-detail'; void render(); }
-                });
-            }
-            else if (route === 'planning-debts') {
-                screen = await renderDebtListV0({ repositories, profile, lifecycle: entityLifecycle }, {
-                    onCreate: () => { route = 'planning-debt-new'; void render(); },
-                    onOpenDetail: (id) => { selectedDebtId = id; route = 'planning-debt-detail'; void render(); }
-                });
-            }
-            else if (route === 'planning-debt-new') {
-                screen = renderNewDebtV0({ repositories, profile, lifecycle: entityLifecycle }, {
-                    onSaved: (id) => { selectedDebtId = id; route = 'planning-debt-detail'; void render(); }
-                });
-            }
-            else if (route === 'planning-debt-detail') {
-                screen = await renderDebtDetailV0({ repositories, profile, lifecycle: entityLifecycle }, selectedDebtId, {
-                    onEdit: () => { route = 'planning-debt-edit'; void render(); },
-                    onPayment: () => { route = 'planning-debt-payment'; void render(); },
-                    onDeactivated: () => { selectedDebtId = null; route = 'planning-debts'; void render(); }
-                });
-            }
-            else if (route === 'planning-debt-edit') {
-                screen = await renderEditDebtV0({ repositories, profile, lifecycle: entityLifecycle }, selectedDebtId, {
-                    onSaved: () => { route = 'planning-debt-detail'; void render(); }
-                });
-            }
-            else if (route === 'planning-debt-payment') {
-                screen = await renderDebtPaymentV0({ repositories, profile, lifecycle: entityLifecycle }, selectedDebtId, {
-                    onCompleted: () => { route = 'planning-debt-detail'; void render(); }
-                });
-            }
-            else if (route === 'planning-allocations') {
-                screen = await renderAllocationListV0({ repositories, profile, lifecycle: entityLifecycle }, {
-                    onCreate: () => { route = 'planning-allocation-new'; void render(); },
-                    onOpenDetail: (id) => { selectedAllocationId = id; route = 'planning-allocation-detail'; void render(); }
-                });
-            }
-            else if (route === 'planning-allocation-new') {
-                screen = await renderNewAllocationV0({ repositories, profile, lifecycle: entityLifecycle }, {
-                    onSaved: (id) => { selectedAllocationId = id; route = 'planning-allocation-detail'; void render(); }
-                });
-            }
-            else if (route === 'planning-allocation-detail') {
-                screen = await renderAllocationDetailV0({ repositories, profile, lifecycle: entityLifecycle }, selectedAllocationId, {
-                    onEdit: () => { route = 'planning-allocation-edit'; void render(); },
-                    onAdjust: () => { route = 'planning-allocation-adjust'; void render(); },
-                    onDeactivated: () => { selectedAllocationId = null; route = 'planning-allocations'; void render(); }
-                });
-            }
-            else if (route === 'planning-allocation-edit') {
-                screen = await renderEditAllocationV0({ repositories, profile, lifecycle: entityLifecycle }, selectedAllocationId, {
-                    onSaved: () => { route = 'planning-allocation-detail'; void render(); }
-                });
-            }
-            else if (route === 'planning-allocation-adjust') {
-                screen = await renderAdjustAllocationV0({ repositories, profile, lifecycle: entityLifecycle }, selectedAllocationId, {
-                    onCompleted: () => { route = 'planning-allocation-detail'; void render(); }
-                });
-            }
-            else if (route === 'accounts') {
-                screen = await renderAccountsRootV0({ repositories, profile, lifecycle: entityLifecycle }, {
-                    onCreate: () => { route = 'account-new'; void render(); },
-                    onOpenDetail: (id) => { selectedAccountId = id; route = 'account-detail'; void render(); }
-                });
-            }
-            else if (route === 'account-new') {
-                screen = renderNewAccountV0({ repositories, profile, lifecycle: entityLifecycle }, {
-                    onSaved: (id) => { selectedAccountId = id; route = 'account-detail'; void render(); }
-                });
-            }
-            else if (route === 'account-detail') {
-                screen = await renderAccountDetailV0({ repositories, profile, lifecycle: entityLifecycle }, selectedAccountId, {
-                    onEdit: () => { route = 'account-edit'; void render(); },
-                    onDeactivated: () => { selectedAccountId = null; route = 'accounts'; void render(); },
-                    onOpenMovement: (id) => { selectedMovementId = id; route = 'movement-detail'; void render(); },
-                    onViewAllMovements: () => {
-                        movementFilters = { ...DEFAULT_MOVEMENT_FILTERS_V0, accountId: selectedAccountId };
-                        route = 'movements';
-                        void render();
-                    }
-                });
-            }
-            else if (route === 'account-edit') {
-                screen = await renderEditAccountV0({ repositories, profile, lifecycle: entityLifecycle }, selectedAccountId, {
-                    onSaved: () => { route = 'account-detail'; void render(); }
-                });
-            }
-            else if (route === 'settings') {
-                screen = renderSettingsRootV0(profile.displayName, {
-                    onProfile: () => { route = 'settings-profile'; void render(); },
-                    onData: () => { route = 'settings-data'; void render(); },
-                    onPrivacy: () => { route = 'settings-privacy'; void render(); },
-                    onAbout: () => { route = 'settings-about'; void render(); },
-                    onRestart: () => { route = 'settings-restart'; void render(); }
-                });
-            }
-            else if (route === 'settings-profile') {
-                screen = renderSettingsProfileV0({ repositories, profile, onProfileChanged: applyProfile, onDataChanged: () => void render() }, () => {
-                    route = 'settings';
-                    void render();
-                });
-            }
-            else if (route === 'settings-data') {
-                screen = renderSettingsDataV0({ repositories, profile, onProfileChanged: applyProfile, onDataChanged: () => void render() });
-            }
-            else if (route === 'settings-privacy') {
-                screen = renderSettingsPrivacyV0();
-            }
-            else if (route === 'settings-about') {
-                screen = renderSettingsAboutV0();
-            }
-            else {
-                screen = renderSettingsRestartV0({ repositories, profile, onProfileChanged: applyProfile, onDataChanged: () => void render() });
-            }
+            if (!screen)
+                screen = await renderMovementRoute(state, repositories, transactionMutations, rerender);
+            if (!screen)
+                screen = await renderPlanningRoute(state, repositories, entityLifecycle, rerender);
+            if (!screen)
+                screen = await renderAccountRoute(state, repositories, entityLifecycle, rerender);
+            if (!screen)
+                screen = renderSettingsRoute(state, repositories, applyProfile, rerender);
+            if (!screen)
+                throw new TypeError('Rota não reconhecida.');
+            shell.setActiveRoute(state.route);
             clear(shell.content);
             shell.content.append(screen);
         }
@@ -301,15 +102,15 @@ async function start() {
             const message = error instanceof Error ? error.message : 'Erro desconhecido.';
             recordDiagnostic('SCREEN_RENDER', 'error');
             clear(shell.content);
-            shell.content.append(errorState('Não foi possível carregar esta área.', message, () => void render()));
+            shell.content.append(errorState('Não foi possível carregar esta área.', message, rerender));
         }
         finally {
             rendering = false;
         }
     }
     await render();
-    if (!profile.onboardingCompletedAt) {
-        showOnboarding(repositories, profile, { onComplete: applyProfile, onDataChanged: () => void render() });
+    if (!state.profile.onboardingCompletedAt) {
+        showOnboarding(repositories, state.profile, { onComplete: applyProfile, onDataChanged: rerender });
     }
     const runtimeConfig = await runtimeConfigPromise;
     if (runtimeConfig.marketGatewayUrl) {
@@ -321,8 +122,8 @@ async function start() {
             fundamentalsMaxAgeMs: 7 * 24 * 60 * 60 * 1000
         });
         const metadata = new IndexedDbMetadataRepository();
-        marketCoordinator = new MarketRefreshCoordinator(repositories.investmentInstruments, marketGateway, metadata, platformRuntime, profile.id, { maxAgeMs: 24 * 60 * 60 * 1000 });
-        fundamentalCoordinator = new FundamentalRefreshCoordinator(repositories.investmentInstruments, marketGateway, metadata, platformRuntime, profile.id, { maxAgeMs: 72 * 60 * 60 * 1000 });
+        marketCoordinator = new MarketRefreshCoordinator(repositories.investmentInstruments, marketGateway, metadata, platformRuntime, state.profile.id, { maxAgeMs: 24 * 60 * 60 * 1000 });
+        fundamentalCoordinator = new FundamentalRefreshCoordinator(repositories.investmentInstruments, marketGateway, metadata, platformRuntime, state.profile.id, { maxAgeMs: 72 * 60 * 60 * 1000 });
         marketCoordinator.bindLifecycle();
         fundamentalCoordinator.bindLifecycle();
         void marketCoordinator.refreshIfDue().then((result) => {
@@ -345,9 +146,7 @@ async function start() {
         platformRuntime.onResume(() => { void registration.update().catch(() => undefined); });
     document.documentElement.dataset.orionVersion = APP_VERSION;
 }
-window.addEventListener('unhandledrejection', () => {
-    recordDiagnostic('UNHANDLED_REJECTION', 'error');
-});
+window.addEventListener('unhandledrejection', () => recordDiagnostic('UNHANDLED_REJECTION', 'error'));
 window.addEventListener('error', () => recordDiagnostic('WINDOW_ERROR', 'error'));
 void start().catch((error) => {
     const message = error instanceof Error ? error.message : 'Erro desconhecido.';
