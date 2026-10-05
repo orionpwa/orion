@@ -4,7 +4,7 @@
 Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Em conflito com layouts/documentação antigos, esta base vence salvo revisão explícita.
 
 ## Base técnica
-- Release candidata: `0.1.0-development.12.39`.
+- Release candidata: `0.1.0-development.12.40`.
 - Financial Core preservado.
 - IndexedDB schema 5.
 - Backup format 2.
@@ -25,6 +25,7 @@ Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Em confl
 - `MARCA-V1-STABLE` ✅
 - `APARENCIA-LEGACY-REMOVED` ✅
 - `UX-V0-FINAL-STABLE` ✅
+- `CARTOES-CONTAS-STABLE` ✅
 
 ## Arquitetura V0 congelada
 Raízes da navegação:
@@ -158,17 +159,25 @@ Validado no iPhone após exclusão e reinstalação do PWA em 12.37. `MARCA-V1-S
 - Preferências antigas já gravadas não são apagadas, evitando mutação desnecessária de dados locais.
 - `prefers-reduced-motion` continua protegido pela camada V0.
 
-## Pós-V0 — Cartões em Contas · candidato 12.39
-- cartões passam a ser cadastrados e administrados dentro de Contas;
+## Pós-V0 — Cartões em Contas · STABLE
+- cartões são cadastrados e administrados dentro de Contas;
 - criação, edição, fatura em aberto, limite, fechamento, vencimento, conta de pagamento e desativação em telas dedicadas;
 - pagamento de fatura usa conta escolhida explicitamente e não pode exceder a fatura aberta;
 - compras no cartão continuam exclusivamente em `Movimentos > Novo > Despesa > Cartão de crédito`;
 - nenhuma nova raiz, FAB ou atalho duplicado;
-- Financial Core, IndexedDB schema 5, backup v2 e migrations permanecem preservados.
+- validado no iPhone em 12.39. `CARTOES-CONTAS-STABLE` ✅
 
-Checkpoint esperado após validação real: `CARTOES-CONTAS-STABLE`.
+## Pós-V0 — Patrimônio em Resumo · candidato 12.40
+- `Patrimônio` entra em `Resumo > Mais recursos`, sem criar nova raiz;
+- tela dedicada somente leitura com Patrimônio líquido, Ativos e Passivos;
+- composição diferencia dinheiro em contas, outros ativos, investimentos, dívidas, cartões e saldos negativos quando existirem;
+- usa a mesma posição financeira já consolidada pelo Core, sem nova regra de cálculo;
+- metas e reservas continuam organização de caixa e não reduzem patrimônio líquido;
+- nenhuma operação de cadastro/edição de ativos é adicionada nesta etapa.
+
+Checkpoint esperado após validação real: `PATRIMONIO-LEITURA-STABLE`.
 
 ## Próxima sequência
-1. Validar 12.39 no iPhone.
-2. Se aprovado, congelar `CARTOES-CONTAS-STABLE`.
-3. Escolher o próximo recurso pós-V0 pela prioridade de uso real.
+1. Validar 12.40 no iPhone.
+2. Se aprovado, congelar `PATRIMONIO-LEITURA-STABLE`.
+3. Só então decidir se o próximo passo é cadastro de outros ativos ou outra necessidade de uso real.

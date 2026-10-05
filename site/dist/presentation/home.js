@@ -79,6 +79,19 @@ export async function renderHomeV0(repositories, profile, actions) {
             list.append(commitmentRow(item));
         commitments.append(list);
     }
-    root.append(free, month, commitments);
+    const resources = el('section', 'summary-section-v0', [
+        el('h2', 'summary-section-title-v0', ['Mais recursos'])
+    ]);
+    const patrimony = el('button', 'summary-resource-row-v1', [
+        el('span', 'summary-resource-copy-v1', [
+            el('strong', 'summary-resource-name-v1', ['Patrimônio']),
+            el('span', 'summary-resource-meta-v1', ['Ativos, passivos e patrimônio líquido'])
+        ]),
+        el('span', 'summary-resource-chevron-v1', ['›'])
+    ]);
+    patrimony.type = 'button';
+    patrimony.addEventListener('click', actions.onOpenPatrimony);
+    resources.append(patrimony);
+    root.append(free, month, commitments, resources);
     return root;
 }

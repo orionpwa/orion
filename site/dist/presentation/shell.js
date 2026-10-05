@@ -12,6 +12,7 @@ const TITLES = {
     movements: 'Movimentos',
     planning: 'Planejar',
     accounts: 'Contas',
+    patrimony: 'Patrimônio',
     settings: 'Ajustes',
     'settings-profile': 'Perfil',
     'settings-data': 'Dados e backup',
@@ -46,7 +47,7 @@ const TITLES = {
     'card-payment': 'Pagar fatura'
 };
 function parentRoute(route) {
-    if (route === 'settings')
+    if (route === 'patrimony' || route === 'settings')
         return 'summary';
     if (route === 'settings-profile' || route === 'settings-data' || route === 'settings-privacy' || route === 'settings-about' || route === 'settings-restart')
         return 'settings';
@@ -79,7 +80,7 @@ function parentRoute(route) {
     return null;
 }
 function backLabel(route) {
-    if (route === 'settings')
+    if (route === 'patrimony' || route === 'settings')
         return '‹ Resumo';
     if (route === 'settings-profile' || route === 'settings-data' || route === 'settings-privacy' || route === 'settings-about' || route === 'settings-restart')
         return '‹ Ajustes';

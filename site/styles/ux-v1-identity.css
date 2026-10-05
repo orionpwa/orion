@@ -48,7 +48,8 @@ body{color:var(--orion-id-text)}
 .movement-internal-screen-v0,
 .planning-screen-v0,
 .accounts-screen-v0,
-.account-internal-screen-v0{
+.account-internal-screen-v0,
+.patrimony-screen-v1{
   background:var(--orion-id-bg);
   color:var(--orion-id-text);
 }
@@ -76,7 +77,8 @@ body{color:var(--orion-id-text)}
 .summary-free-value-v0,
 .summary-section-title-v0,
 .summary-amount-value-v0{color:var(--orion-id-text)}
-.summary-inline-action-v0{color:var(--orion-id-accent)}
+.summary-inline-action-v0,
+.summary-resource-chevron-v1{color:var(--orion-id-accent)}
 .summary-amount-row-v0.positive .summary-amount-value-v0{color:var(--orion-id-positive)}
 .summary-amount-row-v0.negative .summary-amount-value-v0{color:var(--orion-id-negative)}
 .summary-commitment-meta-v0.overdue{color:var(--orion-id-warning)}
@@ -301,3 +303,9 @@ body{color:var(--orion-id-text)}
   outline:2px solid var(--orion-id-accent);
   outline-offset:2px;
 }
+
+/* Patrimônio */
+.patrimony-kicker-v1{color:var(--orion-id-accent)}
+.patrimony-hero-v1,.patrimony-row-v1,.patrimony-empty-v1,.summary-resource-row-v1{border-color:var(--orion-id-line)}
+.patrimony-net-v1,.patrimony-section-title-v1,.patrimony-row-value-v1,.summary-resource-name-v1{color:var(--orion-id-text)}
+.patrimony-row-label-v1,.patrimony-empty-v1,.patrimony-note-v1,.summary-resource-meta-v1{color:var(--orion-id-muted)}

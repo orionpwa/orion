@@ -1,6 +1,6 @@
-# Orion Finance — Cloudflare Pages — 12.39
+# Orion Finance — Cloudflare Pages — 12.40
 
-Orion Finance v0.1 — Fase 12.39: cartões de crédito dentro de Contas; compras em Movimentos; Core e schema preservados. O conteúdo público está em `site/`.
+Orion Finance v0.1 — Fase 12.40: Patrimônio em leitura dentro de Resumo; cartões estáveis; Core e schema preservados. O conteúdo público está em `site/`.
 
 Configuração:
 - Framework: **None**

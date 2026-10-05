@@ -7,7 +7,6 @@ import { IndexedDbMarketDataCache } from '../data/indexeddb/market-cache.js';
 import { IndexedDbMetadataRepository } from '../data/indexeddb/metadata.js';
 import { clear } from '../presentation/dom.js';
 import { createShellV0 } from '../presentation/shell.js';
-import { renderHomeV0 } from '../presentation/home.js';
 import { DEFAULT_MOVEMENT_FILTERS_V0 } from '../presentation/movements.js';
 import { showOnboarding } from '../presentation/screens/onboarding.js';
 import { showToast, showUpdateBanner } from '../presentation/components/feedback.js';
@@ -22,6 +21,7 @@ import { checkGatewayHealth } from '../infrastructure/market-data/gateway-health
 import { ResilientMarketDataGateway } from '../application/market-data/resilient-gateway.js';
 import { MarketRefreshCoordinator } from '../application/market-data/refresh-coordinator.js';
 import { FundamentalRefreshCoordinator } from '../application/market-data/fundamental-refresh-coordinator.js';
+import { renderSummaryRoute } from './routes/summary.js';
 import { renderMovementRoute } from './routes/movements.js';
 import { renderPlanningRoute } from './routes/planning.js';
 import { renderAccountRoute } from './routes/accounts.js';
@@ -79,17 +79,13 @@ async function start() {
         shell.setActiveRoute(state.route);
         try {
             let screen = null;
-            if (state.route === 'summary') {
-                screen = await renderHomeV0(repositories, state.profile, {
-                    onOpenMovements: () => { state.route = 'movements'; rerender(); }
-                });
-            }
+            screen = await renderSummaryRoute(state, repositories, rerender);
             if (!screen)
-                screen = await renderMovementRoute(state, repositories, transactionMutations, rerender);
+                screen = await renderMovementRoute(state, repositories, transactionMutations, render);
             if (!screen)
-                screen = await renderPlanningRoute(state, repositories, entityLifecycle, rerender);
+                screen = await renderPlanningRoute(state, repositories, entityLifecycle, render);
             if (!screen)
-                screen = await renderAccountRoute(state, repositories, entityLifecycle, rerender);
+                screen = await renderAccountRoute(state, repositories, entityLifecycle, render);
             if (!screen)
                 screen = renderSettingsRoute(state, repositories, applyProfile, rerender);
             if (!screen)
@@ -138,7 +134,7 @@ async function start() {
     const registration = await registerPwaUpdateFlow({
         onUpdateReady: (applyUpdate) => showUpdateBanner('Atualizar', applyUpdate),
         onError: () => {
-            recordDiagnostic('PWA_SW_REGISTER', 'warning');
+            recordDiagostic('PWA_SW_REGISTER', 'warning');
             showToast('Offline indisponível nesta sessão.', 'error');
         }
     });
