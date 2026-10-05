@@ -4,7 +4,7 @@
 Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Em conflito com layouts/documentação antigos, esta base vence salvo revisão explícita.
 
 ## Base técnica
-- Release candidata: `0.1.0-development.12.35`.
+- Release candidata: `0.1.0-development.12.36`.
 - Financial Core preservado.
 - IndexedDB schema 5.
 - Backup format 2.
@@ -22,6 +22,7 @@ Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Em confl
 - `UX-FUNCTIONAL-REFINEMENT-STABLE` ✅
 - `AJUSTES-STABLE` ✅
 - `IDENTIDADE-V1-STABLE` ✅
+- `MARCA-V1-CANDIDATE` 🧪
 
 ## Arquitetura V0 congelada
 Raízes da navegação:
@@ -130,12 +131,22 @@ Direção oficial candidata: **grafite profundo + azul safira frio**.
 - verde/vermelho usados somente como semântica financeira/estado;
 - antigo motor de temas deixa de controlar o runtime, mas preferências salvas não são apagadas;
 - theme/background do PWA passam a `#080b10`;
-- ícone atual permanece temporariamente até a identidade dentro do app ser validada;
+- identidade interna validada; marca V1 passa a usar anel + três barras ascendentes em grafite + safira;
 - Core, schema 5, backup v2 e arquitetura V0 permanecem congelados.
 
 Validado visualmente no iPhone em 12.34. `IDENTIDADE-V1-STABLE` ✅
 
+## Marca V1 — candidato 12.36
+- símbolo oficial: anel contínuo + três barras ascendentes;
+- nome completo: Orion Finance; nome curto no dispositivo: Orion;
+- Apple touch icon, favicon e PWA usam assets V1;
+- ícones Rubi anteriores deixam de ser referenciados pelo runtime;
+- fonte vetorial em `brand/orion-icon-v1-master.svg`;
+- sem alteração em UX, Core ou persistência.
+
+Checkpoint esperado após validação real: `MARCA-V1-STABLE`.
+
 ## Próxima sequência
-1. Corrigir exibição da versão em Ajustes (`12.12.34` → `12.35`).
-2. Desenhar ícone/marca.
-3. Decidir se Aparência volta como controle da identidade oficial.
+1. Validar 12.36 no iPhone e congelar `MARCA-V1-STABLE`.
+2. Decidir se Aparência volta como controle da identidade oficial.
+3. Fazer auditoria técnica final da V0 antes de novos recursos.

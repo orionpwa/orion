@@ -1,6 +1,7 @@
 # Verificação depois do deploy
 
-1. Em Ajustes, confirme **12.35** em “Sobre o Orion”, sem `12.12.35`.
-2. Abra “Sobre o Orion” e confirme a versão técnica **0.1.0-development.12.35**.
-3. Confirme que Resumo, Movimentos, Planejar, Contas e Ajustes mantêm a identidade grafite + safira aprovada.
-4. Feche e abra o PWA e confirme persistência e dock sem regressão.
+1. Em Ajustes > Sobre o Orion, confirme **0.1.0-development.12.36**.
+2. Feche o PWA e confirme que a interface permanece grafite + safira sem alteração estrutural.
+3. Na Tela de Início, confirme o novo ícone azul do Orion; em instalações antigas o iOS pode exigir remover e adicionar o PWA novamente para renovar o ícone.
+4. Confirme que o nome sob o ícone é **Orion**.
+5. Abra o app e confirme dados, dock e navegação sem regressão.
