@@ -4,7 +4,7 @@
 Este arquivo é a fonte de recuperação da reconstrução UX e da evolução pós-V0 do Orion. Em conflito com layouts/documentação antigos, esta base vence salvo revisão explícita.
 
 ## Base técnica
-- Release candidata: `0.1.0-development.12.41`.
+- Release candidata: `0.1.0-development.12.42`.
 - Financial Core preservado.
 - IndexedDB schema 5.
 - Backup format 2.
@@ -27,6 +27,7 @@ Este arquivo é a fonte de recuperação da reconstrução UX e da evolução p�
 - `UX-V0-FINAL-STABLE` ✅
 - `CARTOES-CONTAS-STABLE` ✅
 - `PATRIMONIO-LEITURA-STABLE` ✅
+- `OUTROS-ATIVOS-STABLE` ✅
 
 ## Arquitetura V0 congelada
 Raízes da navegação:
@@ -99,24 +100,30 @@ Validado no iPhone em 12.40. `PATRIMONIO-LEITURA-STABLE` ✅
 - `Resumo > Mais recursos > Patrimônio`.
 - Patrimônio líquido, Ativos e Passivos em leitura.
 - Composição distingue dinheiro em contas, outros ativos, investimentos, dívidas, cartões e saldos negativos.
-- Usa a posição financeira consolidada existente.
 - Metas e reservas organizam caixa e não reduzem patrimônio líquido.
 
-## Pós-V0 — Outros ativos · candidato 12.41
-- gerenciamento dentro de `Patrimônio`, sem nova raiz;
-- cadastra bens e outros valores que não são contas, investimentos, metas ou reservas;
-- valor inicial entra no patrimônio sem movimentar saldo bancário;
-- nome pode ser editado sem reescrever histórico;
-- `Atualizar valor` registra somente a diferença como evento de valorização/desvalorização;
-- atualização de valor não cria entrada ou saída em conta;
-- histórico das atualizações permanece auditável;
-- desativação preserva histórico e oferece `Desfazer`;
-- ativos técnicos de garantia (`kind: guarantee`) não aparecem nesta gestão genérica;
-- Financial Core, schema 5, backup v2 e migrations permanecem preservados.
+## Pós-V0 — Outros ativos · STABLE
+Validado no iPhone em 12.41. `OUTROS-ATIVOS-STABLE` ✅
+- gerenciamento dentro de Patrimônio, sem nova raiz;
+- valor inicial entra no patrimônio sem movimentar conta;
+- atualização de valor registra somente a diferença;
+- edição e desativação preservam histórico;
+- ativos técnicos de garantia não aparecem na gestão genérica.
 
-Checkpoint esperado após validação real: `OUTROS-ATIVOS-STABLE`.
+## Pós-V0 — Situação do mês · candidato 12.42
+- entra diretamente no Resumo, sem nova tela ou nova raiz;
+- reutiliza o status financeiro já calculado pelo dashboard;
+- estados: `Confortável`, `Atenção` e `Apertado`;
+- `Apertado`: Disponível ou Livre abaixo de zero;
+- `Atenção`: resultado mensal negativo, ou Livre zerado com compromissos/reservas;
+- `Confortável`: nenhuma das condições anteriores;
+- somente leitura, sem criar nova regra financeira;
+- cores seguem semântica de estado: verde, atenção e vermelho;
+- Core, schema 5, backup v2 e migrations permanecem preservados.
+
+Checkpoint esperado após validação real: `SITUACAO-MES-STABLE`.
 
 ## Próxima sequência
-1. Validar 12.41 no iPhone.
-2. Se aprovado, congelar `OUTROS-ATIVOS-STABLE`.
+1. Validar 12.42 no iPhone.
+2. Se aprovado, congelar `SITUACAO-MES-STABLE`.
 3. Escolher a próxima lacuna funcional pelo uso real, sem abrir nova raiz desnecessariamente.

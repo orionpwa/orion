@@ -1,4 +1,5 @@
 import { getDashboardSnapshot } from '../application/dashboard/get-dashboard.js';
+import { financialStatusLabel } from '../application/dashboard/financial-status.js';
 import { formatBRL, negateCents } from '../domain/money/money.js';
 import { el } from './dom.js';
 function monthLabel(now = new Date()) {
@@ -33,6 +34,22 @@ function commitmentRow(item) {
         el('strong', 'summary-commitment-value-v0', [formatBRL(item.amount)])
     ]);
 }
+function statusDescription(status) {
+    if (status === 'tight')
+        return 'Disponível ou Livre ficou abaixo de zero. Priorize o essencial.';
+    if (status === 'attention')
+        return 'O mês pede atenção ao resultado e ao dinheiro já comprometido.';
+    return 'O caixa atual comporta o que está planejado neste momento.';
+}
+function statusCard(status) {
+    return el('div', `summary-status-v1 ${status}`, [
+        el('span', 'summary-status-dot-v1'),
+        el('div', 'summary-status-copy-v1', [
+            el('strong', 'summary-status-label-v1', [financialStatusLabel(status)]),
+            el('span', 'summary-status-meta-v1', [statusDescription(status)])
+        ])
+    ]);
+}
 export async function renderHomeV0(repositories, profile, actions) {
     const snapshot = await getDashboardSnapshot(repositories, profile.id);
     const root = el('div', 'summary-screen-v0');
@@ -65,6 +82,10 @@ export async function renderHomeV0(repositories, profile, actions) {
             amountRow('Resultado', formatBRL(snapshot.resultMonth), snapshot.resultMonth < 0 ? 'negative' : 'positive')
         ]));
     }
+    const situation = el('section', 'summary-section-v0', [
+        el('h2', 'summary-section-title-v0', ['Situação do mês']),
+        statusCard(snapshot.status)
+    ]);
     const commitments = el('section', 'summary-section-v0', [
         el('h2', 'summary-section-title-v0', ['Próximos compromissos'])
     ]);
@@ -92,6 +113,6 @@ export async function renderHomeV0(repositories, profile, actions) {
     patrimony.type = 'button';
     patrimony.addEventListener('click', actions.onOpenPatrimony);
     resources.append(patrimony);
-    root.append(free, month, commitments, resources);
+    root.append(free, month, situation, commitments, resources);
     return root;
 }

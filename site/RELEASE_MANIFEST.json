@@ -1,46 +1,36 @@
 {
   "schemaVersion": 1,
   "product": "Orion Finance",
-  "appVersion": "0.1.0-development.12.41",
+  "appVersion": "0.1.0-development.12.42",
   "phase": 12,
   "classification": "PWA TESTÁVEL — PODE IR AO GITHUB PARA TESTE",
   "runtimeOnly": true,
   "generatedFromSourcePackage": false,
   "manifestCoversSelf": false,
   "manifestMode": "delta",
-  "baseAppVersion": "0.1.0-development.12.40",
-  "baseCommit": "3e089a680f29f1ec65c464f6bae5eefeab840232",
+  "baseAppVersion": "0.1.0-development.12.41",
+  "baseCommit": "3892a87a751c08ef8c10831e0610edb27127c5ea",
   "filesScope": "changed",
   "files": [
     {
-      "path": "dist/app/routes/summary.js",
-      "bytes": 2841,
-      "sha256": "641fae91daecb887916fbf034cde26241cc919ec183cae5e14782d3154c2760f"
+      "path": "dist/presentation/home.js",
+      "bytes": 5469,
+      "sha256": "6fa9a49ad8b87ad8356f1176456797892fabe444b40f7a0807ca78c6e56a77f8"
     },
     {
       "path": "dist/app/version.js",
       "bytes": 190,
-      "sha256": "016a569a6eb3a96ced18e242253e44eeff2be1085ab292c2481e76e9a14d2277"
-    },
-    {
-      "path": "dist/presentation/screens/patrimony-v1.js",
-      "bytes": 15146,
-      "sha256": "9adaf1e0edebb42b3acb916b586730db7995666641e2d17004d8e1c3cc11acff"
-    },
-    {
-      "path": "dist/presentation/shell.js",
-      "bytes": 7828,
-      "sha256": "66daca8947fbf6270d2cf4a32c306074286eae6ed882a8152bcc356513f34193"
+      "sha256": "eda52804428a15447edcbd82014fc0268872f8e54136b54298a5b72ef2e5b5f3"
     },
     {
       "path": "service-worker.js",
       "bytes": 10421,
-      "sha256": "e974bbdc404060bb3b81b2a993dfc8d2b05d1b486d5a6bffe408d62098e95823"
+      "sha256": "db323de7337305b62be696831340fdeea16144f4dd4666fe670a3ab9c7d1b55b"
     },
     {
-      "path": "styles/ux-v1-patrimony.css",
-      "bytes": 6113,
-      "sha256": "6be6cf02582cdf7f6d42f1008890b3f875310dddba902e7c85d194f50aec2ef3"
+      "path": "styles/ux-v0-summary.css",
+      "bytes": 4586,
+      "sha256": "0eab98dde650505edaa32378d73225b4c6d9b2a763862c6618bc94965446fce1"
     }
   ]
 }
