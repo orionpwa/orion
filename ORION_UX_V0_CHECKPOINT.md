@@ -4,7 +4,7 @@
 Este arquivo é a fonte de recuperação da reconstrução UX do Orion. Em conflito com layouts/documentação antigos, esta base vence salvo revisão explícita.
 
 ## Base técnica
-- Release candidata: `0.1.0-development.12.36`.
+- Release candidata: `0.1.0-development.12.37`.
 - Financial Core preservado.
 - IndexedDB schema 5.
 - Backup format 2.
@@ -146,7 +146,14 @@ Validado visualmente no iPhone em 12.34. `IDENTIDADE-V1-STABLE` ✅
 
 Checkpoint esperado após validação real: `MARCA-V1-STABLE`.
 
+
+## Hotfix 12.37 — integridade da marca V1
+- restaura no runtime os PNGs V1 validados, sem regenerar visualmente a marca;
+- corrige o `purpose: maskable` para `assets/orion-icon-v1-maskable-512.png`;
+- renova versão/cache PWA e regenera o `RELEASE_MANIFEST.json` a partir do artefato real;
+- nenhuma alteração em UX, Financial Core, schema 5, backup v2, IndexedDB ou migrations.
+
 ## Próxima sequência
-1. Validar 12.36 no iPhone e congelar `MARCA-V1-STABLE`.
+1. Validar 12.37 no iPhone e congelar `MARCA-V1-STABLE`.
 2. Decidir se Aparência volta como controle da identidade oficial.
 3. Fazer auditoria técnica final da V0 antes de novos recursos.
