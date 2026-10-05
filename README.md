@@ -1,6 +1,6 @@
-# Orion Finance — Cloudflare Pages — 12.43
+# Orion Finance — Cloudflare Pages — 12.44
 
-Orion Finance v0.1 — Fase 12.43: leitura da carteira de investimentos dentro de Patrimônio; UX V0 e demais checkpoints preservados. O conteúdo público está em `site/`.
+Orion Finance v0.1 — Fase 12.44: cadastro de investimentos B3 e registro manual de compra/venda dentro de Patrimônio; UX V0 e checkpoints anteriores estáveis. O conteúdo público está em `site/`.
 
 Configuração:
 - Framework: **None**

@@ -1,36 +1,36 @@
 {
   "schemaVersion": 1,
   "product": "Orion Finance",
-  "appVersion": "0.1.0-development.12.43",
+  "appVersion": "0.1.0-development.12.44",
   "phase": 12,
   "classification": "PWA TESTÁVEL — PODE IR AO GITHUB PARA TESTE",
   "runtimeOnly": true,
   "generatedFromSourcePackage": false,
   "manifestCoversSelf": false,
   "manifestMode": "delta",
-  "baseAppVersion": "0.1.0-development.12.42",
-  "baseCommit": "e1ceaa2ab98acf49324d328d1fd0d21a87a5bbc8",
+  "baseAppVersion": "0.1.0-development.12.43",
+  "baseCommit": "3dcb1082d2537e4c6ae7f01191eac0bf1989796f",
   "filesScope": "changed",
   "files": [
     {
       "path": "dist/app/routes/summary.js",
-      "bytes": 6485,
-      "sha256": "37a5f1f2312a8839d90a5af630437fbd2e6e7bc9386f598db5c3b6abab914f30"
+      "bytes": 17198,
+      "sha256": "098f35c8c3061813783b36c3f842e8c65f36da9842f9d6fbd19d7d86d4d871ed"
     },
     {
       "path": "dist/app/version.js",
       "bytes": 190,
-      "sha256": "6e0e055cdf4a50b5f4c05fdd624d6d7e9c2bbfae72d5d9c11732871fde2f4254"
+      "sha256": "cba018a2363d937dab003c8bcdf0c45b71ec1137de36faf949539b608c934401"
     },
     {
       "path": "dist/presentation/shell.js",
-      "bytes": 7952,
-      "sha256": "45eb8236ade4c57705d4fd2bf976cad7a61b26dccca4d80c5b18396e39a5d1cb"
+      "bytes": 8422,
+      "sha256": "183830939da9a3c96b179346e0463a5f5bed48030892909bf458cee1a915358c"
     },
     {
       "path": "service-worker.js",
-      "bytes": 10421,
-      "sha256": "eeec952ebdbf7dc752535aac40b286c438516de34ba425d760ca744b47d82bc0"
+      "bytes": 10366,
+      "sha256": "4e23bad5b6db9680c7b367709c42076d1475f043ff8e3052507a859744c42aee"
     }
   ]
 }

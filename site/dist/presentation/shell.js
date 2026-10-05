@@ -15,6 +15,9 @@ const TITLES = {
     accounts: 'Contas',
     patrimony: 'Patrimônio',
     'patrimony-investments': 'Investimentos',
+    'patrimony-investment-new': 'Novo investimento',
+    'patrimony-investment-detail': 'Investimento',
+    'patrimony-investment-trade': 'Registrar operação',
     'patrimony-assets': 'Outros ativos',
     'patrimony-asset-new': 'Novo ativo',
     'patrimony-asset-detail': 'Ativo',
@@ -59,6 +62,10 @@ function parentRoute(route) {
         return 'summary';
     if (route === 'patrimony-assets' || route === 'patrimony-investments')
         return 'patrimony';
+    if (route === 'patrimony-investment-new' || route === 'patrimony-investment-detail')
+        return 'patrimony-investments';
+    if (route === 'patrimony-investment-trade')
+        return 'patrimony-investment-detail';
     if (route === 'patrimony-asset-new' || route === 'patrimony-asset-detail')
         return 'patrimony-assets';
     if (route === 'patrimony-asset-edit' || route === 'patrimony-asset-value')
@@ -99,6 +106,8 @@ function backLabel(route) {
         return '‹ Resumo';
     if (route === 'patrimony-assets' || route === 'patrimony-investments')
         return '‹ Patrimônio';
+    if (route === 'patrimony-investment-detail')
+        return '‹ Investimentos';
     if (route === 'patrimony-asset-detail')
         return '‹ Ativos';
     if (route === 'settings-profile' || route === 'settings-data' || route === 'settings-privacy' || route === 'settings-about' || route === 'settings-restart')

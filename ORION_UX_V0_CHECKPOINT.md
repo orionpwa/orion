@@ -4,7 +4,7 @@
 Este arquivo é a fonte de recuperação da reconstrução UX e da evolução pós-V0 do Orion. Em conflito com layouts/documentação antigos, esta base vence salvo revisão explícita.
 
 ## Base técnica
-- Release candidata: `0.1.0-development.12.43`.
+- Release candidata: `0.1.0-development.12.44`.
 - Financial Core preservado.
 - IndexedDB schema 5.
 - Backup format 2.
@@ -29,6 +29,7 @@ Este arquivo é a fonte de recuperação da reconstrução UX e da evolução p�
 - `PATRIMONIO-LEITURA-STABLE` ✅
 - `OUTROS-ATIVOS-STABLE` ✅
 - `SITUACAO-MES-STABLE` ✅
+- `INVESTIMENTOS-LEITURA-STABLE` ✅
 
 ## Arquitetura V0 congelada
 Raízes da navegação:
@@ -94,46 +95,27 @@ Ajustes pertence a Resumo e não é quinta raiz.
 - Marca validada no iPhone após reinstalação do PWA.
 - Sem estrelas, planetas ou gradientes decorativos.
 
-## Pós-V0 — Cartões em Contas · STABLE
-Validado no iPhone em 12.39. `CARTOES-CONTAS-STABLE` ✅
-
-## Pós-V0 — Patrimônio em Resumo · STABLE
-Validado no iPhone em 12.40. `PATRIMONIO-LEITURA-STABLE` ✅
+## Pós-V0 — Patrimônio
 - `Resumo > Mais recursos > Patrimônio`.
-- Patrimônio líquido, Ativos e Passivos em leitura.
-- Composição distingue dinheiro em contas, outros ativos, investimentos, dívidas, cartões e saldos negativos.
-- Metas e reservas organizam caixa e não reduzem patrimônio líquido.
+- Patrimônio líquido, ativos e passivos em leitura.
+- Outros ativos podem ser cadastrados e ter valor atualizado sem movimentar conta.
+- Investimentos compõem patrimônio pelo custo quando não há cotação e pela cotação quando disponível.
 
-## Pós-V0 — Outros ativos · STABLE
-Validado no iPhone em 12.41. `OUTROS-ATIVOS-STABLE` ✅
-- gerenciamento dentro de Patrimônio, sem nova raiz;
-- valor inicial entra no patrimônio sem movimentar conta;
-- atualização de valor registra somente a diferença;
-- edição e desativação preservam histórico;
-- ativos técnicos de garantia não aparecem na gestão genérica.
+## Pós-V0 — Investimentos · candidato 12.44
+- permanece dentro de `Patrimônio > Investimentos`, sem nova raiz;
+- leitura da carteira 12.43 passa a ser `INVESTIMENTOS-LEITURA-STABLE`;
+- permite cadastrar instrumento B3 em BRL com código, nome e tipo;
+- permite registrar compra e venda manualmente;
+- compra exige conta de liquidação e saldo suficiente;
+- venda não pode exceder a quantidade disponível;
+- taxas entram no cálculo da liquidação;
+- posições sem operação continuam visíveis para permitir iniciar a compra;
+- mercado internacional e câmbio permanecem fora desta etapa para não misturar moedas sem regra explícita;
+- Core, schema 5, backup v2 e migrations permanecem preservados.
 
-## Pós-V0 — Situação do mês · STABLE
-Validado no iPhone em 12.42. `SITUACAO-MES-STABLE` ✅
-- entra diretamente no Resumo;
-- reutiliza o status financeiro já calculado pelo dashboard;
-- `Apertado`: Disponível ou Livre abaixo de zero;
-- `Atenção`: resultado mensal negativo, ou Livre zerado com compromissos/reservas;
-- `Confortável`: nenhuma das condições anteriores;
-- somente leitura e sem nova regra financeira.
-
-## Pós-V0 — Investimentos em Patrimônio · candidato 12.43
-- `Patrimônio > Ver investimentos`, sem nova raiz;
-- tela somente leitura nesta etapa;
-- mostra valor da carteira, custo, resultado e posições;
-- quantidade e participação de cada posição ficam visíveis;
-- quando não houver cotação, o valor usa o custo e isso é informado;
-- cotações desatualizadas também são sinalizadas;
-- cadastro, compra e venda não entram nesta etapa;
-- Financial Core, schema 5, backup v2 e migrations permanecem preservados.
-
-Checkpoint esperado após validação real: `INVESTIMENTOS-LEITURA-STABLE`.
+Checkpoint esperado após validação real: `INVESTIMENTOS-OPERACAO-STABLE`.
 
 ## Próxima sequência
-1. Validar 12.43 no iPhone.
-2. Se aprovado, congelar `INVESTIMENTOS-LEITURA-STABLE`.
-3. Só então liberar gestão da carteira em uma etapa separada.
+1. Validar 12.44 no iPhone.
+2. Se aprovado, congelar `INVESTIMENTOS-OPERACAO-STABLE`.
+3. Escolher a próxima lacuna funcional pelo uso real.
