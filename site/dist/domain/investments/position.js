@@ -44,13 +44,15 @@ export function calculateInvestmentPosition(instrumentId, trades) {
     }
     return { instrumentId, quantity: quantityUnits(quantity), costBasis: cents(costBasis), realizedGainLoss: cents(realized) };
 }
-export function marketValueForPosition(quantity, quotePrice) {
-    const result = roundRatioHalfUp(BigInt(quantity) * BigInt(quotePrice), BigInt(QUANTITY_SCALE));
+export function marketValueForPosition(quantity, quotePrice, quantityScale = QUANTITY_SCALE) {
+    if (!Number.isSafeInteger(quantityScale) || quantityScale <= 0)
+        throw new RangeError('Escala de quantidade inválida.');
+    const result = roundRatioHalfUp(BigInt(quantity) * BigInt(quotePrice), BigInt(quantityScale));
     const value = Number(result);
     if (!Number.isSafeInteger(value))
         throw new RangeError('Valor de mercado excede limite seguro.');
     return cents(value);
 }
-export function unrealizedGainLoss(position, quotePrice) {
-    return cents(marketValueForPosition(position.quantity, quotePrice) - position.costBasis);
+export function unrealizedGainLoss(position, quotePrice, quantityScale = QUANTITY_SCALE) {
+    return cents(marketValueForPosition(position.quantity, quotePrice, quantityScale) - position.costBasis);
 }
