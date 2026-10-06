@@ -57,6 +57,15 @@ jobs:
           ! grep -q "Ver investimentos" site/dist/app/routes/summary.js
           grep -q '"marketGatewayUrl": ""' site/runtime-config.json
 
+      - name: Check reserve progress UI
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "function allocationProgress" site/dist/presentation/screens/planning-v0/allocations.js
+          grep -q "planning-goal-progress-v0" site/dist/presentation/screens/planning-v0/allocations.js
+          grep -q "planning-goal-progress-track-v0" site/styles/ux-v0-planning.css
+          grep -q "Objetivo alcançado" site/dist/presentation/screens/planning-v0/allocations.js
+
       - name: Check preserved investment data compatibility
         shell: bash
         run: |
