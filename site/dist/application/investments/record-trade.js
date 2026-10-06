@@ -1,7 +1,7 @@
 import { calculateCashBalances } from '../../domain/ledger/ledger.js';
 import { addCents, parseMajorToCents } from '../../domain/money/money.js';
 import { calculateInvestmentPosition } from '../../domain/investments/position.js';
-import { parseQuantity } from '../../domain/investments/quantity.js';
+import { parseQuantity, quantityScaleForInstrument } from '../../domain/investments/quantity.js';
 import { createEntityId } from '../shared/ids.js';
 import { requireISODate } from '../shared/validation.js';
 export async function recordInvestmentTrade(trades, instruments, accounts, transactions, input, now = new Date()) {
@@ -11,7 +11,7 @@ export async function recordInvestmentTrade(trades, instruments, accounts, trans
     const account = await accounts.getById(input.settlementAccountId);
     if (!account || !account.active || account.profileId !== input.profileId)
         throw new Error('Conta de liquidação inválida.');
-    const quantity = parseQuantity(input.quantity);
+    const quantity = parseQuantity(input.quantity, quantityScaleForInstrument(instrument));
     if (quantity <= 0)
         throw new RangeError('A quantidade deve ser maior que zero.');
     const grossAmount = parseMajorToCents(input.grossAmount);
