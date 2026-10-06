@@ -26,6 +26,7 @@ const ROUTES = new Set([
 const assetLifecycle = new IndexedDbEntityLifecycleMutationGateway();
 const INVESTMENT_CLASSES = [
     { value: 'stock', label: 'Ação' },
+    { value: 'bdr', label: 'BDR' },
     { value: 'reit', label: 'FII' },
     { value: 'etf', label: 'ETF' },
     { value: 'other', label: 'Outro listado' }
@@ -106,6 +107,12 @@ async function renderInvestmentsRoute(context, actions) {
     create.type = 'button';
     create.addEventListener('click', actions.onCreate);
     root.append(create);
+    if (instruments.length > 0) {
+        const refresh = el('button', 'account-secondary-action-v0', ['Atualizar cotações']);
+        refresh.type = 'button';
+        refresh.addEventListener('click', actions.onRefreshQuotes);
+        root.append(refresh);
+    }
     if (snapshot.missingQuotes > 0 || snapshot.staleQuotes > 0) {
         const notes = [];
         if (snapshot.missingQuotes > 0)
@@ -154,7 +161,7 @@ function renderNewInvestmentRoute(context, actions) {
         symbol.element,
         name.element,
         assetClass.element,
-        el('p', 'patrimony-form-support-v1', ['Nesta etapa, o cadastro usa B3 e valores em reais. Mercado internacional e câmbio entram em uma etapa própria.']),
+        el('p', 'patrimony-form-support-v1', ['Cadastro patrimonial B3 em reais. A cotação atualiza o valor do ativo sem criar movimento financeiro.']),
         error.element,
         save
     ]);
@@ -296,6 +303,7 @@ export async function renderSummaryRoute(state, repositories, rerender) {
     if (state.route === 'patrimony-investments') {
         return renderInvestmentsRoute(context, {
             onCreate: () => { state.route = 'patrimony-investment-new'; rerender(); },
+            onRefreshQuotes: () => { window.dispatchEvent(new Event('orion:refresh-market')); },
             onOpenDetail: (id) => { state.selectedInvestmentId = id; state.route = 'patrimony-investment-detail'; rerender(); }
         });
     }
