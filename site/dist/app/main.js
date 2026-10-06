@@ -65,7 +65,8 @@ async function start() {
         selectedCardId: null,
         selectedAssetId: null,
         selectedInvestmentId: null,
-        selectedInvestmentSide: null
+        selectedInvestmentSide: null,
+        selectedDocumentId: null
     };
     let rendering = false;
     let marketCoordinator = null;
