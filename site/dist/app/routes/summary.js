@@ -29,6 +29,7 @@ const INVESTMENT_CLASSES = [
     { value: 'bdr', label: 'BDR' },
     { value: 'reit', label: 'FII' },
     { value: 'etf', label: 'ETF' },
+    { value: 'crypto', label: 'Criptoativo' },
     { value: 'other', label: 'Outro listado' }
 ];
 
@@ -150,9 +151,9 @@ async function renderInvestmentsRoute(context, actions) {
 function renderNewInvestmentRoute(context, actions) {
     const symbol = accountInputFieldV0('Código do ativo');
     symbol.input.autocapitalize = 'characters';
-    symbol.input.placeholder = 'Ex.: PETR4';
+    symbol.input.placeholder = 'Ex.: PETR4 ou BTC';
     const name = accountInputFieldV0('Nome');
-    name.input.placeholder = 'Ex.: Petrobras';
+    name.input.placeholder = 'Ex.: Petrobras ou Bitcoin';
     const assetClass = accountChoiceFieldV0('Tipo', INVESTMENT_CLASSES, 'stock');
     const error = accountErrorV0();
     const save = el('button', 'account-primary-action-v0', ['Salvar investimento']);
@@ -161,7 +162,7 @@ function renderNewInvestmentRoute(context, actions) {
         symbol.element,
         name.element,
         assetClass.element,
-        el('p', 'patrimony-form-support-v1', ['Cadastro patrimonial B3 em reais. A cotação atualiza o valor do ativo sem criar movimento financeiro.']),
+        el('p', 'patrimony-form-support-v1', ['Cadastro patrimonial em reais. Ações, BDRs, FIIs e ETFs usam B3; criptoativos usam o mercado cripto. A cotação altera apenas o valor patrimonial.']),
         error.element,
         save
     ]);
@@ -169,12 +170,13 @@ function renderNewInvestmentRoute(context, actions) {
         event.preventDefault();
         error.clear();
         save.disabled = true;
+        const selectedClass = assetClass.control.value;
         void createInvestmentInstrument(context.repositories.investmentInstruments, {
             profileId: context.profile.id,
             symbol: symbol.input.value,
             name: name.input.value,
-            assetClass: assetClass.control.value,
-            venue: 'B3',
+            assetClass: selectedClass,
+            venue: selectedClass === 'crypto' ? 'CRYPTO' : 'B3',
             currency: 'BRL'
         }).then((created) => actions.onSaved(created.id))
             .catch((failure) => {
