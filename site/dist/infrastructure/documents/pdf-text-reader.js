@@ -31,7 +31,8 @@ function lineText(items) {
 }
 
 export async function extractPdfText(file) {
-    if (!(file instanceof File) || file.type !== 'application/pdf')
+    const isPdf = file instanceof File && (file.type === 'application/pdf' || /\.pdf$/i.test(file.name));
+    if (!isPdf)
         throw new TypeError('Selecione um arquivo PDF.');
     const pdfjs = await loadPdfJs();
     const data = new Uint8Array(await file.arrayBuffer());
