@@ -1,11 +1,20 @@
-import { listPayslips } from '../../data/documents/database.js';
+import { listPayslips, listIncomeReports } from '../../data/documents/database.js';
 import { availableTaxYears, buildAnnualTaxPreparation } from '../../application/documents/annual-tax-summary.js';
 import { formatBRL } from '../../domain/money/money.js';
 import { el } from '../dom.js';
 import { downloadTextFile } from '../download.js';
 
-function currentTaxYear(items) {
-    return availableTaxYears(items, new Date().getFullYear())[0];
+function availableFiscalYears(payslips, reports) {
+    const years = new Set(availableTaxYears(payslips, new Date().getFullYear()));
+    for (const report of reports) {
+        if (Number.isInteger(report.year))
+            years.add(report.year);
+    }
+    return [...years].sort((left, right) => right - left);
+}
+
+function currentTaxYear(payslips, reports) {
+    return availableFiscalYears(payslips, reports)[0];
 }
 
 function metric(label, value, support) {
@@ -43,7 +52,7 @@ function statusRow(title, support, status, tone = '') {
     ]);
 }
 
-function dossierText(summary, counts) {
+function dossierText(summary, counts, incomeReports) {
     const lines = [
         `ORION FINANCE — DOSSIÊ FISCAL DE PREPARAÇÃO ${summary.year}`,
         '',
@@ -51,6 +60,7 @@ function dossierText(summary, counts) {
         '',
         'RENDIMENTOS DO TRABALHO',
         `Holerites arquivados: ${summary.documentCount}`,
+        `Informes anuais arquivados: ${incomeReports}`,
         `Rendimentos brutos: ${formatBRL(summary.totals.grossEarnings)}`,
         `INSS descontado: ${formatBRL(summary.totals.inssDiscount)}`,
         `IRRF retido: ${formatBRL(summary.totals.irrfDiscount)}`,
@@ -63,24 +73,27 @@ function dossierText(summary, counts) {
         `Outros ativos cadastrados: ${counts.assets}`,
         '',
         'PENDÊNCIAS PARA UM DOSSIÊ COMPLETO',
-        '- Informe de Rendimentos anual da fonte pagadora',
         '- Informes anuais das instituições financeiras',
         '- Posições de bens, direitos e dívidas nas datas exigidas pela declaração',
         '- Despesas dedutíveis e outros rendimentos, quando existirem',
         '- Conferência das regras e limites do exercício correspondente'
     ];
+    if (incomeReports === 0)
+        lines.splice(lines.indexOf('PENDÊNCIAS PARA UM DOSSIÊ COMPLETO') + 1, 0, '- Informe de Rendimentos anual da fonte pagadora');
     return lines.join('\n');
 }
 
 export async function renderFiscalV1(context, actions) {
-    const [payslips, accounts, debts, assets] = await Promise.all([
+    const [payslips, reports, accounts, debts, assets] = await Promise.all([
         listPayslips(context.profile.id),
+        listIncomeReports(context.profile.id),
         context.repositories.accounts.listByProfile(context.profile.id),
         context.repositories.debts.listByProfile(context.profile.id),
         context.repositories.assets.listByProfile(context.profile.id)
     ]);
-    const year = currentTaxYear(payslips);
+    const year = currentTaxYear(payslips, reports);
     const summary = buildAnnualTaxPreparation(payslips, year);
+    const reportsForYear = reports.filter((item) => item.year === year);
     const activeAccounts = accounts.filter((item) => !item.deactivatedAt).length;
     const activeDebts = debts.filter((item) => !item.deactivatedAt).length;
     const activeAssets = assets.filter((item) => !item.deactivatedAt).length;
@@ -100,7 +113,8 @@ export async function renderFiscalV1(context, actions) {
 
     root.append(el('section', 'fiscal-section-v1', [
         el('h2', '', ['Ferramentas']),
-        actionCard('Dossiê fiscal anual', 'Mapa do que já está documentado e do que ainda falta preparar.', actions.onOpenDossier, 'NOVO'),
+        actionCard('Dossiê fiscal anual', 'Mapa do que já está documentado e do que ainda falta preparar.', actions.onOpenDossier),
+        actionCard('Informe de Rendimentos', 'Leia o PDF anual e concilie com os holerites do mesmo ano.', actions.onOpenIncomeReports, 'NOVO'),
         actionCard('Preparação para IR', 'Consolidação anual de holerites, empregadores e valores.', actions.onOpenIr),
         actionCard('Documentos', 'Holerites, PDFs originais e backup documental.', actions.onOpenDocuments)
     ]));
@@ -108,7 +122,7 @@ export async function renderFiscalV1(context, actions) {
     root.append(el('section', 'fiscal-section-v1', [
         el('h2', '', ['Situação da documentação']),
         statusRow('Holerites', summary.documentCount > 0 ? `${summary.documentCount} documento(s) do ano encontrados.` : 'Nenhum holerite arquivado para o ano.', summary.documentCount > 0 ? 'Em andamento' : 'Pendente', summary.documentCount > 0 ? 'ready' : 'pending'),
-        statusRow('Informe de Rendimentos', 'Documento anual oficial da fonte pagadora.', 'Próxima etapa', 'pending'),
+        statusRow('Informe de Rendimentos', reportsForYear.length > 0 ? `${reportsForYear.length} informe(s) anual(is) arquivado(s).` : 'Documento anual oficial da fonte pagadora ainda não arquivado.', reportsForYear.length > 0 ? 'Arquivado' : 'Pendente', reportsForYear.length > 0 ? 'ready' : 'pending'),
         statusRow('Instituições financeiras', `${activeAccounts} conta(s) cadastrada(s) hoje. Ainda faltará conferir os informes anuais.`, 'A preparar', 'pending'),
         statusRow('Patrimônio e dívidas', `${activeAssets} ativo(s) e ${activeDebts} dívida(s) cadastrados atualmente.`, 'A conferir', 'pending')
     ]));
@@ -117,13 +131,14 @@ export async function renderFiscalV1(context, actions) {
 }
 
 export async function renderFiscalDossierV1(context) {
-    const [payslips, accounts, debts, assets] = await Promise.all([
+    const [payslips, reports, accounts, debts, assets] = await Promise.all([
         listPayslips(context.profile.id),
+        listIncomeReports(context.profile.id),
         context.repositories.accounts.listByProfile(context.profile.id),
         context.repositories.debts.listByProfile(context.profile.id),
         context.repositories.assets.listByProfile(context.profile.id)
     ]);
-    const years = availableTaxYears(payslips, new Date().getFullYear());
+    const years = availableFiscalYears(payslips, reports);
     let selectedYear = years[0];
     const root = el('div', 'fiscal-screen-v1 fiscal-dossier-v1');
     const content = el('div', 'fiscal-dossier-content-v1');
@@ -137,6 +152,7 @@ export async function renderFiscalDossierV1(context) {
 
     const renderYear = () => {
         const summary = buildAnnualTaxPreparation(payslips, selectedYear);
+        const reportsForYear = reports.filter((item) => item.year === selectedYear);
         const counts = {
             accounts: accounts.filter((item) => !item.deactivatedAt).length,
             debts: debts.filter((item) => !item.deactivatedAt).length,
@@ -145,7 +161,7 @@ export async function renderFiscalDossierV1(context) {
         const exportButton = el('button', 'fiscal-primary-v1', ['Exportar dossiê de preparação']);
         exportButton.type = 'button';
         exportButton.addEventListener('click', () => {
-            downloadTextFile(`orion-dossie-fiscal-${selectedYear}.txt`, dossierText(summary, counts));
+            downloadTextFile(`orion-dossie-fiscal-${selectedYear}.txt`, dossierText(summary, counts, reportsForYear.length));
         });
         content.replaceChildren(
             el('section', 'fiscal-hero-v1 compact', [
@@ -162,7 +178,7 @@ export async function renderFiscalDossierV1(context) {
             el('section', 'fiscal-section-v1', [
                 el('h2', '', ['Checklist do dossiê']),
                 statusRow('Rendimentos do trabalho', summary.documentCount > 0 ? `${summary.documentCount} holerite(s) organizados.` : 'Ainda sem holerites para este ano.', summary.documentCount > 0 ? 'Parcial' : 'Pendente', summary.documentCount > 0 ? 'ready' : 'pending'),
-                statusRow('Informe de Rendimentos', 'Será usado para confrontar a soma dos holerites com o documento oficial.', 'Pendente', 'pending'),
+                statusRow('Informe de Rendimentos', reportsForYear.length > 0 ? `${reportsForYear.length} informe(s) anual(is) arquivado(s) para conciliação.` : 'Ainda falta o documento anual da fonte pagadora.', reportsForYear.length > 0 ? 'Arquivado' : 'Pendente', reportsForYear.length > 0 ? 'ready' : 'pending'),
                 statusRow('Bancos e contas', `${counts.accounts} conta(s) cadastrada(s). Para IR, ainda será necessário o informe anual e a posição exigida.`, 'Parcial', 'pending'),
                 statusRow('Bens e direitos', `${counts.assets} ativo(s) cadastrado(s) atualmente. O Orion ainda precisa montar a posição fiscal por ano.`, 'Parcial', 'pending'),
                 statusRow('Dívidas', `${counts.debts} dívida(s) cadastrada(s) atualmente. O saldo fiscal precisa ser conferido na data correta.`, 'Parcial', 'pending'),

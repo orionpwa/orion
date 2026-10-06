@@ -16,6 +16,9 @@ const TITLES = {
     accounts: 'Contas',
     fiscal: 'Fiscal',
     'fiscal-dossier': 'Dossiê fiscal',
+    'income-reports': 'Informe de Rendimentos',
+    'income-report-new': 'Ler Informe',
+    'income-report-detail': 'Informe de Rendimentos',
     patrimony: 'Patrimônio',
     'patrimony-investments': 'Investimentos',
     'patrimony-investment-new': 'Novo investimento',
@@ -67,8 +70,10 @@ const TITLES = {
 function parentRoute(route) {
     if (route === 'patrimony' || route === 'settings')
         return 'summary';
-    if (route === 'documents' || route === 'documents-ir' || route === 'fiscal-dossier')
+    if (route === 'documents' || route === 'documents-ir' || route === 'fiscal-dossier' || route === 'income-reports')
         return 'fiscal';
+    if (route === 'income-report-new' || route === 'income-report-detail')
+        return 'income-reports';
     if (route === 'document-new' || route === 'document-detail')
         return 'documents';
     if (route === 'patrimony-assets' || route === 'patrimony-investments')
@@ -115,8 +120,10 @@ function parentRoute(route) {
 function backLabel(route) {
     if (route === 'patrimony' || route === 'settings')
         return '‹ Resumo';
-    if (route === 'documents' || route === 'documents-ir' || route === 'fiscal-dossier')
+    if (route === 'documents' || route === 'documents-ir' || route === 'fiscal-dossier' || route === 'income-reports')
         return '‹ Fiscal';
+    if (route === 'income-report-new' || route === 'income-report-detail')
+        return '‹ Informes';
     if (route === 'document-new' || route === 'document-detail')
         return '‹ Documentos';
     if (route === 'patrimony-assets' || route === 'patrimony-investments')
