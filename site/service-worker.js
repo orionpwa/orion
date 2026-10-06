@@ -1,4 +1,4 @@
-const CACHE_NAME = "orion-0-1-0-development-12-56-static-v1";
+const CACHE_NAME = "orion-0-1-0-development-12-57-static-v1";
 const STATIC_PATHS = [
   "./",
   "./assets/institutions/bradesco.png",
@@ -36,6 +36,7 @@ const STATIC_PATHS = [
   "./dist/application/debts/create-debt.js",
   "./dist/application/debts/pay-debt.js",
   "./dist/application/debts/update-debt.js",
+  "./dist/application/documents/parse-payslip.js",
   "./dist/application/investments/create-instrument.js",
   "./dist/application/investments/manual-quote.js",
   "./dist/application/investments/portfolio.js",
@@ -67,6 +68,7 @@ const STATIC_PATHS = [
   "./dist/data/backup/validate.js",
   "./dist/data/contracts/mutations.js",
   "./dist/data/contracts/repositories.js",
+  "./dist/data/documents/database.js",
   "./dist/data/import/json-document.js",
   "./dist/data/indexeddb/database.js",
   "./dist/data/indexeddb/entity-lifecycle-mutations.js",
@@ -106,6 +108,7 @@ const STATIC_PATHS = [
   "./dist/domain/recurrences/position.js",
   "./dist/identity/profile.js",
   "./dist/identity/session.js",
+  "./dist/infrastructure/documents/pdf-text-reader.js",
   "./dist/infrastructure/market-data/gateway-health.js",
   "./dist/infrastructure/market-data/http-gateway-provider.js",
   "./dist/migration/legacy/apply.js",
@@ -141,6 +144,7 @@ const STATIC_PATHS = [
   "./dist/presentation/screens/accounts-v0/forms.js",
   "./dist/presentation/screens/accounts-v0/root.js",
   "./dist/presentation/screens/accounts-v0/shared.js",
+  "./dist/presentation/screens/documents-v1.js",
   "./dist/presentation/screens/movements-v0/controls.js",
   "./dist/presentation/screens/movements-v0/detail.js",
   "./dist/presentation/screens/movements-v0/edit.js",
@@ -181,6 +185,7 @@ const STATIC_PATHS = [
   "./styles/ux-v0-settings.css",
   "./styles/ux-v0-shell.css",
   "./styles/ux-v0-summary.css",
+  "./styles/ux-v1-documents.css",
   "./styles/ux-v1-identity.css",
   "./styles/ux-v1-patrimony.css",
   "./styles/ux-v1-personal-ready.css",
