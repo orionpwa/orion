@@ -94,6 +94,43 @@ jobs:
           }
           NODE
 
+      - name: Check safe restart for personal base
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { readFileSync } from 'node:fs';
+          import { createFreshProfileData } from './site/dist/data/backup/fresh-profile.js';
+
+          const source = readFileSync('./site/dist/presentation/screens/settings-v0/restart.js', 'utf8');
+          const backupIndex = source.indexOf('createProfileBackup');
+          const downloadIndex = source.indexOf('downloadTextFile');
+          const replaceIndex = source.indexOf('replaceProfileDataAtomically');
+          if (!(backupIndex >= 0 && downloadIndex > backupIndex && replaceIndex > downloadIndex)) {
+            throw new Error('Recomeço deve criar e baixar backup antes da substituição local.');
+          }
+          if (!source.includes('createFreshProfileData')) {
+            throw new Error('Recomeço deve usar a base nova oficial.');
+          }
+
+          const fresh = createFreshProfileData({
+            id: 'profile-test',
+            displayName: 'Teste',
+            locale: 'pt-BR',
+            baseCurrency: 'BRL',
+            createdAt: '2026-01-01T00:00:00.000Z',
+            updatedAt: '2026-01-01T00:00:00.000Z',
+            onboardingCompletedAt: '2026-01-01T00:00:00.000Z'
+          }, '2026-10-06T00:00:00.000Z');
+
+          const collections = ['accounts', 'transactions', 'creditCards', 'debts', 'assets', 'allocations', 'recurrences', 'recurrenceMonths', 'investmentInstruments', 'investmentTrades'];
+          for (const key of collections) {
+            if (!Array.isArray(fresh[key]) || fresh[key].length !== 0) throw new Error(`Base nova não limpou ${key}.`);
+          }
+          if (fresh.profiles[0].id !== 'profile-test') throw new Error('Recomeço não deve trocar o id do perfil local.');
+          if ('onboardingCompletedAt' in fresh.profiles[0]) throw new Error('Base nova deve reabrir o onboarding.');
+          NODE
+
       - name: Check preserved investment data compatibility
         shell: bash
         run: |
