@@ -3,8 +3,11 @@ import { renderHomeV0 } from '../../presentation/home.js';
 import { renderAssetDetailV1, renderAssetListV1, renderAssetValueV1, renderEditAssetV1, renderNewAssetV1, renderPatrimonyV1 } from '../../presentation/screens/patrimony-v1.js';
 import { renderDocumentsListV1, renderNewPayslipV1, renderPayslipDetailV1 } from '../../presentation/screens/documents-v1.js';
 import { renderDocumentsIrV1 } from '../../presentation/screens/documents-ir-v1.js';
+import { renderFiscalV1, renderFiscalDossierV1 } from '../../presentation/screens/fiscal-v1.js';
 const ROUTES = new Set([
     'summary',
+    'fiscal',
+    'fiscal-dossier',
     'patrimony',
     'patrimony-assets',
     'patrimony-asset-new',
@@ -31,11 +34,18 @@ export async function renderSummaryRoute(state, repositories, rerender) {
             onOpenPlanning: () => { state.route = 'planning'; rerender(); },
             onOpenAllocations: () => { state.route = 'planning-allocations'; rerender(); },
             onOpenDebts: () => { state.route = 'planning-debts'; rerender(); },
-            onOpenPatrimony: () => { state.route = 'patrimony'; rerender(); },
-            onOpenDocuments: () => { state.route = 'documents'; rerender(); },
-            onOpenIr: () => { state.route = 'documents-ir'; rerender(); }
+            onOpenPatrimony: () => { state.route = 'patrimony'; rerender(); }
         });
     }
+    if (state.route === 'fiscal') {
+        return renderFiscalV1(context, {
+            onOpenDossier: () => { state.route = 'fiscal-dossier'; rerender(); },
+            onOpenIr: () => { state.route = 'documents-ir'; rerender(); },
+            onOpenDocuments: () => { state.route = 'documents'; rerender(); }
+        });
+    }
+    if (state.route === 'fiscal-dossier')
+        return renderFiscalDossierV1(context);
     if (state.route === 'documents-ir')
         return renderDocumentsIrV1(context);
     if (state.route === 'documents') {
