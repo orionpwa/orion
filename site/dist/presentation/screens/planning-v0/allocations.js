@@ -6,6 +6,42 @@ import { showToast } from '../../components/feedback.js';
 import { deactivateWithUndoFeedback } from '../../components/lifecycle-feedback.js';
 import { planningChoiceFieldV0, planningErrorV0, planningInputFieldV0, planningMoneyFieldV0, planningSubmitV0 } from './controls.js';
 import { accountName, accountOptions, activeAccounts, centsToInput, detailRowsV0, emptyPlanningV0, formatDateBR, inlineConfirmV0 } from './shared.js';
+function allocationProgress(allocation) {
+    if (allocation.targetAmount === undefined || allocation.targetAmount <= 0)
+        return null;
+    const target = allocation.targetAmount;
+    const current = Math.max(0, allocation.amount);
+    const remaining = Math.max(0, target - current);
+    const percent = Math.min(100, Math.max(0, Math.round((current / target) * 100)));
+    return { target, remaining, percent, complete: current >= target };
+}
+function allocationProgressLabel(progress) {
+    if (!progress)
+        return 'Valor reservado';
+    if (progress.complete)
+        return 'Objetivo alcançado';
+    return `${progress.percent}% · faltam ${formatBRL(progress.remaining)}`;
+}
+function allocationProgressBlock(progress) {
+    const track = el('div', 'planning-goal-progress-track-v0');
+    track.setAttribute('role', 'progressbar');
+    track.setAttribute('aria-valuemin', '0');
+    track.setAttribute('aria-valuemax', '100');
+    track.setAttribute('aria-valuenow', String(progress.percent));
+    const fill = el('span', 'planning-goal-progress-fill-v0');
+    fill.style.width = `${progress.percent}%`;
+    track.append(fill);
+    return el('div', 'planning-goal-progress-v0', [
+        el('div', 'planning-goal-progress-head-v0', [
+            el('span', '', ['Progresso']),
+            el('strong', '', [`${progress.percent}%`])
+        ]),
+        track,
+        el('small', 'planning-goal-progress-meta-v0', [progress.complete
+            ? `Objetivo de ${formatBRL(progress.target)} alcançado.`
+            : `Faltam ${formatBRL(progress.remaining)} para ${formatBRL(progress.target)}.`])
+    ]);
+}
 export async function renderAllocationListV0(context, actions) {
     const allocations = (await context.repositories.allocations.listByProfile(context.profile.id))
         .filter((item) => item.active)
@@ -25,6 +61,7 @@ export async function renderAllocationListV0(context, actions) {
     }
     const list = el('div', 'planning-entity-list-v0');
     for (const allocation of allocations) {
+        const progress = allocationProgress(allocation);
         const row = el('button', 'planning-entity-row-v0', [
             el('span', 'planning-entity-copy-v0', [
                 el('strong', '', [allocation.name]),
@@ -32,7 +69,7 @@ export async function renderAllocationListV0(context, actions) {
             ]),
             el('span', 'planning-entity-value-v0', [
                 el('strong', '', [formatBRL(allocation.amount)]),
-                el('small', '', [allocation.targetAmount !== undefined ? `Objetivo ${formatBRL(allocation.targetAmount)}` : 'Valor reservado'])
+                el('small', '', [allocationProgressLabel(progress)])
             ]),
             el('span', 'planning-entity-chevron-v0', ['›'])
         ]);
@@ -50,12 +87,16 @@ export async function renderAllocationDetailV0(context, allocationId, actions) {
     ]);
     if (!allocation || allocation.profileId !== context.profile.id || !allocation.active)
         throw new TypeError('Meta ou reserva não encontrada.');
+    const progress = allocationProgress(allocation);
     const root = el('div', 'planning-screen-v0 planning-detail-screen-v0');
     root.append(el('div', 'planning-detail-hero-v0', [
         el('small', '', ['VALOR RESERVADO']),
         el('strong', '', [formatBRL(allocation.amount)]),
         el('span', '', [allocation.name])
-    ]), detailRowsV0([
+    ]));
+    if (progress)
+        root.append(allocationProgressBlock(progress));
+    root.append(detailRowsV0([
         { label: 'Conta associada', value: accountName(accounts, allocation.accountId) },
         { label: 'Objetivo', value: allocation.targetAmount !== undefined ? formatBRL(allocation.targetAmount) : 'Não definido' },
         { label: 'Prazo', value: allocation.goalDate ? formatDateBR(allocation.goalDate) : 'Não definido' },
