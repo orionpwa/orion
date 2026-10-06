@@ -20,6 +20,9 @@ export async function renderSummaryRoute(state, repositories, rerender) {
     if (state.route === 'summary') {
         return renderHomeV0(repositories, state.profile, {
             onOpenMovements: () => { state.route = 'movements'; rerender(); },
+            onOpenPlanning: () => { state.route = 'planning'; rerender(); },
+            onOpenAllocations: () => { state.route = 'planning-allocations'; rerender(); },
+            onOpenDebts: () => { state.route = 'planning-debts'; rerender(); },
             onOpenPatrimony: () => { state.route = 'patrimony'; rerender(); }
         });
     }
