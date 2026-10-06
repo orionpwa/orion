@@ -7,7 +7,7 @@ import { downloadTextFile } from '../../download.js';
 import { settingsErrorV0 } from './shared.js';
 export function renderSettingsRestartV0(context) {
     const error = settingsErrorV0();
-    const restart = el('button', 'settings-primary-action-v0 danger', ['Criar backup e recomeçar']);
+    const restart = el('button', 'settings-primary-action-v0 danger', ['Recomeçar com uma base nova']);
     restart.type = 'button';
     restart.addEventListener('click', () => {
         error.clear();
@@ -25,8 +25,8 @@ export function renderSettingsRestartV0(context) {
     return el('div', 'settings-screen-v0 settings-internal-v0', [
         el('section', 'settings-warning-v0', [
             el('strong', '', ['Isto limpa os dados deste perfil']),
-            el('p', '', ['Antes da limpeza, o Orion cria automaticamente um backup para você guardar. Depois, o app volta ao início.']),
-            el('p', '', ['Use este caminho ao abandonar uma base de testes ou quando quiser recomeçar pelos saldos atuais. Após a limpeza, o onboarding será aberto para cadastrar a nova base.'])
+            el('p', '', ['O Orion apaga os dados financeiros deste perfil e volta para a configuração inicial.']),
+            el('p', '', ['Se quiser guardar a base atual, exporte um arquivo antes em Dados e backup. Use este caminho ao abandonar uma base de testes ou quando quiser recomeçar pelos saldos atuais.'])
         ]),
         error.element,
         restart
