@@ -1,4 +1,4 @@
-const CACHE_NAME = "orion-0-1-0-development-12-57-static-v1";
+const CACHE_NAME = "orion-0-1-0-development-12-58-static-v1";
 const STATIC_PATHS = [
   "./",
   "./assets/institutions/bradesco.png",
@@ -68,6 +68,7 @@ const STATIC_PATHS = [
   "./dist/data/backup/validate.js",
   "./dist/data/contracts/mutations.js",
   "./dist/data/contracts/repositories.js",
+  "./dist/data/documents/backup.js",
   "./dist/data/documents/database.js",
   "./dist/data/import/json-document.js",
   "./dist/data/indexeddb/database.js",

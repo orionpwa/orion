@@ -36,7 +36,8 @@ export async function renderSummaryRoute(state, repositories, rerender) {
     if (state.route === 'documents') {
         return renderDocumentsListV1(context, {
             onCreate: () => { state.route = 'document-new'; rerender(); },
-            onOpen: (id) => { state.selectedDocumentId = id; state.route = 'document-detail'; rerender(); }
+            onOpen: (id) => { state.selectedDocumentId = id; state.route = 'document-detail'; rerender(); },
+            onChanged: rerender
         });
     }
     if (state.route === 'document-new') {
