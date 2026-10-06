@@ -23,6 +23,9 @@ const TITLES = {
     'patrimony-asset-detail': 'Ativo',
     'patrimony-asset-edit': 'Editar ativo',
     'patrimony-asset-value': 'Atualizar valor',
+    documents: 'Documentos',
+    'document-new': 'Ler holerite',
+    'document-detail': 'Holerite',
     settings: 'Ajustes',
     'settings-profile': 'Perfil',
     'settings-data': 'Dados e backup',
@@ -58,8 +61,10 @@ const TITLES = {
 };
 
 function parentRoute(route) {
-    if (route === 'patrimony' || route === 'settings')
+    if (route === 'patrimony' || route === 'settings' || route === 'documents')
         return 'summary';
+    if (route === 'document-new' || route === 'document-detail')
+        return 'documents';
     if (route === 'patrimony-assets' || route === 'patrimony-investments')
         return 'patrimony';
     if (route === 'patrimony-investment-new' || route === 'patrimony-investment-detail')
@@ -102,8 +107,10 @@ function parentRoute(route) {
 }
 
 function backLabel(route) {
-    if (route === 'patrimony' || route === 'settings')
+    if (route === 'patrimony' || route === 'settings' || route === 'documents')
         return '‹ Resumo';
+    if (route === 'document-new' || route === 'document-detail')
+        return '‹ Documentos';
     if (route === 'patrimony-assets' || route === 'patrimony-investments')
         return '‹ Patrimônio';
     if (route === 'patrimony-investment-detail')
