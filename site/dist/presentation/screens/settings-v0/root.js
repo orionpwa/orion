@@ -14,7 +14,7 @@ export function renderSettingsRootV0(displayName, actions) {
             settingsRowV0('Sobre o Orion', 'Versão, instalação e suporte', APP_VERSION.replace('0.1.0-development.', ''), actions.onAbout)
         ]),
         el('section', 'settings-danger-zone-v0', [
-            settingsRowV0('Recomeçar com uma base nova', 'Cria um backup antes de limpar os dados deste perfil', '', actions.onRestart, 'danger')
+            settingsRowV0('Recomeçar com uma base nova', 'Limpa os dados deste perfil e volta à configuração inicial', '', actions.onRestart, 'danger')
         ])
     ]);
 }
