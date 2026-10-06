@@ -1,0 +1,174 @@
+/* Orion Finance · Personal Ready visual layer
+   Atualiza onboarding e Resumo sem alterar regras financeiras. */
+
+/* Onboarding: identidade oficial, sem o símbolo decorativo legado. */
+.onboarding-content.onboarding-flow{
+  gap:16px;
+  padding:12px 0 4px;
+}
+.onboarding-symbol{
+  width:64px;
+  height:64px;
+  margin:0 auto 2px;
+  border:1px solid var(--orion-id-line);
+  border-radius:16px;
+  background-color:var(--orion-id-surface-2);
+  background-image:url('../assets/orion-icon-v1-64.png');
+  background-position:center;
+  background-repeat:no-repeat;
+  background-size:52px 52px;
+  box-shadow:0 12px 28px rgba(0,0,0,.24);
+  color:transparent;
+  font-size:0;
+}
+.onboarding-step{
+  color:var(--orion-id-accent);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.18em;
+}
+.onboarding-content h3{
+  margin:0;
+  color:var(--orion-id-text);
+  font-size:clamp(24px,7vw,30px);
+  line-height:1.08;
+  font-weight:760;
+  letter-spacing:-.035em;
+}
+.onboarding-content p{
+  max-width:34rem;
+  margin:0 auto;
+  color:var(--orion-id-muted);
+  font-size:14px;
+  line-height:1.55;
+}
+.onboarding-content .field{
+  margin-top:4px;
+}
+.onboarding-choice-list{
+  display:grid;
+  gap:10px;
+  margin-top:4px;
+}
+.onboarding-choice{
+  border-color:var(--orion-id-line)!important;
+  background:var(--orion-id-surface)!important;
+  border-radius:16px!important;
+}
+.onboarding-choice-icon{
+  border-color:var(--orion-id-line-strong)!important;
+  background:var(--orion-id-accent-soft)!important;
+  color:var(--orion-id-accent)!important;
+}
+
+/* Resumo: mesma informação, hierarquia visual atual. */
+.summary-screen-v0{
+  padding:18px max(16px,var(--safe-right)) 32px max(16px,var(--safe-left));
+  background:var(--orion-id-bg);
+}
+.summary-period-v0{
+  margin:0 2px 12px;
+  color:var(--orion-id-muted);
+  font-size:13px;
+  font-weight:600;
+}
+.summary-free-v0{
+  padding:18px;
+  border:1px solid var(--orion-id-line);
+  border-radius:18px;
+  background:var(--orion-id-surface);
+  box-shadow:0 12px 30px rgba(0,0,0,.18);
+}
+.summary-kicker-v0{
+  margin-bottom:8px;
+  color:var(--orion-id-accent);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.16em;
+}
+.summary-free-value-v0{
+  margin-bottom:16px;
+  color:var(--orion-id-text);
+  font-size:clamp(36px,10vw,50px);
+  line-height:1;
+  font-weight:780;
+  letter-spacing:-.055em;
+}
+.summary-breakdown-v0{
+  border-top:1px solid var(--orion-id-line);
+}
+.summary-amount-row-v0{
+  min-height:48px;
+  border-top:1px solid var(--orion-id-line);
+}
+.summary-breakdown-v0 .summary-amount-row-v0:first-child{
+  border-top:0;
+}
+.summary-amount-label-v0{
+  color:var(--orion-id-muted);
+  font-size:14px;
+}
+.summary-amount-value-v0{
+  color:var(--orion-id-text);
+  font-size:14px;
+  font-weight:700;
+}
+.summary-section-v0{
+  margin-top:14px;
+  padding:16px 18px;
+  border:1px solid var(--orion-id-line);
+  border-radius:18px;
+  background:var(--orion-id-surface);
+}
+.summary-section-title-v0{
+  margin:0 0 10px;
+  color:var(--orion-id-text);
+  font-size:17px;
+  font-weight:740;
+  letter-spacing:-.02em;
+}
+.summary-empty-v0,
+.summary-status-v1,
+.summary-commitment-row-v0,
+.summary-resource-row-v1{
+  border-color:var(--orion-id-line);
+}
+.summary-empty-v0{
+  min-height:62px;
+  padding:12px 0 2px;
+  color:var(--orion-id-muted);
+  font-size:13px;
+}
+.summary-inline-action-v0{
+  color:var(--orion-id-accent);
+}
+.summary-status-v1{
+  min-height:70px;
+  padding:12px 0 0;
+}
+.summary-status-meta-v1{
+  color:var(--orion-id-muted);
+  font-size:13px;
+}
+.summary-commitment-row-v0,
+.summary-resource-row-v1{
+  min-height:66px;
+  padding:11px 0;
+}
+.summary-resource-chevron-v1{
+  color:var(--orion-id-accent);
+}
+
+@media(max-width:340px){
+  .summary-screen-v0{
+    padding-left:max(12px,var(--safe-left));
+    padding-right:max(12px,var(--safe-right));
+  }
+  .summary-free-v0,
+  .summary-section-v0{
+    padding-left:14px;
+    padding-right:14px;
+    border-radius:16px;
+  }
+  .summary-free-value-v0{font-size:34px}
+}
