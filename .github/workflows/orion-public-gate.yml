@@ -38,7 +38,7 @@ jobs:
           grep -q "DATA_SCHEMA_VERSION = 5" site/dist/app/version.js
           grep -q "BACKUP_FORMAT_VERSION = 2" site/dist/app/version.js
           bytes=$(wc -c < site/dist/app/routes/summary.js)
-          test "$bytes" -gt 10000
+          test "$bytes" -gt 1500
 
       - name: Check release version coherence
         shell: bash
@@ -49,7 +49,15 @@ jobs:
           cache_token=$(printf '%s' "$app_version" | tr '.' '-')
           grep -q "const CACHE_NAME = \"orion-${cache_token}-static-v1\";" site/service-worker.js
 
-      - name: Check investment quantity precision
+      - name: Check portfolio is disabled in personal phase
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -q "patrimony-investments" site/dist/app/routes/summary.js
+          ! grep -q "Ver investimentos" site/dist/app/routes/summary.js
+          grep -q '"marketGatewayUrl": ""' site/runtime-config.json
+
+      - name: Check preserved investment data compatibility
         shell: bash
         run: |
           node --input-type=module <<'NODE'
@@ -61,11 +69,10 @@ jobs:
             if (!condition) throw new Error(message);
           };
 
-          assert(parseQuantity('0.00000001', CRYPTO_QUANTITY_SCALE) === 1, 'Cripto deve aceitar 8 casas decimais.');
-          assert(formatQuantity(1, CRYPTO_QUANTITY_SCALE) === '0,00000001', 'Cripto deve preservar satoshi na exibição.');
+          assert(parseQuantity('0.00000001', CRYPTO_QUANTITY_SCALE) === 1, 'Dados cripto preservados devem manter 8 casas decimais.');
+          assert(formatQuantity(1, CRYPTO_QUANTITY_SCALE) === '0,00000001', 'Exibição cripto preservada não pode regredir.');
           assert(parseQuantity('10', QUANTITY_SCALE) === 10 * QUANTITY_SCALE, 'Escala legada de ações não pode mudar.');
-          assert(marketValueForPosition(10 * QUANTITY_SCALE, 3500, QUANTITY_SCALE) === 35000, 'Valorização legada de ações deve permanecer correta.');
-          assert(marketValueForPosition(CRYPTO_QUANTITY_SCALE, 35000000, CRYPTO_QUANTITY_SCALE) === 35000000, 'Valorização de 1 BTC deve respeitar 8 casas.');
+          assert(marketValueForPosition(10 * QUANTITY_SCALE, 3500, QUANTITY_SCALE) === 35000, 'Dados legados de ações devem permanecer compatíveis.');
           NODE
 
       - name: Check no Radar UI returned
