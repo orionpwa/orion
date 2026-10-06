@@ -243,11 +243,7 @@ export async function renderHomeV0(repositories, profile, actions) {
     }
     root.append(month);
     const resources = section('Mais recursos');
-    resources.append(
-        resourceRow('Patrimônio', 'Ativos, passivos e patrimônio líquido', actions.onOpenPatrimony),
-        resourceRow('Documentos', 'Holerites e registros financeiros pessoais', actions.onOpenDocuments),
-        resourceRow('Preparação para IR', 'Resumo anual dos holerites por ano-calendário', actions.onOpenIr)
-    );
+    resources.append(resourceRow('Patrimônio', 'Ativos, passivos e patrimônio líquido', actions.onOpenPatrimony));
     root.append(resources);
     return root;
 }

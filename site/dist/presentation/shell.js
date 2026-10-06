@@ -5,7 +5,8 @@ const ROOT_NAVIGATION = [
     { route: 'summary', label: 'Resumo', icon: 'home' },
     { route: 'movements', label: 'Movimentos', icon: 'movement' },
     { route: 'planning', label: 'Planejar', icon: 'plan' },
-    { route: 'accounts', label: 'Contas', icon: 'accounts' }
+    { route: 'accounts', label: 'Contas', icon: 'accounts' },
+    { route: 'fiscal', label: 'Fiscal', icon: 'fiscal' }
 ];
 const ROOT_ROUTES = new Set(ROOT_NAVIGATION.map((item) => item.route));
 const TITLES = {
@@ -13,6 +14,8 @@ const TITLES = {
     movements: 'Movimentos',
     planning: 'Planejar',
     accounts: 'Contas',
+    fiscal: 'Fiscal',
+    'fiscal-dossier': 'Dossiê fiscal',
     patrimony: 'Patrimônio',
     'patrimony-investments': 'Investimentos',
     'patrimony-investment-new': 'Novo investimento',
@@ -62,8 +65,10 @@ const TITLES = {
 };
 
 function parentRoute(route) {
-    if (route === 'patrimony' || route === 'settings' || route === 'documents' || route === 'documents-ir')
+    if (route === 'patrimony' || route === 'settings')
         return 'summary';
+    if (route === 'documents' || route === 'documents-ir' || route === 'fiscal-dossier')
+        return 'fiscal';
     if (route === 'document-new' || route === 'document-detail')
         return 'documents';
     if (route === 'patrimony-assets' || route === 'patrimony-investments')
@@ -108,8 +113,10 @@ function parentRoute(route) {
 }
 
 function backLabel(route) {
-    if (route === 'patrimony' || route === 'settings' || route === 'documents' || route === 'documents-ir')
+    if (route === 'patrimony' || route === 'settings')
         return '‹ Resumo';
+    if (route === 'documents' || route === 'documents-ir' || route === 'fiscal-dossier')
+        return '‹ Fiscal';
     if (route === 'document-new' || route === 'document-detail')
         return '‹ Documentos';
     if (route === 'patrimony-assets' || route === 'patrimony-investments')
@@ -164,6 +171,7 @@ export function createShellV0(onNavigate, onCreateMovement) {
             el('span', 'nav-label-v0', [item.label])
         ]);
         button.type = 'button';
+        button.setAttribute('aria-label', item.label);
         button.addEventListener('click', () => onNavigate(item.route));
         buttons.set(item.route, button);
         navigation.append(button);

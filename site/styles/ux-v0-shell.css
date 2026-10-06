@@ -9,8 +9,6 @@
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;
   background:#0a0a0a;
 }
-/* iOS standalone: 100dvh can stop above the physical home-indicator area.
-   Keep dynamic viewport in browsers, but fill the full installed-app viewport. */
 .pwa-standalone .app-shell-v0{height:100vh}
 .app-shell-v0.internal-route-v0{grid-template-rows:auto minmax(0,1fr)}
 .app-header-v0{
@@ -20,7 +18,7 @@
   grid-template-columns:minmax(72px,1fr) auto minmax(72px,1fr);
   align-items:center;
   gap:8px;
-  border-bottom:1px solid rgba(255,255,255,.18);
+  border-bottom:1px solid rgba(255,255,255,.14);
   background:#0a0a0a;
 }
 .shell-header-leading-v0{justify-self:start;min-width:0}
@@ -50,46 +48,74 @@
 }
 .shell-action-v0{text-align:right}
 .app-content-v0{min-width:0;min-height:0;overflow:hidden}
+
+/* Orion floating dock: inspired by the compact mobile capsule pattern, without copying a product-specific identity. */
 .bottom-nav-v0{
-  width:100%;
-  min-height:calc(64px + var(--safe-bottom));
-  padding:0 max(4px,var(--safe-right)) var(--safe-bottom) max(4px,var(--safe-left));
+  width:auto;
+  min-height:66px;
+  margin:8px max(12px,var(--safe-right)) calc(8px + var(--safe-bottom)) max(12px,var(--safe-left));
+  padding:6px;
   display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  align-items:stretch;
-  border-top:1px solid rgba(255,255,255,.18);
-  background:#0a0a0a;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  align-items:center;
+  gap:4px;
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:30px;
+  background:rgba(30,34,38,.96);
+  box-shadow:0 14px 38px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.035);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
 }
 .bottom-nav-v0[hidden]{display:none}
 .nav-item-v0{
+  position:relative;
   min-width:0;
-  min-height:64px;
-  padding:5px 2px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
+  min-height:54px;
+  padding:0;
+  display:grid;
+  place-items:center;
   border:0;
+  border-radius:24px;
   background:transparent;
-  color:#b9b9b9;
+  color:#c6ccd3;
   touch-action:manipulation;
+  transition:background-color .16s ease,color .16s ease,transform .16s ease;
 }
-.nav-item-v0.active{color:#fff}
-.nav-icon-v0{width:23px;height:23px;stroke-width:1.8}
+.nav-item-v0:active{transform:scale(.96)}
+.nav-item-v0.active{
+  color:#eef5ff;
+  background:rgba(255,255,255,.085);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.028);
+}
+.nav-item-v0.active::after{
+  content:"";
+  position:absolute;
+  bottom:5px;
+  width:16px;
+  height:2px;
+  border-radius:999px;
+  background:var(--blue);
+  box-shadow:0 0 10px rgba(41,147,255,.45);
+}
+.nav-icon-v0{width:27px;height:27px;stroke-width:1.85}
+.nav-item-v0.active .nav-icon-v0{width:29px;height:29px}
 .nav-label-v0{
-  display:block;
-  max-width:100%;
-  font-size:11px;
-  line-height:1.15;
-  font-weight:600;
-  text-align:center;
-  white-space:normal;
-  overflow-wrap:anywhere;
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  padding:0!important;
+  margin:-1px!important;
+  overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;
+  border:0!important;
 }
 @media(max-width:340px){
   .app-header-v0{grid-template-columns:minmax(64px,1fr) auto minmax(64px,1fr);padding-left:max(10px,var(--safe-left));padding-right:max(10px,var(--safe-right))}
   .shell-title-v0{font-size:17px}
   .shell-action-v0,.shell-back-v0{font-size:13px;padding-left:4px;padding-right:4px}
-  .nav-label-v0{font-size:10px}
+  .bottom-nav-v0{margin-left:max(8px,var(--safe-left));margin-right:max(8px,var(--safe-right));padding:5px;gap:2px}
+  .nav-item-v0{min-height:50px}
+  .nav-icon-v0{width:24px;height:24px}
+  .nav-item-v0.active .nav-icon-v0{width:26px;height:26px}
 }
