@@ -25,7 +25,8 @@ export function renderSettingsRestartV0(context) {
     return el('div', 'settings-screen-v0 settings-internal-v0', [
         el('section', 'settings-warning-v0', [
             el('strong', '', ['Isto limpa os dados deste perfil']),
-            el('p', '', ['Antes da limpeza, o Orion cria automaticamente um backup para você guardar. Depois, o app volta ao início.'])
+            el('p', '', ['Antes da limpeza, o Orion cria automaticamente um backup para você guardar. Depois, o app volta ao início.']),
+            el('p', '', ['Use este caminho ao abandonar uma base de testes ou quando quiser recomeçar pelos saldos atuais. Após a limpeza, o onboarding será aberto para cadastrar a nova base.'])
         ]),
         error.element,
         restart
