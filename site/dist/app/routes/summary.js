@@ -1,5 +1,7 @@
 import { createInvestmentInstrument } from '../../application/investments/create-instrument.js';
+import { saveManualFundamentals } from '../../application/investments/manual-fundamentals.js';
 import { allocationBasisPoints, basisPointsToPercent, getPortfolioSnapshot, totalPortfolioPerformance } from '../../application/investments/portfolio.js';
+import { assessFundamentals } from '../../application/investments/radar-assessment.js';
 import { recordInvestmentTrade } from '../../application/investments/record-trade.js';
 import { IndexedDbEntityLifecycleMutationGateway } from '../../data/indexeddb/entity-lifecycle-mutations.js';
 import { calculateInvestmentPosition } from '../../domain/investments/position.js';
@@ -26,9 +28,24 @@ const ROUTES = new Set([
 const assetLifecycle = new IndexedDbEntityLifecycleMutationGateway();
 const INVESTMENT_CLASSES = [
     { value: 'stock', label: 'Ação' },
+    { value: 'bdr', label: 'BDR' },
     { value: 'reit', label: 'FII' },
     { value: 'etf', label: 'ETF' },
     { value: 'other', label: 'Outro listado' }
+];
+const RADAR_METRICS = [
+    ['pe_ratio', 'P/L'],
+    ['pb_ratio', 'P/VP'],
+    ['ev_ebitda', 'EV/EBITDA'],
+    ['dividend_yield_pct', 'Dividend Yield (%)'],
+    ['roe_pct', 'ROE (%)'],
+    ['roic_pct', 'ROIC (%)'],
+    ['net_margin_pct', 'Margem líquida (%)'],
+    ['revenue_growth_pct', 'Crescimento da receita (%)'],
+    ['earnings_growth_pct', 'Crescimento do lucro (%)'],
+    ['current_ratio', 'Liquidez corrente'],
+    ['debt_to_equity_ratio', 'Dívida / patrimônio'],
+    ['net_debt_to_ebitda', 'Dívida líquida / EBITDA']
 ];
 
 function valueRow(label, value) {
@@ -59,6 +76,38 @@ function dateField(label, value) {
     input.value = value;
     input.setAttribute('aria-label', label);
     return { input, element: el('label', 'account-field-v0', [el('span', 'account-field-label-v0', [label]), input]) };
+}
+function instrumentRef(instrument) {
+    return { symbol: instrument.providerSymbol ?? instrument.symbol, venue: instrument.venue, currency: instrument.currency };
+}
+function radarSupported(instrument) {
+    return instrument.venue === 'B3' && (instrument.assetClass === 'stock' || instrument.assetClass === 'bdr');
+}
+function recommendationFor(assessment) {
+    if (assessment.adherence === 'high')
+        return { label: 'Boa candidata', rank: 3 };
+    if (assessment.adherence === 'moderate')
+        return { label: 'Em observação', rank: 2 };
+    if (assessment.adherence === 'low')
+        return { label: 'Não priorizar', rank: 1 };
+    return { label: 'Dados insuficientes', rank: 0 };
+}
+function metricValue(snapshot, metric) {
+    const item = snapshot?.metrics?.find((entry) => entry.metric === metric);
+    if (!item)
+        return null;
+    const suffix = item.unit === 'percent' ? '%' : '';
+    return `${item.value.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}${suffix}`;
+}
+async function radarForInstrument(context, instrument) {
+    if (!radarSupported(instrument))
+        return { kind: 'unsupported', recommendation: 'Critério específico pendente', score: null, snapshot: null, assessment: null };
+    const snapshot = await context.repositories.marketDataCache.getFundamentals(instrumentRef(instrument));
+    if (!snapshot)
+        return { kind: 'missing', recommendation: 'Sem fundamentos', score: null, snapshot: null, assessment: null };
+    const assessment = assessFundamentals(snapshot);
+    const recommendation = recommendationFor(assessment);
+    return { kind: 'assessment', recommendation: recommendation.label, rank: recommendation.rank, score: assessment.scorePercent, snapshot, assessment };
 }
 async function renderPatrimonyRoute(repositories, profile, actions) {
     const root = await renderPatrimonyV1(repositories, profile, actions);
@@ -118,17 +167,50 @@ async function renderInvestmentsRoute(context, actions) {
         root.append(el('div', 'patrimony-assets-empty-v1', ['Nenhum investimento cadastrado.']));
         return root;
     }
+
+    const radarItems = await Promise.all(instruments.map(async (instrument) => ({ instrument, radar: await radarForInstrument(context, instrument) })));
+    const analyzed = radarItems
+        .filter((item) => item.radar.kind === 'assessment')
+        .sort((left, right) => (right.radar.rank - left.radar.rank) || ((right.radar.score ?? -1) - (left.radar.score ?? -1)) || left.instrument.symbol.localeCompare(right.instrument.symbol));
+    const radarSection = el('section', 'patrimony-section-v1', [el('h2', 'patrimony-section-title-v1', ['Radar'])]);
+    if (analyzed.length === 0) {
+        radarSection.append(el('div', 'patrimony-empty-v1', ['Nenhum ativo com fundamentos suficientes para ranquear. Abra um investimento para inserir dados do briefing.']));
+    }
+    else {
+        const radarList = el('div', 'patrimony-assets-list-v1');
+        for (const { instrument, radar } of analyzed.slice(0, 5)) {
+            const row = el('button', 'patrimony-asset-row-v1', [
+                el('span', 'patrimony-asset-copy-v1', [
+                    el('strong', '', [`${instrument.symbol} · ${instrument.name}`]),
+                    el('small', '', [radar.recommendation])
+                ]),
+                el('strong', 'patrimony-asset-value-v1', [radar.score == null ? '—' : `${radar.score}%`]),
+                el('span', 'patrimony-asset-chevron-v1', ['›'])
+            ]);
+            row.type = 'button';
+            row.addEventListener('click', () => actions.onOpenDetail(instrument.id));
+            radarList.append(row);
+        }
+        radarSection.append(radarList, el('p', 'patrimony-note-v1', ['O Radar é um filtro explicável de qualidade e valuation, não uma ordem automática de compra.']));
+    }
+    const fiiCount = radarItems.filter((item) => item.instrument.assetClass === 'reit').length;
+    if (fiiCount > 0)
+        radarSection.append(el('p', 'patrimony-note-v1', [`${fiiCount} FII(s) aguardam a régua específica de fundos imobiliários; eles não são avaliados com critérios de ações.`]));
+    root.append(radarSection);
+
     const list = el('div', 'patrimony-assets-list-v1');
     for (const instrument of instruments) {
         const item = byId.get(instrument.id);
+        const radar = radarItems.find((entry) => entry.instrument.id === instrument.id)?.radar;
         const allocation = item ? basisPointsToPercent(allocationBasisPoints(item, snapshot.marketValue)) : '';
-        const meta = item
+        const positionMeta = item
             ? `${formatQuantity(item.position.quantity)} un. · ${item.valuationBasis === 'market' ? 'cotação' : 'custo'}${allocation ? ` · ${allocation}` : ''}`
             : 'Sem posição';
+        const radarMeta = radar?.kind === 'assessment' ? ` · Radar: ${radar.recommendation}` : '';
         const row = el('button', 'patrimony-asset-row-v1', [
             el('span', 'patrimony-asset-copy-v1', [
                 el('strong', '', [`${instrument.symbol} · ${instrument.name}`]),
-                el('small', '', [meta])
+                el('small', '', [`${positionMeta}${radarMeta}`])
             ]),
             el('strong', 'patrimony-asset-value-v1', [formatBRL(item?.marketValue ?? ZERO_CENTS)]),
             el('span', 'patrimony-asset-chevron-v1', ['›'])
@@ -181,6 +263,7 @@ async function renderInvestmentDetailRoute(context, instrumentId, actions) {
     const { instrument, position, portfolioItem } = await investmentContext(context, instrumentId);
     const currentValue = portfolioItem?.marketValue ?? position.costBasis;
     const result = addCents(position.realizedGainLoss ?? ZERO_CENTS, portfolioItem?.unrealizedGainLoss ?? ZERO_CENTS);
+    const radar = await radarForInstrument(context, instrument);
     const root = el('div', 'patrimony-asset-detail-v1');
     root.append(el('section', 'patrimony-asset-hero-v1', [
         el('small', '', ['VALOR ATUAL']),
@@ -206,6 +289,82 @@ async function renderInvestmentDetailRoute(context, instrumentId, actions) {
     root.append(actionsBox);
     if (position.quantity <= 0)
         root.append(el('p', 'patrimony-note-v1', ['Registre uma compra para iniciar a posição.']));
+
+    const radarSection = el('section', 'patrimony-section-v1', [el('h2', 'patrimony-section-title-v1', ['Radar'])]);
+    if (!radarSupported(instrument)) {
+        radarSection.append(el('div', 'patrimony-empty-v1', [instrument.assetClass === 'reit'
+            ? 'Este FII não será pontuado pela régua de ações. A análise específica de FIIs entra na próxima etapa.'
+            : 'A análise automática ainda não está habilitada para esta classe de ativo.']));
+    }
+    else if (radar.kind === 'missing') {
+        radarSection.append(el('div', 'patrimony-empty-v1', ['Ainda não há fundamentos para este ativo. Se o gateway estiver configurado, eles serão atualizados automaticamente; você também pode inserir os dados recebidos no briefing.']));
+    }
+    else if (radar.kind === 'assessment') {
+        const assessment = radar.assessment;
+        radarSection.append(el('dl', 'patrimony-asset-detail-list-v1', [
+            detailRow('Sinal', radar.recommendation),
+            detailRow('Score', assessment.scorePercent == null ? 'Dados insuficientes' : `${assessment.scorePercent}%`),
+            detailRow('Critérios avaliados', `${assessment.coverage}/${assessment.expectedCriteria}`),
+            detailRow('Origem', radar.snapshot.providerId === 'manual' ? 'Briefing / inserido no Orion' : radar.snapshot.providerId),
+            detailRow('Período', radar.snapshot.metrics?.[0]?.referencePeriod ?? 'Não informado')
+        ]));
+        const dividendYield = metricValue(radar.snapshot, 'dividend_yield_pct');
+        if (dividendYield)
+            radarSection.append(el('p', 'patrimony-note-v1', [`Dividend Yield informado: ${dividendYield}. Ele é exibido, mas não aumenta sozinho o score, evitando premiar yield alto sem contexto.`]));
+        const criteriaList = el('div', 'patrimony-assets-list-v1');
+        for (const criterion of assessment.criteria) {
+            const value = `${criterion.value.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}${criterion.unit === 'percent' ? '%' : ''}`;
+            const state = criterion.status === 'positive' ? 'Favorável' : criterion.status === 'neutral' ? 'Neutro' : 'Atenção';
+            criteriaList.append(el('div', 'patrimony-asset-history-row-v1', [
+                el('span', '', [el('strong', '', [criterion.label]), el('small', '', [`${value} · ${criterion.explanation}`])]),
+                el('strong', '', [state])
+            ]));
+        }
+        radarSection.append(criteriaList);
+    }
+    if (radarSupported(instrument)) {
+        const toggle = el('button', 'account-secondary-action-v0', [radar.kind === 'assessment' ? 'Atualizar dados do briefing' : 'Inserir dados do briefing']);
+        toggle.type = 'button';
+        const reference = accountInputFieldV0('Período de referência');
+        reference.input.placeholder = 'Ex.: 3T26 ou 2026';
+        const fields = RADAR_METRICS.map(([key, label]) => {
+            const field = accountInputFieldV0(label);
+            field.input.inputMode = 'decimal';
+            return { key, field };
+        });
+        const error = accountErrorV0();
+        const save = el('button', 'account-primary-action-v0', ['Salvar fundamentos']);
+        save.type = 'submit';
+        const form = el('form', 'account-form-v0', [
+            reference.element,
+            ...fields.map((item) => item.field.element),
+            el('p', 'patrimony-form-support-v1', ['Preencha apenas os indicadores que o briefing trouxer. O Orion recalcula o Radar a partir deles e mantém a origem separada das operações da carteira.']),
+            error.element,
+            save
+        ]);
+        form.hidden = true;
+        toggle.addEventListener('click', () => {
+            form.hidden = !form.hidden;
+            if (!form.hidden)
+                reference.input.focus();
+        });
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            error.clear();
+            save.disabled = true;
+            const values = Object.fromEntries(fields.map((item) => [item.key, item.field.input.value]));
+            void saveManualFundamentals(context.repositories.marketDataCache, instrument, {
+                referencePeriod: reference.input.value,
+                values
+            }).then(actions.onDataChanged)
+                .catch((failure) => {
+                    save.disabled = false;
+                    error.show(failure instanceof Error ? failure.message : 'Não foi possível salvar os fundamentos.');
+                });
+        });
+        radarSection.append(toggle, form, el('p', 'patrimony-note-v1', ['Sinal do Radar não é uma ordem automática de compra. A decisão final continua separada do registro da operação.']));
+    }
+    root.append(radarSection);
     return root;
 }
 async function renderInvestmentTradeRoute(context, instrumentId, side, actions) {
@@ -306,7 +465,8 @@ export async function renderSummaryRoute(state, repositories, rerender) {
     }
     if (state.route === 'patrimony-investment-detail') {
         return renderInvestmentDetailRoute(context, state.selectedInvestmentId, {
-            onTrade: (side) => { state.selectedInvestmentSide = side; state.route = 'patrimony-investment-trade'; rerender(); }
+            onTrade: (side) => { state.selectedInvestmentSide = side; state.route = 'patrimony-investment-trade'; rerender(); },
+            onDataChanged: rerender
         });
     }
     if (state.route === 'patrimony-investment-trade') {
