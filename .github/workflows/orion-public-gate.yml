@@ -149,6 +149,36 @@ jobs:
           assert(marketValueForPosition(10 * QUANTITY_SCALE, 3500, QUANTITY_SCALE) === 35000, 'Dados legados de ações devem permanecer compatíveis.');
           NODE
 
+      - name: Check payslip document parser
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s site/dist/application/documents/parse-payslip.js
+          test -s site/dist/data/documents/database.js
+          test -s site/dist/presentation/screens/documents-v1.js
+          grep -q "orion_documents_v1" site/dist/data/documents/database.js
+          grep -q "não cria receita" site/dist/presentation/screens/documents-v1.js
+          node --input-type=module <<'NODE'
+          import { parsePayslipText } from './site/dist/application/documents/parse-payslip.js';
+          const sample = `EMPRESA EXEMPLO LTDA RECIBO DE PAGAMENTO DE SALÁRIO
+          CNPJ: 12.345.678/0001-90 Referente ao mês: Junho/2026
+          5 Salário mensalista 30,00 2.870,00
+          822 Desconto VA/VR PAT 1,00
+          91005 INSS 9,00% 233,98
+          Totais 2.870,00 234,98
+          SALÁRIO LÍQUIDO R$ 2.635,02
+          Salário base 2.870,00 Base INSS 2.870,00 Base FGTS 2.870,00 Valor FGTS 229,60 Base IRRF 2.262,80`;
+          const parsed = parsePayslipText(sample);
+          const expected = {
+            competence: '2026-06', salaryBase: 287000, grossEarnings: 287000,
+            totalDeductions: 23498, netPay: 263502, inssDiscount: 23398, fgtsValue: 22960
+          };
+          for (const [key, value] of Object.entries(expected)) {
+            if (parsed[key] !== value) throw new Error(`Parser de holerite falhou em ${key}: ${parsed[key]} !== ${value}`);
+          }
+          if (parsed.confidence !== 'high') throw new Error('Holerite completo deve ter confiança alta.');
+          NODE
+
       - name: Check no Radar UI returned
         shell: bash
         run: |
