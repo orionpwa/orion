@@ -4,7 +4,7 @@ import { formatBRL } from '../../../domain/money/money.js';
 import { el } from '../../dom.js';
 import { showToast } from '../../components/feedback.js';
 import { deactivateWithUndoFeedback } from '../../components/lifecycle-feedback.js';
-import { planningErrorV0, planningInputFieldV0, planningMoneyFieldV0, planningSubmitV0 } from './controls.js';
+import { planningChoiceFieldV0, planningErrorV0, planningInputFieldV0, planningMoneyFieldV0, planningSubmitV0 } from './controls.js';
 import { accountName, accountOptions, activeAccounts, centsToInput, detailRowsV0, emptyPlanningV0, formatDateBR, inlineConfirmV0 } from './shared.js';
 function allocationProgress(allocation) {
     if (allocation.targetAmount === undefined || allocation.targetAmount <= 0)
@@ -122,10 +122,7 @@ export async function renderNewAllocationV0(context, actions) {
     const accounts = await activeAccounts(context);
     if (accounts.length === 0)
         throw new TypeError('Cadastre uma conta antes de criar uma meta ou reserva.');
-    const account = { element: null, control: null };
-    const accountChoice = (await import('./controls.js')).planningChoiceFieldV0('Conta associada', accountOptions(accounts), '');
-    account.element = accountChoice.element;
-    account.control = accountChoice.control;
+    const account = planningChoiceFieldV0('Conta associada', accountOptions(accounts), '');
     const name = planningInputFieldV0('Nome', 'text');
     name.input.placeholder = 'Ex.: Reserva de emergência';
     const amount = planningMoneyFieldV0('Valor reservado');
