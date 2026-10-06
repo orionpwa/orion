@@ -1,6 +1,6 @@
-# Orion Finance — Cloudflare Pages — 12.52
+# Orion Finance — Cloudflare Pages — 12.53
 
-Orion Finance v0.1 — Fase 12.52: foco pessoal em reserva e dívidas. Reservas continuam automaticamente fora do Livre para decidir. Dívidas mantêm progresso da quitação e economia potencial, e agora podem ser simuladas por pagamento mensal e juros informados sem alterar saldo, dívida ou movimentações. Carteira de investimentos e mercado permanecem desativados na experiência atual, com dados antigos preservados para eventual reativação futura.
+Orion Finance v0.1 — Fase 12.53 Personal Ready. A fase ativa continua focada em reserva e dívidas, com carteira de investimentos e mercado desativados. A 12.52 de simulação de quitação foi congelada como estável e o fluxo de `Recomeçar com uma base nova` foi revisado para a transição dos dados de teste para uma base financeira real: o Orion cria e baixa um backup antes da substituição local, reabre o onboarding e permite começar pelos saldos atuais, sem exigir reconstrução do histórico anterior.
 
 Configuração:
 - Framework: **None**
@@ -10,3 +10,5 @@ Configuração:
 - Pages Functions: diretório **functions/** na raiz do projeto
 
 Financial Core, IndexedDB schema 5, backup v2 e migrations permanecem preservados.
+
+A sequência oficial de entrada em uso pessoal está documentada em `PERSONAL_READY.md`.
