@@ -26,6 +26,7 @@ const TITLES = {
     documents: 'Documentos',
     'document-new': 'Ler holerite',
     'document-detail': 'Holerite',
+    'documents-ir': 'Preparação para IR',
     settings: 'Ajustes',
     'settings-profile': 'Perfil',
     'settings-data': 'Dados e backup',
@@ -61,7 +62,7 @@ const TITLES = {
 };
 
 function parentRoute(route) {
-    if (route === 'patrimony' || route === 'settings' || route === 'documents')
+    if (route === 'patrimony' || route === 'settings' || route === 'documents' || route === 'documents-ir')
         return 'summary';
     if (route === 'document-new' || route === 'document-detail')
         return 'documents';
@@ -107,7 +108,7 @@ function parentRoute(route) {
 }
 
 function backLabel(route) {
-    if (route === 'patrimony' || route === 'settings' || route === 'documents')
+    if (route === 'patrimony' || route === 'settings' || route === 'documents' || route === 'documents-ir')
         return '‹ Resumo';
     if (route === 'document-new' || route === 'document-detail')
         return '‹ Documentos';

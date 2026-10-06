@@ -2,6 +2,7 @@ import { IndexedDbEntityLifecycleMutationGateway } from '../../data/indexeddb/en
 import { renderHomeV0 } from '../../presentation/home.js';
 import { renderAssetDetailV1, renderAssetListV1, renderAssetValueV1, renderEditAssetV1, renderNewAssetV1, renderPatrimonyV1 } from '../../presentation/screens/patrimony-v1.js';
 import { renderDocumentsListV1, renderNewPayslipV1, renderPayslipDetailV1 } from '../../presentation/screens/documents-v1.js';
+import { renderDocumentsIrV1 } from '../../presentation/screens/documents-ir-v1.js';
 const ROUTES = new Set([
     'summary',
     'patrimony',
@@ -12,7 +13,8 @@ const ROUTES = new Set([
     'patrimony-asset-value',
     'documents',
     'document-new',
-    'document-detail'
+    'document-detail',
+    'documents-ir'
 ]);
 const assetLifecycle = new IndexedDbEntityLifecycleMutationGateway();
 export async function renderSummaryRoute(state, repositories, rerender) {
@@ -30,9 +32,12 @@ export async function renderSummaryRoute(state, repositories, rerender) {
             onOpenAllocations: () => { state.route = 'planning-allocations'; rerender(); },
             onOpenDebts: () => { state.route = 'planning-debts'; rerender(); },
             onOpenPatrimony: () => { state.route = 'patrimony'; rerender(); },
-            onOpenDocuments: () => { state.route = 'documents'; rerender(); }
+            onOpenDocuments: () => { state.route = 'documents'; rerender(); },
+            onOpenIr: () => { state.route = 'documents-ir'; rerender(); }
         });
     }
+    if (state.route === 'documents-ir')
+        return renderDocumentsIrV1(context);
     if (state.route === 'documents') {
         return renderDocumentsListV1(context, {
             onCreate: () => { state.route = 'document-new'; rerender(); },

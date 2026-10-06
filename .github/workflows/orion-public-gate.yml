@@ -179,6 +179,31 @@ jobs:
           if (parsed.confidence !== 'high') throw new Error('Holerite completo deve ter confiança alta.');
           NODE
 
+      - name: Check annual IR preparation summary
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s site/dist/application/documents/annual-tax-summary.js
+          test -s site/dist/presentation/screens/documents-ir-v1.js
+          grep -q "não substitui informe de rendimentos" site/dist/presentation/screens/documents-ir-v1.js
+          node --input-type=module <<'NODE'
+          import { buildAnnualTaxPreparation, annualTaxPreparationCsv } from './site/dist/application/documents/annual-tax-summary.js';
+          const sample = [
+            { competence: '2026-01', employer: 'Empresa A', employerCnpj: '00.000.000/0001-00', grossEarnings: 250000, totalDeductions: 20000, inssDiscount: 19000, irrfDiscount: 0, netPay: 230000, fgtsValue: 20000 },
+            { competence: '2026-02', employer: 'Empresa A', employerCnpj: '00.000.000/0001-00', grossEarnings: 250000, totalDeductions: 21000, inssDiscount: 20000, irrfDiscount: 1000, netPay: 229000, fgtsValue: 20000 },
+            { competence: '2025-12', employer: 'Empresa A', employerCnpj: '00.000.000/0001-00', grossEarnings: 999999, totalDeductions: 0, inssDiscount: 0, irrfDiscount: 0, netPay: 999999, fgtsValue: 0 }
+          ];
+          const summary = buildAnnualTaxPreparation(sample, 2026);
+          if (summary.documentCount !== 2) throw new Error('Resumo anual deve filtrar pelo ano-calendário.');
+          if (summary.totals.grossEarnings !== 500000) throw new Error('Total bruto anual incorreto.');
+          if (summary.totals.inssDiscount !== 39000) throw new Error('Total INSS anual incorreto.');
+          if (summary.totals.irrfDiscount !== 1000) throw new Error('Total IRRF anual incorreto.');
+          if (summary.totals.netPay !== 459000) throw new Error('Total líquido anual incorreto.');
+          if (summary.employers.length !== 1) throw new Error('Agrupamento por empregador regrediu.');
+          const csv = annualTaxPreparationCsv(summary);
+          if (!csv.includes('Ano-calendário') || !csv.includes('TOTAL')) throw new Error('Exportação CSV do resumo anual regrediu.');
+          NODE
+
       - name: Check no Radar UI returned
         shell: bash
         run: |
