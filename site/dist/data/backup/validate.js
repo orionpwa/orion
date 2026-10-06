@@ -57,7 +57,7 @@ export function parseBackup(raw) {
     validateEntityList(allocations, 'alocação malformada', (value) => typeof value.name === 'string' && Number.isSafeInteger(value.amount));
     validateEntityList(recurrences, 'recorrência malformada', (value) => typeof value.name === 'string' && Number.isSafeInteger(value.amount));
     validateEntityList(recurrenceMonths, 'estado de recorrência malformado', (value) => typeof value.recurrenceId === 'string' && typeof value.month === 'string');
-    validateEntityList(investmentInstruments, 'instrumento de investimento malformado', (value) => typeof value.symbol === 'string' && typeof value.name === 'string' && typeof value.venue === 'string');
+    validateEntityList(investmentInstruments, 'instrumento de investimento malformado', (value) => typeof value.symbol === 'string' && typeof value.name === 'string' && typeof value.venue === 'string' && (value.quantityScale === undefined || (Number.isSafeInteger(value.quantityScale) && value.quantityScale > 0)));
     validateEntityList(investmentTrades, 'negociação de investimento malformada', (value) => typeof value.instrumentId === 'string' && typeof value.side === 'string' && Number.isSafeInteger(value.quantity) && Number.isSafeInteger(value.grossAmount) && Number.isSafeInteger(value.fees));
     return {
         formatVersion: BACKUP_FORMAT_VERSION,

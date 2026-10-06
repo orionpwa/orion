@@ -3,7 +3,7 @@ import { allocationBasisPoints, basisPointsToPercent, getPortfolioSnapshot, tota
 import { recordInvestmentTrade } from '../../application/investments/record-trade.js';
 import { IndexedDbEntityLifecycleMutationGateway } from '../../data/indexeddb/entity-lifecycle-mutations.js';
 import { calculateInvestmentPosition } from '../../domain/investments/position.js';
-import { formatQuantity } from '../../domain/investments/quantity.js';
+import { formatQuantity, quantityScaleForInstrument } from '../../domain/investments/quantity.js';
 import { addCents, formatBRL, ZERO_CENTS } from '../../domain/money/money.js';
 import { el } from '../../presentation/dom.js';
 import { renderHomeV0 } from '../../presentation/home.js';
@@ -29,6 +29,7 @@ const INVESTMENT_CLASSES = [
     { value: 'bdr', label: 'BDR' },
     { value: 'reit', label: 'FII' },
     { value: 'etf', label: 'ETF' },
+    { value: 'crypto', label: 'Criptoativo' },
     { value: 'other', label: 'Outro listado' }
 ];
 
@@ -130,7 +131,7 @@ async function renderInvestmentsRoute(context, actions) {
         const item = byId.get(instrument.id);
         const allocation = item ? basisPointsToPercent(allocationBasisPoints(item, snapshot.marketValue)) : '';
         const meta = item
-            ? `${formatQuantity(item.position.quantity)} un. · ${item.valuationBasis === 'market' ? 'cotação' : 'custo'}${allocation ? ` · ${allocation}` : ''}`
+            ? `${formatQuantity(item.position.quantity, quantityScaleForInstrument(instrument))} un. · ${item.valuationBasis === 'market' ? 'cotação' : 'custo'}${allocation ? ` · ${allocation}` : ''}`
             : 'Sem posição';
         const row = el('button', 'patrimony-asset-row-v1', [
             el('span', 'patrimony-asset-copy-v1', [
@@ -150,9 +151,9 @@ async function renderInvestmentsRoute(context, actions) {
 function renderNewInvestmentRoute(context, actions) {
     const symbol = accountInputFieldV0('Código do ativo');
     symbol.input.autocapitalize = 'characters';
-    symbol.input.placeholder = 'Ex.: PETR4';
+    symbol.input.placeholder = 'Ex.: PETR4 ou BTC';
     const name = accountInputFieldV0('Nome');
-    name.input.placeholder = 'Ex.: Petrobras';
+    name.input.placeholder = 'Ex.: Petrobras ou Bitcoin';
     const assetClass = accountChoiceFieldV0('Tipo', INVESTMENT_CLASSES, 'stock');
     const error = accountErrorV0();
     const save = el('button', 'account-primary-action-v0', ['Salvar investimento']);
@@ -161,7 +162,7 @@ function renderNewInvestmentRoute(context, actions) {
         symbol.element,
         name.element,
         assetClass.element,
-        el('p', 'patrimony-form-support-v1', ['Cadastro patrimonial B3 em reais. A cotação atualiza o valor do ativo sem criar movimento financeiro.']),
+        el('p', 'patrimony-form-support-v1', ['Cadastro patrimonial em reais. Ações, BDRs, FIIs e ETFs usam B3; criptoativos usam o mercado cripto. A cotação altera apenas o valor patrimonial.']),
         error.element,
         save
     ]);
@@ -169,12 +170,13 @@ function renderNewInvestmentRoute(context, actions) {
         event.preventDefault();
         error.clear();
         save.disabled = true;
+        const selectedClass = assetClass.control.value;
         void createInvestmentInstrument(context.repositories.investmentInstruments, {
             profileId: context.profile.id,
             symbol: symbol.input.value,
             name: name.input.value,
-            assetClass: assetClass.control.value,
-            venue: 'B3',
+            assetClass: selectedClass,
+            venue: selectedClass === 'crypto' ? 'CRYPTO' : 'B3',
             currency: 'BRL'
         }).then((created) => actions.onSaved(created.id))
             .catch((failure) => {
@@ -196,7 +198,7 @@ async function renderInvestmentDetailRoute(context, instrumentId, actions) {
     ]));
     root.append(el('dl', 'patrimony-asset-detail-list-v1', [
         detailRow('Tipo', classLabel(instrument.assetClass)),
-        detailRow('Quantidade', formatQuantity(position.quantity)),
+        detailRow('Quantidade', formatQuantity(position.quantity, quantityScaleForInstrument(instrument))),
         detailRow('Custo da posição', formatBRL(position.costBasis)),
         detailRow('Resultado', formatBRL(result)),
         detailRow('Base do valor', portfolioItem?.valuationBasis === 'market' ? 'Cotação' : 'Custo')
@@ -220,7 +222,7 @@ async function renderInvestmentTradeRoute(context, instrumentId, side, actions) 
     const accounts = (await context.repositories.accounts.listByProfile(context.profile.id)).filter((item) => item.active);
     const quantity = accountInputFieldV0('Quantidade');
     quantity.input.inputMode = 'decimal';
-    quantity.input.placeholder = 'Ex.: 10';
+    quantity.input.placeholder = instrument.assetClass === 'crypto' ? 'Ex.: 0,00080000' : 'Ex.: 10';
     const gross = accountMoneyFieldV0(side === 'buy' ? 'Valor bruto da compra' : 'Valor bruto da venda');
     const fees = accountMoneyFieldV0('Taxas');
     fees.input.value = '0,00';
@@ -231,7 +233,7 @@ async function renderInvestmentTradeRoute(context, instrumentId, side, actions) 
     save.type = 'submit';
     const support = side === 'buy'
         ? 'A compra reduz o saldo da conta escolhida pelo valor bruto mais as taxas.'
-        : `Posição disponível: ${formatQuantity(position.quantity)} un. A venda devolve à conta o valor líquido das taxas.`;
+        : `Posição disponível: ${formatQuantity(position.quantity, quantityScaleForInstrument(instrument))} un. A venda devolve à conta o valor líquido das taxas.`;
     const form = el('form', 'account-form-v0', [
         el('div', 'account-static-field-v0', [
             el('span', 'account-field-label-v0', ['Investimento']),

@@ -1,5 +1,6 @@
 import { addCents, sumCents, ZERO_CENTS } from '../../domain/money/money.js';
 import { calculateInvestmentPosition, marketValueForPosition, unrealizedGainLoss } from '../../domain/investments/position.js';
+import { quantityScaleForInstrument } from '../../domain/investments/quantity.js';
 function quoteIsStale(quote, now) {
     const fetched = Date.parse(quote.fetchedAt);
     return !Number.isFinite(fetched) || now.getTime() - fetched > 36 * 60 * 60 * 1000;
@@ -22,13 +23,14 @@ export async function getPortfolioSnapshot(repositories, marketCache, profileId,
             missingQuotes += 1;
         if (quote && quoteIsStale(quote, now))
             staleQuotes += 1;
-        const marketValue = quote ? marketValueForPosition(position.quantity, quote.price) : position.costBasis;
+        const quantityScale = quantityScaleForInstrument(instrument);
+        const marketValue = quote ? marketValueForPosition(position.quantity, quote.price, quantityScale) : position.costBasis;
         items.push({
             instrument,
             position,
             quote,
             marketValue,
-            unrealizedGainLoss: quote ? unrealizedGainLoss(position, quote.price) : ZERO_CENTS,
+            unrealizedGainLoss: quote ? unrealizedGainLoss(position, quote.price, quantityScale) : ZERO_CENTS,
             valuationBasis: quote ? 'market' : 'cost'
         });
     }

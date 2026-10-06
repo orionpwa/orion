@@ -1,1 +1,2 @@
 export const QUANTITY_SCALE = 1_000_000;
+export const CRYPTO_QUANTITY_SCALE = 100_000_000;
