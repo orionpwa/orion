@@ -118,12 +118,12 @@ function restoredRecord(source, profileId, now) {
 export async function restoreDocumentsBackup(profileId, backup, now = new Date()) {
     if (!backup || backup.kind !== DOCUMENTS_BACKUP_KIND || backup.formatVersion !== DOCUMENTS_BACKUP_FORMAT_VERSION)
         throw new TypeError('Backup de Documentos inválido.');
+    const records = backup.documents.map((source) => restoredRecord(source, profileId, now));
     const existing = await listPayslips(profileId);
     const existingCompetences = new Set(existing.map((item) => item.competence));
     let imported = 0;
     let skipped = 0;
-    for (const source of backup.documents) {
-        const record = restoredRecord(source, profileId, now);
+    for (const record of records) {
         if (existingCompetences.has(record.competence)) {
             skipped += 1;
             continue;
