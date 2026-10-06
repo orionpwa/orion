@@ -57,7 +57,7 @@ jobs:
           ! grep -q "Ver investimentos" site/dist/app/routes/summary.js
           grep -q '"marketGatewayUrl": ""' site/runtime-config.json
 
-      - name: Check reserve progress UI
+      - name: Check reserve behavior is simple and protected
         shell: bash
         run: |
           set -euo pipefail
@@ -65,6 +65,18 @@ jobs:
           grep -q "planning-goal-progress-v0" site/dist/presentation/screens/planning-v0/allocations.js
           grep -q "planning-goal-progress-track-v0" site/styles/ux-v0-planning.css
           grep -q "Objetivo alcançado" site/dist/presentation/screens/planning-v0/allocations.js
+          grep -q "protected: true" site/dist/presentation/screens/planning-v0/allocations.js
+          ! grep -q "Reduzir o Livre para decidir?" site/dist/presentation/screens/planning-v0/allocations.js
+          grep -q "fora do Livre para decidir" site/dist/presentation/screens/planning-v0/allocations.js
+
+      - name: Check debt progress and settlement visibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "function debtProgress" site/dist/presentation/screens/planning-v0/debts.js
+          grep -q "Progresso da quitação" site/dist/presentation/screens/planning-v0/debts.js
+          grep -q "Economia potencial" site/dist/presentation/screens/planning-v0/debts.js
+          grep -q "settlementSaving" site/dist/presentation/screens/planning-v0/debts.js
 
       - name: Check preserved investment data compatibility
         shell: bash

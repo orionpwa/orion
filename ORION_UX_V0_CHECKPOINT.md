@@ -4,7 +4,7 @@
 Este arquivo é a fonte de recuperação da UX e da evolução pós-V0 do Orion. Em conflito com documentação antiga, esta base vence salvo revisão explícita.
 
 ## Base técnica
-- Release candidata: `0.1.0-development.12.50`.
+- Release candidata: `0.1.0-development.12.51`.
 - Financial Core preservado.
 - IndexedDB schema 5.
 - Backup format 2.
@@ -43,22 +43,43 @@ Validada no iPhone.
 
 Investimentos passam a ser recurso adiado. Checkpoints históricos de investimento continuam válidos como registro técnico, mas não definem a experiência ativa.
 
-## 12.50 — progresso de metas e reservas — CANDIDATO
-Objetivo: tornar a reserva útil para a fase atual sem criar uma nova área.
-- `Planejar > Metas e reservas` continua sendo o único lugar de gestão;
-- quando houver objetivo total, a lista mostra percentual e quanto falta;
-- o detalhe mostra barra de progresso, percentual, valor restante e objetivo;
-- ao atingir ou ultrapassar o objetivo, exibe `Objetivo alcançado`;
-- metas sem objetivo continuam funcionando como antes;
-- ajustar valor reservado continua sem criar movimentação bancária;
-- não há alteração de schema, backup, migrations ou Financial Core;
-- carteira e mercado continuam desativados.
+## 12.50 — progresso de metas e reservas
+A 12.50 introduziu percentual, valor restante e barra de progresso para reservas com objetivo definido. Durante a validação conceitual, a opção `Reduzir o Livre para decidir?` mostrou-se redundante e confusa, pois o cálculo financeiro atual já considera os valores ativos de metas e reservas na redução do Livre.
 
-Checkpoint esperado após validação real: `PROGRESSO-RESERVAS-STABLE`.
+A 12.50 não é congelada isoladamente; seu progresso visual é incorporado e simplificado na 12.51.
+
+## 12.51 — reserva simples + progresso de dívidas — CANDIDATO
+Objetivo: deixar a fase Reserva → Dívidas direta e sem controles redundantes.
+
+### Reservas
+- `Planejar > Metas e reservas` continua sendo o único lugar de gestão;
+- todo valor reservado fica automaticamente fora do `Livre para decidir`;
+- a pergunta `Reduzir o Livre para decidir?` foi removida;
+- novas reservas são gravadas com `protected: true` para manter compatibilidade sem mudar schema;
+- editar ou ajustar uma reserva também normaliza `protected: true`;
+- reservar continua sem criar movimentação bancária nem alterar o saldo real da conta;
+- objetivo definido continua mostrando percentual, barra de progresso e quanto falta;
+- ao atingir ou ultrapassar o objetivo, exibe `Objetivo alcançado`.
+
+### Dívidas
+- lista passa a mostrar percentual já pago;
+- detalhe mostra progresso da quitação, valor pago e saldo restante;
+- quando existir oferta de quitação abaixo do saldo restante, o Orion mostra a economia potencial;
+- oferta e validade continuam sendo informações manuais, sem recomendação automática de negociação;
+- pagamentos continuam sendo os únicos eventos que reduzem o saldo da dívida.
+
+### Garantias
+- nenhuma alteração de Financial Core;
+- schema 5, backup v2 e migrations preservados;
+- carteira e mercado permanecem desativados;
+- gate público verifica sintaxe, coerência de versão, reserva simplificada e progresso de dívidas.
+
+Checkpoint esperado após validação real: `RESERVA-SIMPLES-DIVIDAS-PROGRESSO-STABLE`.
 
 ## Próxima sequência
-1. Publicar 12.50.
-2. Validar no iPhone uma reserva com objetivo definido.
-3. Confirmar percentual, valor restante e estado `Objetivo alcançado`.
-4. Se aprovado, congelar `PROGRESSO-RESERVAS-STABLE`.
-5. Só então avaliar refinamentos de dívidas conforme a necessidade real.
+1. Publicar 12.51.
+2. Validar no iPhone que a reserva não pergunta mais se deve reduzir o Livre.
+3. Confirmar que o valor reservado continua reduzindo o Livre para decidir.
+4. Abrir uma dívida e conferir progresso e, quando houver oferta, economia potencial.
+5. Se aprovado, congelar `RESERVA-SIMPLES-DIVIDAS-PROGRESSO-STABLE`.
+6. A próxima evolução só deve aprofundar dívidas se surgir uma necessidade real no uso.

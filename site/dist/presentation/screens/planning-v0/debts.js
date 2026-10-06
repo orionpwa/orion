@@ -8,6 +8,38 @@ import { showToast } from '../../components/feedback.js';
 import { deactivateWithUndoFeedback } from '../../components/lifecycle-feedback.js';
 import { planningChoiceFieldV0, planningErrorV0, planningInputFieldV0, planningMoneyFieldV0, planningSubmitV0 } from './controls.js';
 import { accountOptions, activeAccounts, centsToInput, detailRowsV0, emptyPlanningV0, formatDateBR, inlineConfirmV0, sectionHeadingV0, todayISO } from './shared.js';
+function debtProgress(item) {
+    const opening = item.debt.openingBalance;
+    const paid = Math.max(0, item.position.paid);
+    const percent = opening > 0 ? Math.min(100, Math.max(0, Math.round((paid / opening) * 100))) : 0;
+    return { opening, paid, outstanding: item.position.outstanding, percent, complete: item.position.outstanding <= ZERO_CENTS };
+}
+function settlementSaving(item) {
+    const offer = item.position.settlementOffer;
+    if (offer === undefined || offer >= item.position.outstanding)
+        return ZERO_CENTS;
+    return item.position.outstanding - offer;
+}
+function debtProgressBlock(progress) {
+    const track = el('div', 'planning-goal-progress-track-v0');
+    track.setAttribute('role', 'progressbar');
+    track.setAttribute('aria-valuemin', '0');
+    track.setAttribute('aria-valuemax', '100');
+    track.setAttribute('aria-valuenow', String(progress.percent));
+    const fill = el('span', 'planning-goal-progress-fill-v0');
+    fill.style.width = `${progress.percent}%`;
+    track.append(fill);
+    return el('div', 'planning-goal-progress-v0', [
+        el('div', 'planning-goal-progress-head-v0', [
+            el('span', '', ['Progresso da quitação']),
+            el('strong', '', [`${progress.percent}%`])
+        ]),
+        track,
+        el('small', 'planning-goal-progress-meta-v0', [progress.complete
+            ? 'Dívida quitada.'
+            : `${formatBRL(progress.paid)} pagos · faltam ${formatBRL(progress.outstanding)}.`])
+    ]);
+}
 export async function renderDebtListV0(context, actions) {
     const position = await getFinancialPosition(context.repositories, context.profile.id);
     const items = [...position.debts].sort((a, b) => b.position.outstanding - a.position.outstanding || a.debt.name.localeCompare(b.debt.name));
@@ -27,14 +59,22 @@ export async function renderDebtListV0(context, actions) {
     }
     const list = el('div', 'planning-entity-list-v0');
     for (const item of items) {
+        const progress = debtProgress(item);
+        const saving = settlementSaving(item);
+        const copy = [
+            el('strong', '', [item.debt.name]),
+            el('small', '', [item.debt.creditor?.trim() || 'Dívida em aberto'])
+        ];
+        if (item.position.settlementOffer !== undefined) {
+            copy.push(el('small', '', [saving > ZERO_CENTS
+                ? `Oferta ${formatBRL(item.position.settlementOffer)} · economia ${formatBRL(saving)}`
+                : `Oferta para quitar ${formatBRL(item.position.settlementOffer)}`]));
+        }
         const row = el('button', 'planning-entity-row-v0', [
-            el('span', 'planning-entity-copy-v0', [
-                el('strong', '', [item.debt.name]),
-                el('small', '', [item.debt.creditor?.trim() || 'Dívida em aberto'])
-            ]),
+            el('span', 'planning-entity-copy-v0', copy),
             el('span', 'planning-entity-value-v0', [
                 el('strong', '', [formatBRL(item.position.outstanding)]),
-                el('small', '', ['Saldo restante'])
+                el('small', '', [`${progress.percent}% pago`])
             ]),
             el('span', 'planning-entity-chevron-v0', ['›'])
         ]);
@@ -56,16 +96,21 @@ export async function renderDebtDetailV0(context, debtId, actions) {
     const history = transactions
         .filter((transaction) => transaction.kind === 'debt-payment' && transaction.debtId === debtId)
         .sort((a, b) => b.date.localeCompare(a.date));
+    const progress = debtProgress(item);
+    const saving = settlementSaving(item);
     const root = el('div', 'planning-screen-v0 planning-detail-screen-v0');
     root.append(el('div', 'planning-detail-hero-v0', [
         el('small', '', ['SALDO RESTANTE']),
         el('strong', '', [formatBRL(item.position.outstanding)]),
         el('span', '', [item.debt.name])
-    ]), detailRowsV0([
+    ]));
+    root.append(debtProgressBlock(progress));
+    root.append(detailRowsV0([
         { label: 'Credor', value: item.debt.creditor?.trim() || 'Não informado' },
         { label: 'Saldo inicial', value: formatBRL(item.debt.openingBalance) },
         { label: 'Total pago', value: formatBRL(item.position.paid) },
         ...(item.position.settlementOffer !== undefined ? [{ label: 'Oferta para quitar', value: formatBRL(item.position.settlementOffer) }] : []),
+        ...(saving > ZERO_CENTS ? [{ label: 'Economia potencial', value: formatBRL(saving) }] : []),
         ...(item.debt.offerExpiry ? [{ label: 'Oferta válida até', value: formatDateBR(item.debt.offerExpiry) }] : [])
     ]));
     const actionStack = el('div', 'planning-action-stack-v0');

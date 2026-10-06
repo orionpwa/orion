@@ -48,7 +48,7 @@ export async function renderAllocationListV0(context, actions) {
         .sort((a, b) => a.name.localeCompare(b.name));
     const root = el('div', 'planning-screen-v0 planning-list-screen-v0');
     const top = el('div', 'planning-list-top-v0', [
-        el('p', '', ['Valores separados para objetivos. Reservar não movimenta o saldo da conta.'])
+        el('p', '', ['Todo valor reservado fica fora do Livre para decidir. Reservar não movimenta o saldo da conta.'])
     ]);
     const create = el('button', 'planning-inline-primary-v0', ['Nova meta ou reserva']);
     create.type = 'button';
@@ -65,7 +65,7 @@ export async function renderAllocationListV0(context, actions) {
         const row = el('button', 'planning-entity-row-v0', [
             el('span', 'planning-entity-copy-v0', [
                 el('strong', '', [allocation.name]),
-                el('small', '', [allocation.protected ? 'Reduz o Livre para decidir' : 'Somente acompanhamento'])
+                el('small', '', ['Reservado · fora do Livre para decidir'])
             ]),
             el('span', 'planning-entity-value-v0', [
                 el('strong', '', [formatBRL(allocation.amount)]),
@@ -100,7 +100,7 @@ export async function renderAllocationDetailV0(context, allocationId, actions) {
         { label: 'Conta associada', value: accountName(accounts, allocation.accountId) },
         { label: 'Objetivo', value: allocation.targetAmount !== undefined ? formatBRL(allocation.targetAmount) : 'Não definido' },
         { label: 'Prazo', value: allocation.goalDate ? formatDateBR(allocation.goalDate) : 'Não definido' },
-        { label: 'Reduz o Livre para decidir', value: allocation.protected ? 'Sim' : 'Não' }
+        { label: 'Disponível para gastar', value: 'Não · fica fora do Livre para decidir' }
     ]));
     if (allocation.description)
         root.append(el('p', 'planning-detail-note-v0', [allocation.description]));
@@ -113,7 +113,7 @@ export async function renderAllocationDetailV0(context, allocationId, actions) {
     edit.addEventListener('click', actions.onEdit);
     actionsBlock.append(adjust, edit);
     root.append(actionsBlock);
-    root.append(inlineConfirmV0('Desativar meta ou reserva', 'O saldo da conta não será alterado. A meta deixará de reduzir o Livre para decidir.', 'Desativar', () => {
+    root.append(inlineConfirmV0('Desativar meta ou reserva', 'O saldo da conta não será alterado. O valor deixará de ficar reservado no Livre para decidir.', 'Desativar', () => {
         deactivateWithUndoFeedback(context.lifecycle, context.profile.id, 'allocation', allocation.id, 'Meta ou reserva', actions.onDeactivated);
     }));
     return root;
@@ -128,13 +128,10 @@ export async function renderNewAllocationV0(context, actions) {
     const amount = planningMoneyFieldV0('Valor reservado');
     const target = planningMoneyFieldV0('Objetivo total');
     const goalDate = planningInputFieldV0('Prazo', 'date');
-    const protection = planningChoiceFieldV0('Reduzir o Livre para decidir?', [
-        { value: 'yes', label: 'Sim', description: 'Esse valor fica separado do dinheiro livre para usar.' },
-        { value: 'no', label: 'Não', description: 'A meta é acompanhada sem reduzir o Livre.' }
-    ], 'yes');
     const error = planningErrorV0();
     const submit = planningSubmitV0('Salvar meta ou reserva');
-    const form = el('form', 'planning-form-v0', [account.element, name.element, amount.element, target.element, goalDate.element, protection.element, error.element, submit]);
+    const support = el('p', 'planning-form-support-v0', ['O valor reservado fica automaticamente fora do Livre para decidir, sem movimentar o saldo da conta.']);
+    const form = el('form', 'planning-form-v0', [support, account.element, name.element, amount.element, target.element, goalDate.element, error.element, submit]);
     form.addEventListener('submit', (event) => {
         event.preventDefault();
         error.clear();
@@ -151,7 +148,7 @@ export async function renderNewAllocationV0(context, actions) {
             amount: amount.input.value,
             ...(target.input.value ? { targetAmount: target.input.value } : {}),
             ...(goalDate.input.value ? { goalDate: goalDate.input.value } : {}),
-            protected: protection.control.value === 'yes'
+            protected: true
         }).then((created) => actions.onSaved(created.id))
             .catch((failure) => { submit.disabled = false; error.show(failure instanceof Error ? failure.message : 'Não foi possível criar a meta ou reserva.'); });
     });
@@ -164,19 +161,15 @@ export async function renderEditAllocationV0(context, allocationId, actions) {
     const name = planningInputFieldV0('Nome', 'text', allocation.name);
     const target = planningMoneyFieldV0('Objetivo total', allocation.targetAmount !== undefined ? centsToInput(allocation.targetAmount) : '');
     const goalDate = planningInputFieldV0('Prazo', 'date', allocation.goalDate ?? '');
-    const protection = planningChoiceFieldV0('Reduzir o Livre para decidir?', [
-        { value: 'yes', label: 'Sim' },
-        { value: 'no', label: 'Não' }
-    ], allocation.protected ? 'yes' : 'no');
     const description = planningInputFieldV0('Descrição', 'text', allocation.description ?? '');
     const error = planningErrorV0();
     const submit = planningSubmitV0('Salvar alterações');
     const reserved = el('div', 'planning-static-field-v0', [
         el('span', 'planning-field-label-v0', ['Valor reservado']),
         el('strong', '', [formatBRL(allocation.amount)]),
-        el('small', '', ['Use “Ajustar valor reservado” no detalhe para mudar este valor.'])
+        el('small', '', ['Fica fora do Livre para decidir. Use “Ajustar valor reservado” no detalhe para mudar este valor.'])
     ]);
-    const form = el('form', 'planning-form-v0', [name.element, reserved, target.element, goalDate.element, protection.element, description.element, error.element, submit]);
+    const form = el('form', 'planning-form-v0', [name.element, reserved, target.element, goalDate.element, description.element, error.element, submit]);
     form.addEventListener('submit', (event) => {
         event.preventDefault();
         error.clear();
@@ -188,7 +181,7 @@ export async function renderEditAllocationV0(context, allocationId, actions) {
             amount: centsToInput(allocation.amount),
             ...(target.input.value ? { targetAmount: target.input.value } : {}),
             ...(goalDate.input.value ? { goalDate: goalDate.input.value } : {}),
-            protected: protection.control.value === 'yes',
+            protected: true,
             ...(description.input.value.trim() ? { description: description.input.value.trim() } : {})
         }).then(() => actions.onSaved(allocation.id))
             .catch((failure) => { submit.disabled = false; error.show(failure instanceof Error ? failure.message : 'Não foi possível salvar as alterações.'); });
@@ -203,7 +196,7 @@ export async function renderAdjustAllocationV0(context, allocationId, actions) {
     const error = planningErrorV0();
     const submit = planningSubmitV0('Salvar novo valor');
     const form = el('form', 'planning-form-v0', [
-        el('p', 'planning-form-support-v0', ['Isso altera apenas quanto do dinheiro existente fica reservado. Nenhuma movimentação bancária será criada.']),
+        el('p', 'planning-form-support-v0', ['Esse valor fica fora do Livre para decidir. Nenhuma movimentação bancária será criada.']),
         amount.element, error.element, submit
     ]);
     form.addEventListener('submit', (event) => {
@@ -217,7 +210,7 @@ export async function renderAdjustAllocationV0(context, allocationId, actions) {
             amount: amount.input.value,
             ...(allocation.targetAmount !== undefined ? { targetAmount: centsToInput(allocation.targetAmount) } : {}),
             ...(allocation.goalDate ? { goalDate: allocation.goalDate } : {}),
-            protected: allocation.protected,
+            protected: true,
             ...(allocation.description ? { description: allocation.description } : {})
         }).then(() => { showToast('Valor reservado ajustado.', 'success'); actions.onCompleted(); })
             .catch((failure) => { submit.disabled = false; error.show(failure instanceof Error ? failure.message : 'Não foi possível ajustar o valor reservado.'); });
