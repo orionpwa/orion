@@ -1,8 +1,10 @@
 import { parseMajorToCents, formatBRL } from '../../domain/money/money.js';
 import { parsePayslipText } from '../../application/documents/parse-payslip.js';
 import { listPayslips, getPayslip, savePayslip, deletePayslip } from '../../data/documents/database.js';
+import { createDocumentsBackup, parseDocumentsBackup, restoreDocumentsBackup } from '../../data/documents/backup.js';
 import { extractPdfText } from '../../infrastructure/documents/pdf-text-reader.js';
 import { el } from '../dom.js';
+import { downloadTextFile } from '../download.js';
 import { showToast } from '../components/feedback.js';
 
 function competenceLabel(value) {
@@ -56,6 +58,10 @@ function downloadBlob(blob, fileName) {
     setTimeout(() => URL.revokeObjectURL(url), 3000);
 }
 
+function backupFileName(now = new Date()) {
+    return `orion-documentos-${now.toISOString().slice(0, 10)}.json`;
+}
+
 export async function renderDocumentsListV1(context, actions) {
     const items = await listPayslips(context.profile.id);
     const root = el('div', 'documents-screen-v1');
@@ -67,6 +73,69 @@ export async function renderDocumentsListV1(context, actions) {
     create.type = 'button';
     create.addEventListener('click', actions.onCreate);
     root.append(create);
+
+    const backupInput = el('input', 'documents-backup-input-v1');
+    backupInput.type = 'file';
+    backupInput.accept = 'application/json,.json';
+    backupInput.hidden = true;
+    const exportBackup = el('button', 'documents-secondary-v1', ['Exportar backup de Documentos']);
+    exportBackup.type = 'button';
+    exportBackup.disabled = items.length === 0;
+    const restoreBackup = el('button', 'documents-secondary-v1', ['Restaurar backup']);
+    restoreBackup.type = 'button';
+    const backupStatus = el('span', 'documents-backup-status-v1', [
+        'Este backup é separado do backup financeiro v2 e inclui os PDFs originais.'
+    ]);
+    const backupActions = el('div', 'documents-backup-actions-v1', [exportBackup, restoreBackup]);
+    root.append(el('section', 'documents-backup-v1', [
+        el('strong', '', ['Backup do arquivo documental']),
+        backupStatus,
+        backupActions,
+        backupInput
+    ]));
+
+    exportBackup.addEventListener('click', () => {
+        exportBackup.disabled = true;
+        backupStatus.textContent = 'Preparando backup local…';
+        void createDocumentsBackup(context.profile.id).then((backup) => {
+            downloadTextFile(backupFileName(), JSON.stringify(backup, null, 2));
+            backupStatus.textContent = `${backup.documentCount} documento(s) incluído(s). Guarde este arquivo em local seguro.`;
+            showToast('Backup de Documentos gerado.', 'success');
+        }).catch((failure) => {
+            backupStatus.textContent = failure instanceof Error ? failure.message : 'Não foi possível gerar o backup.';
+            showToast('Falha ao gerar backup de Documentos.', 'error');
+        }).finally(() => {
+            exportBackup.disabled = items.length === 0;
+        });
+    });
+
+    restoreBackup.addEventListener('click', () => backupInput.click());
+    backupInput.addEventListener('change', () => {
+        const file = backupInput.files?.[0] ?? null;
+        if (!file)
+            return;
+        if (file.size > 50 * 1024 * 1024) {
+            backupStatus.textContent = 'O backup selecionado é grande demais para restaurar nesta versão.';
+            backupInput.value = '';
+            return;
+        }
+        restoreBackup.disabled = true;
+        backupStatus.textContent = 'Conferindo e restaurando o backup…';
+        void file.text().then((text) => parseDocumentsBackup(text)).then((backup) => restoreDocumentsBackup(context.profile.id, backup)).then((result) => {
+            backupStatus.textContent = result.skipped > 0
+                ? `${result.imported} documento(s) restaurado(s); ${result.skipped} já existente(s) foram preservado(s).`
+                : `${result.imported} documento(s) restaurado(s).`;
+            showToast(result.imported > 0 ? 'Backup de Documentos restaurado.' : 'Nenhum documento novo para restaurar.', 'success');
+            actions.onChanged();
+        }).catch((failure) => {
+            backupStatus.textContent = failure instanceof Error ? failure.message : 'Não foi possível restaurar este backup.';
+            showToast('Backup de Documentos não restaurado.', 'error');
+        }).finally(() => {
+            restoreBackup.disabled = false;
+            backupInput.value = '';
+        });
+    });
+
     if (items.length === 0) {
         root.append(el('div', 'documents-empty-v1', [
             el('strong', '', ['Nenhum holerite arquivado']),
