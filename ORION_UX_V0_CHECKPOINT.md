@@ -4,7 +4,7 @@
 Este arquivo é a fonte de recuperação da UX e da evolução pós-V0 do Orion. Em conflito com documentação antiga, esta base vence salvo revisão explícita.
 
 ## Base técnica
-- Release candidata: `0.1.0-development.12.52`.
+- Release candidata: `0.1.0-development.12.53`.
 - Financial Core preservado.
 - IndexedDB schema 5.
 - Backup format 2.
@@ -18,7 +18,8 @@ Este arquivo é a fonte de recuperação da UX e da evolução pós-V0 do Orion.
 - `OUTROS-ATIVOS-STABLE` ✅
 - `SITUACAO-MES-STABLE` ✅
 - `FOCO-RESERVA-DIVIDAS-STABLE` ✅ — 12.49 validada no iPhone.
-- `RESERVA-SIMPLES-DIVIDAS-PROGRESSO-STABLE` ✅ — 12.51 aprovada para prosseguir.
+- `RESERVA-SIMPLES-DIVIDAS-PROGRESSO-STABLE` ✅ — 12.51 aprovada.
+- `SIMULACAO-QUITACAO-STABLE` ✅ — 12.52 fechada após gate e aprovação para prosseguir.
 
 ## Arquitetura V0 congelada
 Raízes: Resumo / Movimentos / Planejar / Contas. Ajustes pertence a Resumo. Nenhum FAB global. Telas internas escondem o dock. `Novo` pertence a Movimentos. Uma função deve ter um único lugar.
@@ -34,67 +35,73 @@ Prioridade operacional atual:
 5. somente depois retomar investimentos.
 
 ## 12.49 — foco em reserva e dívidas — STABLE
-Validada no iPhone.
 - carteira de investimentos removida da navegação e do uso normal;
 - gateway de mercado desativado;
-- nenhum dado antigo de investimentos foi apagado;
-- compatibilidade dos dados de investimentos permanece preservada para eventual reativação futura;
+- dados antigos de investimentos preservados para eventual reativação;
 - Patrimônio, outros ativos, contas, cartões, compromissos, dívidas, metas e reservas permanecem ativos;
-- Financial Core, schema 5, backup v2 e migrations não mudaram.
-
-Investimentos passam a ser recurso adiado. Checkpoints históricos de investimento continuam válidos como registro técnico, mas não definem a experiência ativa.
-
-## 12.50 — progresso de metas e reservas
-A 12.50 introduziu percentual, valor restante e barra de progresso para reservas com objetivo definido. Durante a validação conceitual, a opção `Reduzir o Livre para decidir?` mostrou-se redundante e confusa, pois o cálculo financeiro atual já considera os valores ativos de metas e reservas na redução do Livre.
-
-A 12.50 não é congelada isoladamente; seu progresso visual é incorporado e simplificado na 12.51.
+- Financial Core, schema 5, backup v2 e migrations preservados.
 
 ## 12.51 — reserva simples + progresso de dívidas — STABLE
-Objetivo: deixar a fase Reserva → Dívidas direta e sem controles redundantes.
-
 ### Reservas
-- `Planejar > Metas e reservas` continua sendo o único lugar de gestão;
 - todo valor reservado fica automaticamente fora do `Livre para decidir`;
-- a pergunta `Reduzir o Livre para decidir?` foi removida;
-- novas reservas são gravadas com `protected: true` para manter compatibilidade sem mudar schema;
-- editar ou ajustar uma reserva também normaliza `protected: true`;
-- reservar continua sem criar movimentação bancária nem alterar o saldo real da conta;
-- objetivo definido continua mostrando percentual, barra de progresso e quanto falta;
-- ao atingir ou ultrapassar o objetivo, exibe `Objetivo alcançado`.
+- não existe pergunta separada para proteger ou reduzir o Livre;
+- reservar não cria movimentação bancária nem altera saldo real da conta;
+- objetivo mostra percentual, progresso e valor restante.
 
 ### Dívidas
-- lista mostra percentual já pago;
-- detalhe mostra progresso da quitação, valor pago e saldo restante;
-- quando existir oferta de quitação abaixo do saldo restante, o Orion mostra a economia potencial;
-- oferta e validade continuam sendo informações manuais, sem recomendação automática de negociação;
-- pagamentos continuam sendo os únicos eventos que reduzem o saldo da dívida.
+- lista e detalhe mostram progresso da quitação;
+- pagamentos são os únicos eventos que reduzem o saldo da dívida;
+- oferta de quitação pode mostrar economia potencial, sem recomendação automática.
 
-## 12.52 — simulação de quitação — CANDIDATO
-Objetivo: permitir planejamento de dívida sem transformar simulação em fato financeiro.
+## 12.52 — simulação de quitação — STABLE
+- `Planejar > Dívidas > detalhe` possui `Simular quitação`;
+- usa o saldo restante atual;
+- recebe pagamento mensal e juros mensais informados pelo usuário;
+- mostra prazo estimado, total pago e juros estimados;
+- informa quando o pagamento não amortiza a dívida;
+- simular não cria pagamento, não movimenta conta, não altera saldo da dívida e não persiste plano.
 
-- `Planejar > Dívidas > detalhe` ganha `Simular quitação`;
-- a simulação usa o saldo restante atual da dívida;
-- o usuário informa quanto pretende pagar por mês;
-- juros mensais são informados na própria simulação e podem ficar em `0%` quando não forem conhecidos ou aplicáveis;
-- quando existir uma taxa mensal antiga já preservada na dívida, ela pode aparecer como valor inicial da simulação;
-- o resultado mostra prazo estimado, total pago e juros estimados;
-- se o pagamento mensal não cobrir nem os juros do primeiro mês, o Orion informa que o cenário não amortiza a dívida;
-- simulações muito longas são limitadas tecnicamente sem alterar o saldo real;
-- simular não cria pagamento, não movimenta conta, não altera saldo da dívida e não persiste um novo plano;
-- registrar pagamento continua sendo a única ação que reduz a dívida real.
+Checkpoint congelado: `SIMULACAO-QUITACAO-STABLE`.
+
+## 12.53 — Personal Ready — CANDIDATO
+Objetivo: encerrar o ciclo de desenvolvimento funcional atual e preparar a transição da base de testes para uso pessoal real.
+
+### Recomeço seguro
+- `Resumo > Ajustes > Recomeçar com uma base nova` continua sendo o único caminho para abandonar a base atual;
+- antes da limpeza, o Orion cria e baixa um backup do perfil;
+- somente depois substitui atomicamente os dados locais por uma base vazia;
+- o mesmo id de perfil é preservado;
+- contas, movimentos, cartões, dívidas, ativos, reservas, compromissos e dados de investimento da base corrente são zerados na nova base;
+- `onboardingCompletedAt` não é carregado para a base nova, portanto o onboarding é reaberto;
+- nenhuma mudança de schema ou formato de backup.
+
+### Marco zero da base real
+A entrada em uso pessoal parte de um retrato do dia atual, não de uma reconstrução histórica:
+1. cadastrar contas ativas com o saldo real atual;
+2. cadastrar a reserva mínima e o valor efetivamente reservado;
+3. cadastrar dívidas ativas pelo saldo atual em aberto;
+4. cadastrar compromissos recorrentes que ainda terão efeito futuro;
+5. registrar receitas, despesas, transferências e pagamentos somente a partir do marco zero.
+
+O histórico anterior não é requisito para o Orion ficar correto daqui para frente.
+
+### Escopo ativo
+- Essenciais → Reserva mínima → Dívidas → Reserva completa;
+- investimentos e mercado permanecem desativados;
+- nenhuma nova frente funcional é aberta nesta release.
 
 ### Garantias
-- nenhuma alteração de Financial Core;
-- schema 5, backup v2 e migrations preservados;
-- carteira e mercado permanecem desativados;
-- gate público verifica sintaxe, coerência de versão, reserva simplificada, progresso de dívidas e simulação de quitação.
+- Financial Core preservado;
+- schema 5 e backup v2 preservados;
+- gate público valida sintaxe, coerência de versão, reserva, dívidas, simulação e segurança do recomeço;
+- o roteiro operacional completo está em `PERSONAL_READY.md`.
 
-Checkpoint esperado após validação real: `SIMULACAO-QUITACAO-STABLE`.
+Checkpoint esperado após validação real: `PERSONAL-READY-STABLE`.
 
 ## Próxima sequência
-1. Publicar 12.52.
-2. Abrir uma dívida com saldo restante.
-3. Usar `Simular quitação` com um pagamento mensal e juros conhecidos ou `0%`.
-4. Confirmar que a simulação apresenta resultado sem criar movimentação ou alterar o saldo da dívida.
-5. Se aprovado, congelar `SIMULACAO-QUITACAO-STABLE`.
-6. Novos avanços continuam subordinados à necessidade real da fase Reserva → Dívidas.
+1. Publicar 12.53.
+2. Confirmar no iPhone que a versão abre normalmente.
+3. Em `Ajustes > Recomeçar com uma base nova`, gerar o backup e abandonar a base de testes.
+4. Concluir o onboarding com a primeira conta e saldo real atual.
+5. Cadastrar contas restantes, reserva mínima, dívidas e compromissos futuros.
+6. A partir desse marco, usar o Orion normalmente e só evoluir quando o uso real revelar uma necessidade concreta.
