@@ -1,3 +1,4 @@
+import { CRYPTO_QUANTITY_SCALE, QUANTITY_SCALE } from '../../domain/investments/models.js';
 import { createEntityId } from '../shared/ids.js';
 function normalizeSymbol(value) {
     const symbol = value.trim().toUpperCase();
@@ -12,6 +13,7 @@ export async function createInvestmentInstrument(repository, input, now = new Da
         throw new TypeError('Informe o nome do ativo.');
     const venue = input.venue ?? 'B3';
     const currency = input.currency ?? 'BRL';
+    const quantityScale = input.assetClass === 'crypto' ? CRYPTO_QUANTITY_SCALE : QUANTITY_SCALE;
     const existing = (await repository.listByProfile(input.profileId))
         .find((item) => item.active && item.symbol === symbol && item.venue === venue);
     if (existing)
@@ -25,6 +27,7 @@ export async function createInvestmentInstrument(repository, input, now = new Da
         currency,
         name,
         assetClass: input.assetClass,
+        quantityScale,
         active: true,
         ...(input.providerSymbol?.trim() ? { providerSymbol: normalizeSymbol(input.providerSymbol) } : {}),
         createdAt: timestamp,
