@@ -1,31 +1,58 @@
 {
   "schemaVersion": 1,
   "product": "Orion Finance",
-  "appVersion": "0.1.0-development.12.45",
+  "appVersion": "0.1.0-development.12.46",
   "phase": 12,
   "classification": "PWA TESTÁVEL — PODE IR AO GITHUB PARA TESTE",
   "runtimeOnly": true,
   "generatedFromSourcePackage": false,
   "manifestCoversSelf": false,
   "manifestMode": "delta",
-  "baseAppVersion": "0.1.0-development.12.44",
-  "baseCommit": "e1d3884fe8075839df1e65cd840ea7f04d00e86d",
+  "baseAppVersion": "0.1.0-development.12.45",
+  "baseCommit": "5bc18f8920197d99803d58dd25e2e0309fba13f7",
   "filesScope": "changed",
   "files": [
     {
+      "path": "dist/app/main.js",
+      "bytes": 8965,
+      "sha256": "c132f3b1d05d37825e5f1340c87145f7700c2a4b1fdbad74577770e7d2cafe85"
+    },
+    {
       "path": "dist/app/routes/summary.js",
-      "bytes": 26874,
-      "sha256": "6f45fd09c7c42026ab58430e24788b7ceca88e530c570a70b4bdc08c53efc2fb"
+      "bytes": 19794,
+      "sha256": "aac4f3c4e2fe2f221e0244131b7f642c50f41b12073e1d3149dad1d8177352dd"
     },
     {
       "path": "dist/app/version.js",
-      "bytes": 190,
-      "sha256": "d0c70b14a7309c3f88a19ee83c391cabd248bab15f74cf95637075ac22e2f294"
+      "bytes": 189,
+      "sha256": "b48527a3184aee2e731c135dbb7586aac133e0887c949c97c53237778def5c52"
+    },
+    {
+      "path": "dist/product/capabilities.js",
+      "bytes": 775,
+      "sha256": "6e017053e197ba1cea98418b413c75ec82f416bf8faf8ba4ec9648a89d612acd"
+    },
+    {
+      "path": "runtime-config.json",
+      "bytes": 39,
+      "sha256": "3d2de65af107ca1156f46fa301e14b9bf80add4862ec47450295be5172970103"
     },
     {
       "path": "service-worker.js",
-      "bytes": 10366,
-      "sha256": "faa59d83fb9556f2b46760cc676e4761e762f45c44ef2b81b6d97934feff3ef9"
+      "bytes": 10253,
+      "sha256": "c0f57d1cb9e1861c02d2d54c6a60a4d1cbd0ad69825e5dc7cf1cd64e56084286"
+    }
+  ],
+  "gatewayFiles": [
+    {
+      "path": "functions/api/market/health.js",
+      "bytes": 586,
+      "sha256": "e2db91438befb15d794108194b03a709c5c4c49c9323e70e8dac5c0d785d62f1"
+    },
+    {
+      "path": "functions/api/market/v1/quote.js",
+      "bytes": 6506,
+      "sha256": "898346baa45d307ac06bdeb721508f1a6fe62db2099c6d3ba91810be2ddee7cd"
     }
   ]
 }

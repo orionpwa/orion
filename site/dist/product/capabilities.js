@@ -2,7 +2,6 @@ const FREE_CAPABILITIES = new Set([
     'core-finance',
     'planning',
     'investments',
-    'investment-radar',
     'market-data-essential',
     'backup-export',
     'backup-restore'

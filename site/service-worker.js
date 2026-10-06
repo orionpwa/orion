@@ -1,4 +1,4 @@
-const CACHE_NAME = "orion-0-1-0-development-12-45-static-v1";
+const CACHE_NAME = "orion-0-1-0-development-12-46-static-v1";
 const STATIC_PATHS = [
   "./",
   "./assets/institutions/bradesco.png",
@@ -37,16 +37,12 @@ const STATIC_PATHS = [
   "./dist/application/debts/pay-debt.js",
   "./dist/application/debts/update-debt.js",
   "./dist/application/investments/create-instrument.js",
-  "./dist/application/investments/manual-fundamentals.js",
   "./dist/application/investments/manual-quote.js",
   "./dist/application/investments/portfolio.js",
-  "./dist/application/investments/radar-assessment.js",
   "./dist/application/investments/record-trade.js",
   "./dist/application/lifecycle/deactivate-entity.js",
   "./dist/application/market-data/contracts.js",
-  "./dist/application/market-data/fundamental-refresh-coordinator.js",
   "./dist/application/market-data/refresh-coordinator.js",
-  "./dist/application/market-data/refresh-fundamentals.js",
   "./dist/application/market-data/refresh-portfolio.js",
   "./dist/application/market-data/resilient-gateway.js",
   "./dist/application/planning/get-financial-position.js",
@@ -215,6 +211,11 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return;
 
   if (url.pathname.endsWith('/runtime-config.json')) {
+    event.respondWith(fetch(event.request, { cache: 'no-store' }));
+    return;
+  }
+
+  if (url.pathname.startsWith('/api/market/')) {
     event.respondWith(fetch(event.request, { cache: 'no-store' }));
     return;
   }

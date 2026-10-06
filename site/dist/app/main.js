@@ -20,7 +20,6 @@ import { HttpMarketGatewayProvider } from '../infrastructure/market-data/http-ga
 import { checkGatewayHealth } from '../infrastructure/market-data/gateway-health.js';
 import { ResilientMarketDataGateway } from '../application/market-data/resilient-gateway.js';
 import { MarketRefreshCoordinator } from '../application/market-data/refresh-coordinator.js';
-import { FundamentalRefreshCoordinator } from '../application/market-data/fundamental-refresh-coordinator.js';
 import { renderSummaryRoute } from './routes/summary.js';
 import { renderMovementRoute } from './routes/movements.js';
 import { renderPlanningRoute } from './routes/planning.js';
@@ -63,11 +62,14 @@ async function start() {
         selectedDebtId: null,
         selectedAllocationId: null,
         selectedAccountId: null,
-        selectedCardId: null
+        selectedCardId: null,
+        selectedAssetId: null,
+        selectedInvestmentId: null,
+        selectedInvestmentSide: null
     };
     let rendering = false;
     let marketCoordinator = null;
-    let fundamentalCoordinator = null;
+    let refreshRunning = null;
     const rerender = () => { void render(); };
     const shell = createShellV0((next) => { state.route = next; rerender(); }, () => { state.route = 'movement-new'; rerender(); });
     host.replaceChildren(shell.shell);
@@ -119,22 +121,33 @@ async function start() {
         });
         const metadata = new IndexedDbMetadataRepository();
         marketCoordinator = new MarketRefreshCoordinator(repositories.investmentInstruments, marketGateway, metadata, platformRuntime, state.profile.id, { maxAgeMs: 24 * 60 * 60 * 1000 });
-        fundamentalCoordinator = new FundamentalRefreshCoordinator(repositories.investmentInstruments, marketGateway, metadata, platformRuntime, state.profile.id, { maxAgeMs: 72 * 60 * 60 * 1000 });
-        marketCoordinator.bindLifecycle();
-        fundamentalCoordinator.bindLifecycle();
-        void marketCoordinator.refreshIfDue().then((result) => {
-            if (result)
-                recordDiagnostic('MARKET_REFRESH', 'info', { fresh: result.fresh, cached: result.cached, unavailable: result.unavailable });
-        }).catch(() => recordDiagnostic('MARKET_REFRESH_FAILED', 'warning'));
-        void fundamentalCoordinator.refreshIfDue().then((result) => {
-            if (result)
-                recordDiagnostic('FUNDAMENTAL_REFRESH', 'info', { fresh: result.fresh, cached: result.cached, unsupported: result.unsupported, unavailable: result.unavailable });
-        }).catch(() => recordDiagnostic('FUNDAMENTAL_REFRESH_FAILED', 'warning'));
+        const refreshMarket = (force = false) => {
+            if (refreshRunning)
+                return refreshRunning;
+            refreshRunning = marketCoordinator.refreshIfDue(force)
+                .then((result) => {
+                    if (result) {
+                        recordDiagnostic('MARKET_REFRESH', 'info', { fresh: result.fresh, cached: result.cached, unavailable: result.unavailable });
+                        rerender();
+                    }
+                    return result;
+                })
+                .catch(() => {
+                    recordDiagnostic('MARKET_REFRESH_FAILED', 'warning');
+                    return null;
+                })
+                .finally(() => { refreshRunning = null; });
+            return refreshRunning;
+        };
+        platformRuntime.onResume(() => { void refreshMarket(); });
+        platformRuntime.onOnline(() => { void refreshMarket(); });
+        window.addEventListener('orion:refresh-market', () => { void refreshMarket(true); });
+        void refreshMarket();
     }
     const registration = await registerPwaUpdateFlow({
         onUpdateReady: (applyUpdate) => showUpdateBanner('Atualizar', applyUpdate),
         onError: () => {
-            recordDiagostic('PWA_SW_REGISTER', 'warning');
+            recordDiagnostic('PWA_SW_REGISTER', 'warning');
             showToast('Offline indisponível nesta sessão.', 'error');
         }
     });

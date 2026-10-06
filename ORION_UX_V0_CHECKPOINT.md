@@ -4,7 +4,7 @@
 Este arquivo é a fonte de recuperação da UX e da evolução pós-V0 do Orion. Em conflito com documentação antiga, esta base vence salvo revisão explícita.
 
 ## Base técnica
-- Release candidata: `0.1.0-development.12.45`.
+- Release candidata: `0.1.0-development.12.46`.
 - Financial Core preservado.
 - IndexedDB schema 5.
 - Backup format 2.
@@ -23,35 +23,55 @@ Este arquivo é a fonte de recuperação da UX e da evolução pós-V0 do Orion.
 ## Arquitetura V0 congelada
 Raízes: Resumo / Movimentos / Planejar / Contas. Ajustes pertence a Resumo. Nenhum FAB global. Telas internas escondem o dock. `Novo` pertence a Movimentos. Uma função deve ter um único lugar.
 
+## Direção do produto
+Orion é um controlador financeiro pessoal. Ele registra fatos, planejamento e patrimônio.
+
+Pertence ao Orion:
+- contas, saldos e movimentos;
+- cartões, compromissos, dívidas, metas e reservas;
+- patrimônio líquido e outros ativos;
+- investimentos como posição patrimonial: compra, venda, quantidade, custo, valor atual e resultado;
+- cotações de mercado apenas para atualizar o valor patrimonial.
+
+Não pertence ao Orion:
+- recomendação de compra;
+- ranking de ativos;
+- score fundamentalista;
+- P/L, P/VP, ROE, ROIC ou screener para decidir o que comprar;
+- integração do briefing como motor de recomendação.
+
+O experimento de Radar da 12.45 não vira checkpoint estável e é retirado da experiência na 12.46.
+
 ## Investimentos — STABLE até 12.44
 Validado no iPhone em 12.44. `INVESTIMENTOS-OPERACAO-STABLE` ✅
-- cadastro B3 em BRL;
-- leitura de carteira;
+- cadastro e leitura de carteira;
 - compra e venda manual;
 - conta de liquidação explícita;
 - compra bloqueada por saldo insuficiente;
 - venda bloqueada acima da posição;
 - taxas participam da liquidação;
-- mercado internacional/câmbio continuam separados.
+- compra troca caixa por patrimônio e não vira despesa de consumo.
 
-## Radar de investimentos — candidato 12.45
+## Valorização patrimonial — candidato 12.46
 - permanece dentro de `Patrimônio > Investimentos`;
-- ranqueia ativos cadastrados com fundamentos disponíveis;
-- ações e BDRs B3 usam a régua fundamentalista já existente;
-- sinais: `Boa candidata`, `Em observação`, `Não priorizar` e `Dados insuficientes`;
-- score é explicável por critérios, não ordem automática de compra;
-- mostra P/L, P/VP, EV/EBITDA, ROE, ROIC, margem, crescimento, liquidez e endividamento quando disponíveis;
-- Dividend Yield é mostrado, mas não melhora sozinho o score;
-- dados automáticos continuam vindo do Market Gateway quando configurado;
-- dados do briefing podem ser inseridos no detalhe do ativo e ficam no cache de fundamentos, separados das operações da carteira;
-- BDR passa a ser opção de cadastro B3/BRL;
-- FIIs aparecem no Radar, mas não recebem nota de ação; a régua própria de FIIs é a próxima etapa;
+- Radar e fundamentos foram removidos da UI;
+- ações B3, FIIs, ETFs, BDRs, cripto e ações internacionais podem ser registrados;
+- todo custo/liquidação permanece em reais para não misturar moedas no Financial Core;
+- cotação automática atualiza somente o valor patrimonial, sem criar movimentação;
+- ausência de cotação usa custo da posição como fallback;
+- atualização automática ocorre ao iniciar/retomar o app quando devida;
+- usuário também pode solicitar `Atualizar cotações`;
+- B3/FII/ETF/BDR e cripto usam brapi através de Pages Function;
+- ações internacionais usam Alpha Vantage e conversão para BRL no gateway;
+- tokens ficam somente no ambiente server-side do Cloudflare, nunca no PWA;
+- API de mercado é `no-store` no service worker;
 - Core financeiro, schema 5, backup v2 e migrations permanecem preservados.
 
-Checkpoint esperado após validação real: `RADAR-ACOES-STABLE`.
+Checkpoint esperado após validação real: `VALORIZACAO-PATRIMONIAL-STABLE`.
 
 ## Próxima sequência
-1. Validar 12.45 no iPhone.
-2. Se aprovado, congelar `RADAR-ACOES-STABLE`.
-3. Criar régua própria de FIIs com indicadores e calendário de proventos.
-4. Depois, estruturar a ponte automática entre briefing e Radar, evitando digitação manual.
+1. Publicar 12.46.
+2. Configurar `BRAPI_TOKEN` no Cloudflare para cobertura B3/FII/ETF/BDR e cripto.
+3. Opcionalmente configurar `ALPHAVANTAGE_API_KEY` para ações internacionais.
+4. Validar no iPhone: compra não altera PL; cotação altera valor atual/PL sem criar movimento; fallback por custo funciona offline.
+5. Se aprovado, congelar `VALORIZACAO-PATRIMONIAL-STABLE` e encerrar esta expansão funcional.
