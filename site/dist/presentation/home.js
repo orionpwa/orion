@@ -171,6 +171,15 @@ function section(title, children = []) {
         ...children
     ]);
 }
+function resourceRow(title, support, onClick) {
+    const row = el('button', 'summary-base-resource-v2', [
+        el('span', '', [el('strong', '', [title]), el('small', '', [support])]),
+        el('span', 'summary-base-resource-chevron-v2', ['›'])
+    ]);
+    row.type = 'button';
+    row.addEventListener('click', onClick);
+    return row;
+}
 export async function renderHomeV0(repositories, profile, actions) {
     const snapshot = await getDashboardSnapshot(repositories, profile.id);
     const phase = phaseFor(snapshot);
@@ -234,16 +243,10 @@ export async function renderHomeV0(repositories, profile, actions) {
     }
     root.append(month);
     const resources = section('Mais recursos');
-    const patrimony = el('button', 'summary-base-resource-v2', [
-        el('span', '', [
-            el('strong', '', ['Patrimônio']),
-            el('small', '', ['Ativos, passivos e patrimônio líquido'])
-        ]),
-        el('span', 'summary-base-resource-chevron-v2', ['›'])
-    ]);
-    patrimony.type = 'button';
-    patrimony.addEventListener('click', actions.onOpenPatrimony);
-    resources.append(patrimony);
+    resources.append(
+        resourceRow('Patrimônio', 'Ativos, passivos e patrimônio líquido', actions.onOpenPatrimony),
+        resourceRow('Documentos', 'Holerites e registros financeiros pessoais', actions.onOpenDocuments)
+    );
     root.append(resources);
     return root;
 }
