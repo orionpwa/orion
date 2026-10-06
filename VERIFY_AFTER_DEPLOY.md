@@ -1,11 +1,12 @@
-# Verificação após deploy — 12.46
+# Verificação após deploy — 12.48
 
-1. Confirme `0.1.0-development.12.46` em Ajustes > Sobre o Orion.
+1. Confirme `0.1.0-development.12.48` em Ajustes > Sobre o Orion.
 2. Vá em Resumo > Mais recursos > Patrimônio > Ver investimentos.
-3. Confirme que não existe Radar, score ou recomendação de compra.
-4. Cadastre PETR4 como Ação B3 e, se quiser, uma posição pequena de teste.
-5. Toque em `Atualizar cotações`; PETR4 deve receber valor de mercado mesmo sem token por ser símbolo sandbox da brapi.
-6. Confirme que a cotação muda `Valor atual`/Patrimônio, mas não cria receita, despesa nem movimento bancário.
-7. Confirme que uma posição sem fonte disponível continua mostrada pelo custo.
-8. Após configurar `BRAPI_TOKEN`, valide um FII ou outro ticker B3 e BTC; após `ALPHAVANTAGE_API_KEY`, valide uma ação internacional.
-9. Feche e reabra o PWA e confirme persistência, atualização e funcionamento normal das demais áreas.
+3. Confirme que ações/FIIs/ETFs/BDRs já cadastrados continuam exibindo a mesma quantidade e custo.
+4. Em `Adicionar investimento`, confirme a opção `Criptoativo`.
+5. Cadastre BTC como criptoativo e registre uma compra de teste com quantidade fracionária, por exemplo `0,00080000`.
+6. Confirme que a conta de liquidação diminui pelo valor bruto + taxas e que a compra não vira despesa de consumo.
+7. Confirme que o detalhe do BTC preserva até 8 casas decimais.
+8. Com `BRAPI_TOKEN` configurado no Cloudflare, toque em `Atualizar cotações` e confirme que o valor atual muda sem criar movimento financeiro.
+9. Sem cotação disponível, confirme que a posição continua mostrada pelo custo.
+10. Feche e reabra o PWA e confirme persistência, atualização e funcionamento normal das demais áreas.
