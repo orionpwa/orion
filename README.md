@@ -1,6 +1,6 @@
-# Orion Finance — Cloudflare Pages — 12.46
+# Orion Finance — Cloudflare Pages — 12.50
 
-Orion Finance v0.1 — Fase 12.46: recentralização no controle financeiro e valorização patrimonial por cotação. Radar, score e recomendação de compra deixam o produto; investimentos permanecem como patrimônio com compra/venda, custo, valor atual e resultado.
+Orion Finance v0.1 — Fase 12.50: foco pessoal em reserva e dívidas. A carteira de investimentos e o mercado permanecem desativados na experiência atual, com dados antigos preservados para eventual reativação futura. Metas e reservas passam a exibir progresso quando possuem objetivo definido.
 
 Configuração:
 - Framework: **None**
