@@ -78,6 +78,22 @@ jobs:
           grep -q "Economia potencial" site/dist/presentation/screens/planning-v0/debts.js
           grep -q "settlementSaving" site/dist/presentation/screens/planning-v0/debts.js
 
+      - name: Check debt payoff simulation
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "simulateFixedMonthlyPayment" site/dist/presentation/screens/planning-v0/debts.js
+          grep -q "Simular quitação" site/dist/presentation/screens/planning-v0/debts.js
+          grep -q "não registra pagamento" site/dist/presentation/screens/planning-v0/debts.js
+          grep -q "Juros ao mês" site/dist/presentation/screens/planning-v0/debts.js
+          node --input-type=module <<'NODE'
+          import { simulateFixedMonthlyPayment } from './site/dist/domain/debts/monthly-projection.js';
+          const result = simulateFixedMonthlyPayment(100000, 0, 10000);
+          if (result.status !== 'paid' || result.months !== 10 || result.totalPaid !== 100000 || result.totalInterest !== 0) {
+            throw new Error('Simulação de quitação sem juros regrediu.');
+          }
+          NODE
+
       - name: Check preserved investment data compatibility
         shell: bash
         run: |

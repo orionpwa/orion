@@ -2,7 +2,9 @@ import { createDebt } from '../../../application/debts/create-debt.js';
 import { updateDebtDetails } from '../../../application/debts/update-debt.js';
 import { payDebt } from '../../../application/debts/pay-debt.js';
 import { getFinancialPosition } from '../../../application/planning/get-financial-position.js';
-import { formatBRL, sumCents, ZERO_CENTS } from '../../../domain/money/money.js';
+import { simulateFixedMonthlyPayment } from '../../../domain/debts/monthly-projection.js';
+import { formatBRL, parseMajorToCents, sumCents, ZERO_CENTS } from '../../../domain/money/money.js';
+import { parsePercentToPpm } from '../../../domain/rates/rate.js';
 import { el } from '../../dom.js';
 import { showToast } from '../../components/feedback.js';
 import { deactivateWithUndoFeedback } from '../../components/lifecycle-feedback.js';
@@ -39,6 +41,68 @@ function debtProgressBlock(progress) {
             ? 'Dívida quitada.'
             : `${formatBRL(progress.paid)} pagos · faltam ${formatBRL(progress.outstanding)}.`])
     ]);
+}
+function rateInputValue(rate) {
+    if (rate === undefined)
+        return '0';
+    return String(rate / 10000).replace('.', ',');
+}
+function debtSimulationBlock(item) {
+    const payment = planningMoneyFieldV0('Pagamento mensal simulado');
+    const monthlyRate = planningInputFieldV0('Juros ao mês (%)', 'text', rateInputValue(item.debt.monthlyRate));
+    monthlyRate.input.inputMode = 'decimal';
+    monthlyRate.input.placeholder = '0';
+    const error = planningErrorV0();
+    const submit = planningSubmitV0('Calcular simulação');
+    const result = el('div', 'planning-static-field-v0');
+    result.hidden = true;
+    const form = el('form', 'planning-form-v0', [
+        el('p', 'planning-form-support-v0', ['A simulação usa o saldo restante atual e não registra pagamento, não altera a dívida e não movimenta nenhuma conta.']),
+        payment.element,
+        monthlyRate.element,
+        error.element,
+        submit,
+        result
+    ]);
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        error.clear();
+        result.hidden = true;
+        try {
+            const paymentValue = parseMajorToCents(payment.input.value);
+            if (paymentValue <= ZERO_CENTS)
+                throw new RangeError('Informe um pagamento mensal maior que zero.');
+            const rateValue = parsePercentToPpm(monthlyRate.input.value.trim() || '0');
+            const simulation = simulateFixedMonthlyPayment(item.position.outstanding, rateValue, paymentValue);
+            if (simulation.status === 'paid') {
+                const months = simulation.months === 1 ? '1 mês' : `${simulation.months} meses`;
+                result.replaceChildren(
+                    el('span', 'planning-field-label-v0', ['Resultado da simulação']),
+                    el('strong', '', [months]),
+                    el('small', '', [`Total estimado: ${formatBRL(simulation.totalPaid)} · juros estimados: ${formatBRL(simulation.totalInterest)}.`])
+                );
+            }
+            else if (simulation.status === 'non-amortizing') {
+                result.replaceChildren(
+                    el('span', 'planning-field-label-v0', ['Pagamento insuficiente para amortizar']),
+                    el('strong', '', [formatBRL(paymentValue)]),
+                    el('small', '', [`Os juros do primeiro mês seriam ${formatBRL(simulation.firstMonthInterest)}.`])
+                );
+            }
+            else {
+                result.replaceChildren(
+                    el('span', 'planning-field-label-v0', ['Prazo acima do limite da simulação']),
+                    el('strong', '', [`Mais de ${simulation.months} meses`]),
+                    el('small', '', [`Após esse período ainda restariam ${formatBRL(simulation.remainingBalance)}.`])
+                );
+            }
+            result.hidden = false;
+        }
+        catch (failure) {
+            error.show(failure instanceof Error ? failure.message : 'Não foi possível calcular a simulação.');
+        }
+    });
+    return el('div', 'planning-simulation-block-v0', [form]);
 }
 export async function renderDebtListV0(context, actions) {
     const position = await getFinancialPosition(context.repositories, context.profile.id);
@@ -114,17 +178,28 @@ export async function renderDebtDetailV0(context, debtId, actions) {
         ...(item.debt.offerExpiry ? [{ label: 'Oferta válida até', value: formatDateBR(item.debt.offerExpiry) }] : [])
     ]));
     const actionStack = el('div', 'planning-action-stack-v0');
+    let simulation = null;
     if (item.position.outstanding > ZERO_CENTS) {
         const pay = el('button', 'planning-primary-action-v0', ['Registrar pagamento']);
         pay.type = 'button';
         pay.addEventListener('click', actions.onPayment);
-        actionStack.append(pay);
+        const simulate = el('button', 'planning-secondary-action-v0', ['Simular quitação']);
+        simulate.type = 'button';
+        simulation = debtSimulationBlock(item);
+        simulation.hidden = true;
+        simulate.addEventListener('click', () => {
+            simulation.hidden = !simulation.hidden;
+            simulate.textContent = simulation.hidden ? 'Simular quitação' : 'Fechar simulação';
+        });
+        actionStack.append(pay, simulate);
     }
     const edit = el('button', 'planning-secondary-action-v0', ['Editar']);
     edit.type = 'button';
     edit.addEventListener('click', actions.onEdit);
     actionStack.append(edit);
     root.append(actionStack);
+    if (simulation)
+        root.append(simulation);
     root.append(sectionHeadingV0('Histórico de pagamentos'));
     if (history.length === 0)
         root.append(emptyPlanningV0('Nenhum pagamento registrado.'));

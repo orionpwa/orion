@@ -1,6 +1,6 @@
-# Orion Finance — Cloudflare Pages — 12.51
+# Orion Finance — Cloudflare Pages — 12.52
 
-Orion Finance v0.1 — Fase 12.51: foco pessoal em reserva e dívidas. Todo valor reservado fica automaticamente fora do Livre para decidir, sem uma opção separada para isso. Dívidas passam a mostrar progresso da quitação e economia potencial quando houver oferta válida informada. Carteira de investimentos e mercado permanecem desativados na experiência atual, com dados antigos preservados para eventual reativação futura.
+Orion Finance v0.1 — Fase 12.52: foco pessoal em reserva e dívidas. Reservas continuam automaticamente fora do Livre para decidir. Dívidas mantêm progresso da quitação e economia potencial, e agora podem ser simuladas por pagamento mensal e juros informados sem alterar saldo, dívida ou movimentações. Carteira de investimentos e mercado permanecem desativados na experiência atual, com dados antigos preservados para eventual reativação futura.
 
 Configuração:
 - Framework: **None**
