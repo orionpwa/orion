@@ -24,14 +24,11 @@ const ROUTES = new Set([
     'patrimony-asset-value'
 ]);
 const assetLifecycle = new IndexedDbEntityLifecycleMutationGateway();
-const INVESTMENT_CHOICES = [
-    { value: 'stock-b3', label: 'Ação B3', assetClass: 'stock', venue: 'B3' },
-    { value: 'reit', label: 'FII', assetClass: 'reit', venue: 'B3' },
-    { value: 'etf', label: 'ETF B3', assetClass: 'etf', venue: 'B3' },
-    { value: 'bdr', label: 'BDR', assetClass: 'bdr', venue: 'B3' },
-    { value: 'crypto', label: 'Criptoativo', assetClass: 'crypto', venue: 'CRYPTO' },
-    { value: 'stock-us', label: 'Ação internacional', assetClass: 'stock', venue: 'US' },
-    { value: 'other', label: 'Outro listado', assetClass: 'other', venue: 'B3' }
+const INVESTMENT_CLASSES = [
+    { value: 'stock', label: 'Ação' },
+    { value: 'reit', label: 'FII' },
+    { value: 'etf', label: 'ETF' },
+    { value: 'other', label: 'Outro listado' }
 ];
 
 function valueRow(label, value) {
@@ -46,28 +43,14 @@ function detailRow(label, value) {
         el('dd', '', [value])
     ]);
 }
-function choiceDefinition(value) {
-    return INVESTMENT_CHOICES.find((item) => item.value === value) ?? INVESTMENT_CHOICES[INVESTMENT_CHOICES.length - 1];
-}
-function classLabel(instrument) {
-    if (instrument.venue === 'US' && instrument.assetClass === 'stock') return 'Ação internacional';
-    if (instrument.venue === 'CRYPTO' && instrument.assetClass === 'crypto') return 'Criptoativo';
-    if (instrument.assetClass === 'stock') return 'Ação B3';
-    if (instrument.assetClass === 'reit') return 'FII';
-    if (instrument.assetClass === 'etf') return 'ETF B3';
-    if (instrument.assetClass === 'bdr') return 'BDR';
-    return 'Outro listado';
+function classLabel(value) {
+    return INVESTMENT_CLASSES.find((item) => item.value === value)?.label ?? 'Outro';
 }
 function todayISO(now = new Date()) {
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
     const day = String(now.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
-}
-function formatTimestamp(value) {
-    if (!value || !Number.isFinite(Date.parse(value)))
-        return '—';
-    return new Date(value).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
 }
 function dateField(label, value) {
     const input = document.createElement('input');
@@ -123,12 +106,6 @@ async function renderInvestmentsRoute(context, actions) {
     create.type = 'button';
     create.addEventListener('click', actions.onCreate);
     root.append(create);
-    if (instruments.length > 0) {
-        const refresh = el('button', 'account-secondary-action-v0', ['Atualizar cotações']);
-        refresh.type = 'button';
-        refresh.addEventListener('click', actions.onRefreshQuotes);
-        root.append(refresh);
-    }
     if (snapshot.missingQuotes > 0 || snapshot.staleQuotes > 0) {
         const notes = [];
         if (snapshot.missingQuotes > 0)
@@ -146,8 +123,221 @@ async function renderInvestmentsRoute(context, actions) {
         const item = byId.get(instrument.id);
         const allocation = item ? basisPointsToPercent(allocationBasisPoints(item, snapshot.marketValue)) : '';
         const meta = item
-            ? `${formatQuantity(item.position.quantity)} un. · ${item.valuationBasis === 'market' ? 'valor de mercado' : 'valor pelo custo'}${allocation ? ` · ${allocation}` : ''}`
+            ? `${formatQuantity(item.position.quantity)} un. · ${item.valuationBasis === 'market' ? 'cotação' : 'custo'}${allocation ? ` · ${allocation}` : ''}`
             : 'Sem posição';
         const row = el('button', 'patrimony-asset-row-v1', [
             el('span', 'patrimony-asset-copy-v1', [
-                el('strong, '',
+                el('strong', '', [`${instrument.symbol} · ${instrument.name}`]),
+                el('small', '', [meta])
+            ]),
+            el('strong', 'patrimony-asset-value-v1', [formatBRL(item?.marketValue ?? ZERO_CENTS)]),
+            el('span', 'patrimony-asset-chevron-v1', ['›'])
+        ]);
+        row.type = 'button';
+        row.addEventListener('click', () => actions.onOpenDetail(instrument.id));
+        list.append(row);
+    }
+    root.append(list);
+    return root;
+}
+function renderNewInvestmentRoute(context, actions) {
+    const symbol = accountInputFieldV0('Código do ativo');
+    symbol.input.autocapitalize = 'characters';
+    symbol.input.placeholder = 'Ex.: PETR4';
+    const name = accountInputFieldV0('Nome');
+    name.input.placeholder = 'Ex.: Petrobras';
+    const assetClass = accountChoiceFieldV0('Tipo', INVESTMENT_CLASSES, 'stock');
+    const error = accountErrorV0();
+    const save = el('button', 'account-primary-action-v0', ['Salvar investimento']);
+    save.type = 'submit';
+    const form = el('form', 'account-form-v0', [
+        symbol.element,
+        name.element,
+        assetClass.element,
+        el('p', 'patrimony-form-support-v1', ['Nesta etapa, o cadastro usa B3 e valores em reais. Mercado internacional e câmbio entram em uma etapa própria.']),
+        error.element,
+        save
+    ]);
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        error.clear();
+        save.disabled = true;
+        void createInvestmentInstrument(context.repositories.investmentInstruments, {
+            profileId: context.profile.id,
+            symbol: symbol.input.value,
+            name: name.input.value,
+            assetClass: assetClass.control.value,
+            venue: 'B3',
+            currency: 'BRL'
+        }).then((created) => actions.onSaved(created.id))
+            .catch((failure) => {
+                save.disabled = false;
+                error.show(failure instanceof Error ? failure.message : 'Não foi possível cadastrar o investimento.');
+            });
+    });
+    return el('div', 'account-internal-screen-v0 account-form-screen-v0', [form]);
+}
+async function renderInvestmentDetailRoute(context, instrumentId, actions) {
+    const { instrument, position, portfolioItem } = await investmentContext(context, instrumentId);
+    const currentValue = portfolioItem?.marketValue ?? position.costBasis;
+    const result = addCents(position.realizedGainLoss ?? ZERO_CENTS, portfolioItem?.unrealizedGainLoss ?? ZERO_CENTS);
+    const root = el('div', 'patrimony-asset-detail-v1');
+    root.append(el('section', 'patrimony-asset-hero-v1', [
+        el('small', '', ['VALOR ATUAL']),
+        el('strong', '', [formatBRL(currentValue)]),
+        el('span', '', [`${instrument.symbol} · ${instrument.name}`])
+    ]));
+    root.append(el('dl', 'patrimony-asset-detail-list-v1', [
+        detailRow('Tipo', classLabel(instrument.assetClass)),
+        detailRow('Quantidade', formatQuantity(position.quantity)),
+        detailRow('Custo da posição', formatBRL(position.costBasis)),
+        detailRow('Resultado', formatBRL(result)),
+        detailRow('Base do valor', portfolioItem?.valuationBasis === 'market' ? 'Cotação' : 'Custo')
+    ]));
+    const actionsBox = el('section', 'patrimony-asset-actions-v1');
+    const buy = el('button', 'account-primary-action-v0', ['Registrar compra']);
+    buy.type = 'button';
+    buy.addEventListener('click', () => actions.onTrade('buy'));
+    const sell = el('button', 'account-secondary-action-v0', ['Registrar venda']);
+    sell.type = 'button';
+    sell.disabled = position.quantity <= 0;
+    sell.addEventListener('click', () => actions.onTrade('sell'));
+    actionsBox.append(buy, sell);
+    root.append(actionsBox);
+    if (position.quantity <= 0)
+        root.append(el('p', 'patrimony-note-v1', ['Registre uma compra para iniciar a posição.']));
+    return root;
+}
+async function renderInvestmentTradeRoute(context, instrumentId, side, actions) {
+    const { instrument, position } = await investmentContext(context, instrumentId);
+    const accounts = (await context.repositories.accounts.listByProfile(context.profile.id)).filter((item) => item.active);
+    const quantity = accountInputFieldV0('Quantidade');
+    quantity.input.inputMode = 'decimal';
+    quantity.input.placeholder = 'Ex.: 10';
+    const gross = accountMoneyFieldV0(side === 'buy' ? 'Valor bruto da compra' : 'Valor bruto da venda');
+    const fees = accountMoneyFieldV0('Taxas');
+    fees.input.value = '0,00';
+    const account = accountChoiceFieldV0('Conta de liquidação', accounts.map((item) => ({ value: item.id, label: item.name })), '');
+    const date = dateField('Data', todayISO());
+    const error = accountErrorV0();
+    const save = el('button', 'account-primary-action-v0', [side === 'buy' ? 'Registrar compra' : 'Registrar venda']);
+    save.type = 'submit';
+    const support = side === 'buy'
+        ? 'A compra reduz o saldo da conta escolhida pelo valor bruto mais as taxas.'
+        : `Posição disponível: ${formatQuantity(position.quantity)} un. A venda devolve à conta o valor líquido das taxas.`;
+    const form = el('form', 'account-form-v0', [
+        el('div', 'account-static-field-v0', [
+            el('span', 'account-field-label-v0', ['Investimento']),
+            el('strong', '', [`${instrument.symbol} · ${instrument.name}`])
+        ]),
+        quantity.element,
+        gross.element,
+        fees.element,
+        account.element,
+        date.element,
+        el('p', 'patrimony-form-support-v1', [support]),
+        error.element,
+        save
+    ]);
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        error.clear();
+        if (!account.control.value) {
+            error.show('Escolha a conta de liquidação.');
+            return;
+        }
+        save.disabled = true;
+        void recordInvestmentTrade(
+            context.repositories.investmentTrades,
+            context.repositories.investmentInstruments,
+            context.repositories.accounts,
+            context.repositories.transactions,
+            {
+                profileId: context.profile.id,
+                instrumentId: instrument.id,
+                settlementAccountId: account.control.value,
+                side,
+                quantity: quantity.input.value,
+                grossAmount: gross.input.value,
+                fees: fees.input.value,
+                date: date.input.value
+            }
+        ).then(() => actions.onCompleted(instrument.id))
+            .catch((failure) => {
+                save.disabled = false;
+                error.show(failure instanceof Error ? failure.message : 'Não foi possível registrar a operação.');
+            });
+    });
+    return el('div', 'account-internal-screen-v0 account-form-screen-v0', [form]);
+}
+
+export async function renderSummaryRoute(state, repositories, rerender) {
+    if (!ROUTES.has(state.route))
+        return null;
+    if ((state.route === 'patrimony-asset-detail' || state.route === 'patrimony-asset-edit' || state.route === 'patrimony-asset-value') && !state.selectedAssetId)
+        state.route = 'patrimony-assets';
+    if ((state.route === 'patrimony-investment-detail' || state.route === 'patrimony-investment-trade') && !state.selectedInvestmentId)
+        state.route = 'patrimony-investments';
+    if (state.route === 'patrimony-investment-trade' && state.selectedInvestmentSide !== 'buy' && state.selectedInvestmentSide !== 'sell')
+        state.route = 'patrimony-investment-detail';
+    const context = { repositories, profile: state.profile, lifecycle: assetLifecycle };
+    if (state.route === 'summary') {
+        return renderHomeV0(repositories, state.profile, {
+            onOpenMovements: () => { state.route = 'movements'; rerender(); },
+            onOpenPatrimony: () => { state.route = 'patrimony'; rerender(); }
+        });
+    }
+    if (state.route === 'patrimony') {
+        return renderPatrimonyRoute(repositories, state.profile, {
+            onManageAssets: () => { state.route = 'patrimony-assets'; rerender(); },
+            onOpenInvestments: () => { state.route = 'patrimony-investments'; rerender(); }
+        });
+    }
+    if (state.route === 'patrimony-investments') {
+        return renderInvestmentsRoute(context, {
+            onCreate: () => { state.route = 'patrimony-investment-new'; rerender(); },
+            onOpenDetail: (id) => { state.selectedInvestmentId = id; state.route = 'patrimony-investment-detail'; rerender(); }
+        });
+    }
+    if (state.route === 'patrimony-investment-new') {
+        return renderNewInvestmentRoute(context, {
+            onSaved: (id) => { state.selectedInvestmentId = id; state.route = 'patrimony-investment-detail'; rerender(); }
+        });
+    }
+    if (state.route === 'patrimony-investment-detail') {
+        return renderInvestmentDetailRoute(context, state.selectedInvestmentId, {
+            onTrade: (side) => { state.selectedInvestmentSide = side; state.route = 'patrimony-investment-trade'; rerender(); }
+        });
+    }
+    if (state.route === 'patrimony-investment-trade') {
+        return renderInvestmentTradeRoute(context, state.selectedInvestmentId, state.selectedInvestmentSide, {
+            onCompleted: () => { state.route = 'patrimony-investment-detail'; rerender(); }
+        });
+    }
+    if (state.route === 'patrimony-assets') {
+        return renderAssetListV1(context, {
+            onCreate: () => { state.route = 'patrimony-asset-new'; rerender(); },
+            onOpenDetail: (id) => { state.selectedAssetId = id; state.route = 'patrimony-asset-detail'; rerender(); }
+        });
+    }
+    if (state.route === 'patrimony-asset-new') {
+        return renderNewAssetV1(context, {
+            onSaved: (id) => { state.selectedAssetId = id; state.route = 'patrimony-asset-detail'; rerender(); }
+        });
+    }
+    if (state.route === 'patrimony-asset-detail') {
+        return renderAssetDetailV1(context, state.selectedAssetId, {
+            onEdit: () => { state.route = 'patrimony-asset-edit'; rerender(); },
+            onUpdateValue: () => { state.route = 'patrimony-asset-value'; rerender(); },
+            onDeactivated: () => { state.selectedAssetId = null; state.route = 'patrimony-assets'; rerender(); }
+        });
+    }
+    if (state.route === 'patrimony-asset-edit') {
+        return renderEditAssetV1(context, state.selectedAssetId, {
+            onSaved: () => { state.route = 'patrimony-asset-detail'; rerender(); }
+        });
+    }
+    return renderAssetValueV1(context, state.selectedAssetId, {
+        onCompleted: () => { state.route = 'patrimony-asset-detail'; rerender(); }
+    });
+}
