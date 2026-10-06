@@ -52,6 +52,15 @@ export async function getDashboardSnapshot(repositories, profileId, now = new Da
         .filter((item) => item !== null)
         .sort((left, right) => left.dueDate.localeCompare(right.dueDate) || left.name.localeCompare(right.name, 'pt-BR'))
         .slice(0, 3);
+    const debtOutstanding = position.debts.reduce((total, item) => total + item.position.outstanding, 0);
+    const debtOpening = position.debts.reduce((total, item) => total + item.debt.openingBalance, 0);
+    const debtPaid = position.debts.reduce((total, item) => total + item.position.paid, 0);
+    const allocations = position.allocations.map((allocation) => ({
+        id: allocation.id,
+        name: allocation.name,
+        amount: allocation.amount,
+        ...(allocation.targetAmount !== undefined ? { targetAmount: allocation.targetAmount } : {})
+    }));
     return {
         accounts,
         transactions,
@@ -65,6 +74,10 @@ export async function getDashboardSnapshot(repositories, profileId, now = new Da
         netWorth: position.netWorth.netWorth,
         plannedExpense: position.commitments.plannedExpense,
         allocated: position.totalAllocated,
+        allocations,
+        debtOutstanding,
+        debtOpening,
+        debtPaid,
         status: financialStatusFor({
             availableNow,
             freeToDecide: position.freeToDecide,
