@@ -12,6 +12,9 @@ function monthKey(now) {
 function todayKey(now) {
     return `${monthKey(now)}-${String(now.getDate()).padStart(2, '0')}`;
 }
+function isRestrictedBenefit(account) {
+    return account.type === 'benefit' || account.institutionId === 'caju';
+}
 export async function getFinancialPosition(repositories, profileId, now = new Date()) {
     const [accounts, transactions, cards, debts, assets, allocations, recurrences, recurrenceMonths, instruments, trades] = await Promise.all([
         repositories.accounts.listByProfile(profileId), repositories.transactions.listByProfile(profileId),
@@ -25,10 +28,17 @@ export async function getFinancialPosition(repositories, profileId, now = new Da
     const rawCashValues = activeAccounts.map((item) => balances.get(item.id) ?? ZERO_CENTS);
     const cashValues = rawCashValues.filter((value) => value >= 0);
     const accountLiabilities = rawCashValues.filter((value) => value < 0).map((value) => cents(-value));
-    const eligibleAccounts = activeAccounts.filter((item) => item.includeInAvailable !== false);
+    const benefitAccounts = activeAccounts.filter(isRestrictedBenefit);
+    const benefitAccountIds = new Set(benefitAccounts.map((item) => item.id));
+    const eligibleAccounts = activeAccounts.filter((item) => item.includeInAvailable !== false && !benefitAccountIds.has(item.id));
     const eligibleAccountIds = new Set(eligibleAccounts.map((item) => item.id));
     const availableValues = eligibleAccounts.map((item) => balances.get(item.id) ?? ZERO_CENTS);
     const availableNow = sumCents(availableValues);
+    const benefits = benefitAccounts.map((account) => ({
+        account,
+        balance: balances.get(account.id) ?? ZERO_CENTS
+    }));
+    const benefitTotal = sumCents(benefits.map((item) => item.balance));
     const cashTotal = totalCash(balances);
     const activeAllocations = allocations.filter((item) => item.active);
     const totalAllocated = sumCents(activeAllocations.filter((item) => eligibleAccountIds.has(item.accountId)).map((item) => item.amount));
@@ -63,6 +73,7 @@ export async function getFinancialPosition(repositories, profileId, now = new Da
     return {
         availableNow, totalCash: cashTotal, totalAllocated,
         freeToDecide: subtractCents(availableNow, reserved), commitments,
+        benefits, benefitTotal,
         cards: positionedCards, debts: positionedDebts, assets: positionedAssets, investments: positionedInvestments,
         allocations: activeAllocations, recurrences: recurrences.filter((item) => item.active), recurrenceMonths,
         netWorth
