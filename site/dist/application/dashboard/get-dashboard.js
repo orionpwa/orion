@@ -65,6 +65,8 @@ export async function getDashboardSnapshot(repositories, profileId, now = new Da
         accounts,
         transactions,
         balances,
+        benefits: position.benefits,
+        benefitTotal: position.benefitTotal,
         availableNow,
         incomeMonth: summary.income,
         expenseMonth: summary.expenseRecognized,
