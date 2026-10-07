@@ -88,7 +88,7 @@ export function parseFinancialReportText(source) {
         /tributa[cç][aã]o exclusiva(?:\/definitiva)?/i
     ]);
     const irrf = moneyAfter(text, [
-        /imposto(?:\s+sobre a renda)? retido na fonte/i,
+        /imposto(?:\s+(?:sobre a renda|de renda))?\s+retido na fonte/i,
         /\birrf\b/i
     ]);
     const known = [year, institutionName, institutionCnpj, yearEndBalance, taxableIncome, exemptIncome, exclusiveIncome, irrf]
