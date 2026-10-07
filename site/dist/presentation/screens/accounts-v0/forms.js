@@ -8,6 +8,9 @@ import { accountChoiceFieldV0, accountErrorV0, accountInputFieldV0, accountMoney
 function availableInstitutions() {
     return listInstitutions().filter((item) => VISIBLE_INSTITUTIONS_V0.includes(item.id));
 }
+function isRestrictedBenefit(institutionId, type) {
+    return institutionId === 'caju' || type === 'benefit';
+}
 export function renderNewAccountV0(context, actions) {
     const institutions = availableInstitutions();
     const institution = accountChoiceFieldV0('Instituição', institutions.map((item) => ({ value: item.id, label: item.name })), 'inter');
@@ -15,16 +18,18 @@ export function renderNewAccountV0(context, actions) {
     const name = accountInputFieldV0('Nome da conta');
     const balance = accountMoneyFieldV0('Saldo inicial');
     let last = '';
-    const syncName = () => {
+    const syncInstitution = () => {
         const selected = getInstitution(institution.control.value);
         const current = name.input.value.trim();
         if (selected && (!current || current === last)) {
-            name.input.value = selected.name;
-            last = selected.name;
+            name.input.value = selected.id === 'caju' ? 'Caju · VA' : selected.name;
+            last = name.input.value;
         }
+        if (selected?.id === 'caju')
+            type.control.value = 'benefit';
     };
-    institution.control.addEventListener('change', syncName);
-    syncName();
+    institution.control.addEventListener('change', syncInstitution);
+    syncInstitution();
     const error = accountErrorV0();
     const save = el('button', 'account-primary-action-v0', ['Salvar conta']);
     save.type = 'submit';
@@ -69,9 +74,22 @@ export async function renderEditAccountV0(context, accountId, actions) {
     const type = accountChoiceFieldV0('Tipo de conta', ACCOUNT_TYPE_OPTIONS, account.type ?? 'other');
     const availability = accountChoiceFieldV0('Disponibilidade', [
         { value: 'yes', label: 'Disponível para uso' },
-        { value: 'no', label: 'Não disponível' }
+        { value: 'no', label: 'Não disponível / benefício restrito' }
     ], account.includeInAvailable === false ? 'no' : 'yes');
     const name = accountInputFieldV0('Nome da conta', account.name);
+    const syncAvailability = () => {
+        const restricted = isRestrictedBenefit(institution.control.value, type.control.value);
+        if (restricted)
+            availability.control.value = 'no';
+        availability.control.disabled = restricted;
+    };
+    institution.control.addEventListener('change', () => {
+        if (institution.control.value === 'caju')
+            type.control.value = 'benefit';
+        syncAvailability();
+    });
+    type.control.addEventListener('change', syncAvailability);
+    syncAvailability();
     const error = accountErrorV0();
     const save = el('button', 'account-primary-action-v0', ['Salvar alterações']);
     save.type = 'submit';
