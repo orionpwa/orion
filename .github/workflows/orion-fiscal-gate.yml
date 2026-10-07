@@ -24,84 +24,26 @@ jobs:
           set -euo pipefail
           test -s site/dist/application/documents/parse-income-report.js
           test -s site/dist/application/documents/reconcile-income-report.js
+          test -s site/dist/application/documents/parse-financial-report.js
           test -s site/dist/presentation/screens/income-reports-v1.js
+          test -s site/dist/presentation/screens/financial-reports-v1.js
           test -s site/dist/presentation/screens/fiscal-v1.js
-          grep -q "DB_VERSION = 2" site/dist/data/documents/database.js
-          grep -q "DOCUMENTS_BACKUP_FORMAT_VERSION = 2" site/dist/data/documents/backup.js
-          grep -q "backup.formatVersion !== 1" site/dist/data/documents/backup.js
-          grep -q "income-report" site/dist/data/documents/backup.js
-          grep -q "income-reports" site/dist/app/routes/summary.js
-          grep -q "Fiscal" site/dist/presentation/shell.js
+          grep -q "DB_VERSION = 3" site/dist/data/documents/database.js
+          grep -q "FINANCIAL_REPORTS_STORE = 'financialReports'" site/dist/data/documents/database.js
+          grep -q "DOCUMENTS_BACKUP_FORMAT_VERSION = 3" site/dist/data/documents/backup.js
+          grep -q "financial-report" site/dist/data/documents/backup.js
+          grep -q "financial-reports" site/dist/app/routes/summary.js
 
-      - name: Check annual income report parser
-        shell: bash
-        run: |
-          set -euo pipefail
-          node --input-type=module <<'NODE'
-          import { parseIncomeReportText } from './site/dist/application/documents/parse-income-report.js';
-
-          const sample = `INFORME DE RENDIMENTOS
-          Ano-calendário: 2026
-          Nome da Fonte Pagadora: EMPRESA EXEMPLO LTDA
-          CNPJ: 12.345.678/0001-90
-          Total dos rendimentos (inclusive férias) R$ 30.000,00
-          Contribuição previdenciária oficial R$ 2.500,00
-          Imposto sobre a renda retido na fonte R$ 600,00
-          Décimo terceiro salário R$ 2.500,00
-          IRRF sobre 13º R$ 100,00`;
-
-          const parsed = parseIncomeReportText(sample);
-          const expected = {
-            year: 2026,
-            employerCnpj: '12.345.678/0001-90',
-            taxableIncome: 3000000,
-            officialPension: 250000,
-            irrf: 60000,
-            thirteenthSalary: 250000,
-            thirteenthIrrf: 10000
-          };
-          for (const [key, value] of Object.entries(expected)) {
-            if (parsed[key] !== value) throw new Error(`Parser do Informe falhou em ${key}: ${parsed[key]} !== ${value}`);
-          }
-          if (parsed.confidence !== 'high') throw new Error('Informe completo deve ter confiança alta.');
-          NODE
-
-      - name: Check reconciliation with payslips
-        shell: bash
-        run: |
-          set -euo pipefail
-          node --input-type=module <<'NODE'
-          import { reconcileIncomeReport } from './site/dist/application/documents/reconcile-income-report.js';
-
-          const annual = {
-            year: 2026,
-            totals: {
-              grossEarnings: 3250000,
-              inssDiscount: 250000,
-              irrfDiscount: 70000
-            }
-          };
-          const report = {
-            employer: 'EMPRESA EXEMPLO LTDA',
-            employerCnpj: '12.345.678/0001-90',
-            taxableIncome: 3000000,
-            officialPension: 250000,
-            irrf: 60000,
-            thirteenthSalary: 250000,
-            thirteenthIrrf: 10000
-          };
-          const result = reconcileIncomeReport(annual, report);
-          if (result.rows.length !== 3) throw new Error('Conciliação deve comparar rendimentos, INSS e IRRF.');
-          for (const row of result.rows) {
-            if (row.status !== 'aligned' || row.difference !== 0) throw new Error(`Conciliação alinhada regrediu em ${row.label}.`);
-          }
-          NODE
+      - name: Run fiscal parsers and reconciliation
+        run: node .github/tests/fiscal-gate.mjs
 
       - name: Check fiscal safety boundaries
         shell: bash
         run: |
           set -euo pipefail
           grep -q "Diferenças são sinalizadas para revisão, não tratadas automaticamente como erro" site/dist/presentation/screens/income-reports-v1.js
+          grep -q "não altera saldo, movimentos ou patrimônio" site/dist/presentation/screens/financial-reports-v1.js
+          grep -q "não substitui nem altera o saldo atual" site/dist/presentation/screens/financial-reports-v1.js
           grep -q "sem decidir sozinho sua obrigação fiscal" site/dist/presentation/screens/fiscal-v1.js
           grep -q "não presume que um item é tributável, dedutível ou obrigatório" site/dist/presentation/screens/fiscal-v1.js
           grep -q "DATA_SCHEMA_VERSION = 5" site/dist/app/version.js
