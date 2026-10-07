@@ -5,6 +5,7 @@ import { renderDocumentsListV1, renderNewPayslipV1, renderPayslipDetailV1 } from
 import { renderDocumentsIrV1 } from '../../presentation/screens/documents-ir-v1.js';
 import { renderFiscalV1, renderFiscalDossierV1 } from '../../presentation/screens/fiscal-v1.js';
 import { renderIncomeReportsListV1, renderNewIncomeReportV1, renderIncomeReportDetailV1 } from '../../presentation/screens/income-reports-v1.js';
+import { renderFinancialReportsListV1, renderNewFinancialReportV1, renderFinancialReportDetailV1 } from '../../presentation/screens/financial-reports-v1.js';
 const ROUTES = new Set([
     'summary',
     'fiscal',
@@ -12,6 +13,9 @@ const ROUTES = new Set([
     'income-reports',
     'income-report-new',
     'income-report-detail',
+    'financial-reports',
+    'financial-report-new',
+    'financial-report-detail',
     'patrimony',
     'patrimony-assets',
     'patrimony-asset-new',
@@ -33,6 +37,8 @@ export async function renderSummaryRoute(state, repositories, rerender) {
         state.route = 'documents';
     if (state.route === 'income-report-detail' && !state.selectedIncomeReportId)
         state.route = 'income-reports';
+    if (state.route === 'financial-report-detail' && !state.selectedFinancialReportId)
+        state.route = 'financial-reports';
     const context = { repositories, profile: state.profile, lifecycle: assetLifecycle };
     if (state.route === 'summary') {
         return renderHomeV0(repositories, state.profile, {
@@ -47,6 +53,7 @@ export async function renderSummaryRoute(state, repositories, rerender) {
         return renderFiscalV1(context, {
             onOpenDossier: () => { state.route = 'fiscal-dossier'; rerender(); },
             onOpenIncomeReports: () => { state.route = 'income-reports'; rerender(); },
+            onOpenFinancialReports: () => { state.route = 'financial-reports'; rerender(); },
             onOpenIr: () => { state.route = 'documents-ir'; rerender(); },
             onOpenDocuments: () => { state.route = 'documents'; rerender(); }
         });
@@ -67,6 +74,22 @@ export async function renderSummaryRoute(state, repositories, rerender) {
     if (state.route === 'income-report-detail') {
         return renderIncomeReportDetailV1(context, state.selectedIncomeReportId, {
             onDeleted: () => { state.selectedIncomeReportId = null; state.route = 'income-reports'; rerender(); }
+        });
+    }
+    if (state.route === 'financial-reports') {
+        return renderFinancialReportsListV1(context, {
+            onCreate: () => { state.route = 'financial-report-new'; rerender(); },
+            onOpen: (id) => { state.selectedFinancialReportId = id; state.route = 'financial-report-detail'; rerender(); }
+        });
+    }
+    if (state.route === 'financial-report-new') {
+        return renderNewFinancialReportV1(context, {
+            onSaved: (id) => { state.selectedFinancialReportId = id; state.route = 'financial-report-detail'; rerender(); }
+        });
+    }
+    if (state.route === 'financial-report-detail') {
+        return renderFinancialReportDetailV1(context, state.selectedFinancialReportId, {
+            onDeleted: () => { state.selectedFinancialReportId = null; state.route = 'financial-reports'; rerender(); }
         });
     }
     if (state.route === 'documents-ir')
