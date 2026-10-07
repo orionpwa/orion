@@ -19,6 +19,9 @@ const TITLES = {
     'income-reports': 'Informe de Rendimentos',
     'income-report-new': 'Ler Informe',
     'income-report-detail': 'Informe de Rendimentos',
+    'financial-reports': 'Informes financeiros',
+    'financial-report-new': 'Ler informe financeiro',
+    'financial-report-detail': 'Informe financeiro',
     patrimony: 'Patrimônio',
     'patrimony-investments': 'Investimentos',
     'patrimony-investment-new': 'Novo investimento',
@@ -70,10 +73,12 @@ const TITLES = {
 function parentRoute(route) {
     if (route === 'patrimony' || route === 'settings')
         return 'summary';
-    if (route === 'documents' || route === 'documents-ir' || route === 'fiscal-dossier' || route === 'income-reports')
+    if (route === 'documents' || route === 'documents-ir' || route === 'fiscal-dossier' || route === 'income-reports' || route === 'financial-reports')
         return 'fiscal';
     if (route === 'income-report-new' || route === 'income-report-detail')
         return 'income-reports';
+    if (route === 'financial-report-new' || route === 'financial-report-detail')
+        return 'financial-reports';
     if (route === 'document-new' || route === 'document-detail')
         return 'documents';
     if (route === 'patrimony-assets' || route === 'patrimony-investments')
@@ -120,10 +125,12 @@ function parentRoute(route) {
 function backLabel(route) {
     if (route === 'patrimony' || route === 'settings')
         return '‹ Resumo';
-    if (route === 'documents' || route === 'documents-ir' || route === 'fiscal-dossier' || route === 'income-reports')
+    if (route === 'documents' || route === 'documents-ir' || route === 'fiscal-dossier' || route === 'income-reports' || route === 'financial-reports')
         return '‹ Fiscal';
     if (route === 'income-report-new' || route === 'income-report-detail')
         return '‹ Informes';
+    if (route === 'financial-report-new' || route === 'financial-report-detail')
+        return '‹ Bancos';
     if (route === 'document-new' || route === 'document-detail')
         return '‹ Documentos';
     if (route === 'patrimony-assets' || route === 'patrimony-investments')
