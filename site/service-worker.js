@@ -1,4 +1,4 @@
-const CACHE_NAME = "orion-0-1-0-development-12-62-static-v1";
+const CACHE_NAME = "orion-0-1-0-development-12-63-static-v1";
 const STATIC_PATHS = [
   "./",
   "./assets/institutions/bradesco.png",
@@ -40,6 +40,7 @@ const STATIC_PATHS = [
   "./dist/application/documents/annual-tax-summary.js",
   "./dist/application/documents/parse-income-report.js",
   "./dist/application/documents/reconcile-income-report.js",
+  "./dist/application/documents/parse-financial-report.js",
   "./dist/application/investments/create-instrument.js",
   "./dist/application/investments/manual-quote.js",
   "./dist/application/investments/portfolio.js",
@@ -152,6 +153,7 @@ const STATIC_PATHS = [
   "./dist/presentation/screens/documents-ir-v1.js",
   "./dist/presentation/screens/fiscal-v1.js",
   "./dist/presentation/screens/income-reports-v1.js",
+  "./dist/presentation/screens/financial-reports-v1.js",
   "./dist/presentation/screens/movements-v0/controls.js",
   "./dist/presentation/screens/movements-v0/detail.js",
   "./dist/presentation/screens/movements-v0/edit.js",
