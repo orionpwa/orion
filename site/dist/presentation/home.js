@@ -99,6 +99,16 @@ function metricCard(label, value, support, className = '') {
         el('small', 'summary-base-metric-support-v2', [support])
     ]);
 }
+function benefitRow(item) {
+    const label = item.account.institutionId === 'caju' ? 'Caju · VA' : item.account.name;
+    return el('div', 'summary-base-benefit-v2', [
+        el('div', 'summary-base-benefit-copy-v2', [
+            el('strong', '', [label]),
+            el('span', '', ['Benefício restrito · não entra no Livre para gastar'])
+        ]),
+        el('strong', 'summary-base-benefit-value-v2', [formatBRL(item.balance)])
+    ]);
+}
 function commitmentRow(item) {
     const meta = item.status === 'overdue'
         ? `Atrasado · ${shortDate(item.dueDate)}`
@@ -188,15 +198,22 @@ export async function renderHomeV0(repositories, profile, actions) {
     root.append(el('section', 'summary-base-hero-v2', [
         el('span', 'summary-base-kicker-v2', ['LIVRE PARA GASTAR']),
         el('strong', 'summary-base-hero-value-v2', [formatBRL(snapshot.freeToDecide)]),
-        el('p', 'summary-base-hero-support-v2', ['Depois de separar reservas e considerar os compromissos planejados.'])
+        el('p', 'summary-base-hero-support-v2', ['Depois de separar reservas, benefícios restritos e considerar os compromissos planejados.'])
     ]));
     root.append(phaseCard(phase, actions));
     root.append(el('div', 'summary-base-metrics-v2', [
         metricCard('Protegido', formatBRL(snapshot.allocated), 'Reservas separadas', 'protected'),
         metricCard('Comprometido', formatBRL(snapshot.plannedExpense), 'Compromissos do mês', 'committed'),
         metricCard('Dívidas', formatBRL(snapshot.debtOutstanding), 'Saldo ainda a eliminar', 'debt'),
-        metricCard('Disponível', formatBRL(snapshot.availableNow), 'Total disponível em contas', 'available')
+        metricCard('Disponível', formatBRL(snapshot.availableNow), 'Dinheiro livre em contas', 'available')
     ]));
+    if (snapshot.benefits.length > 0) {
+        const benefits = section('Benefícios');
+        for (const item of snapshot.benefits)
+            benefits.append(benefitRow(item));
+        benefits.append(el('small', 'summary-base-benefit-total-v2', [`Total em benefícios: ${formatBRL(snapshot.benefitTotal)}`]));
+        root.append(benefits);
+    }
     const nextAction = el('button', 'summary-base-next-action-v2', [phase.nextStep, el('span', '', ['›'])]);
     nextAction.type = 'button';
     nextAction.addEventListener('click', () => {

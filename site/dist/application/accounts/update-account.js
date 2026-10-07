@@ -7,12 +7,13 @@ export async function updateAccountDetails(repository, gateway, input) {
     const name = input.name.trim();
     if (!name)
         throw new TypeError('Informe um nome para a conta.');
+    const isRestrictedBenefit = input.type === 'benefit' || input.institutionId === 'caju';
     return gateway.update(input.profileId, 'account', {
         ...current,
         name,
         institutionId: input.institutionId,
-        type: input.type,
+        type: isRestrictedBenefit ? 'benefit' : input.type,
         color: input.color,
-        includeInAvailable: input.includeInAvailable
+        includeInAvailable: isRestrictedBenefit ? false : input.includeInAvailable
     });
 }

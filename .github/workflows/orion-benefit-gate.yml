@@ -1,0 +1,38 @@
+name: Orion Benefit Gate
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main, 'release/**']
+
+jobs:
+  benefit-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check restricted benefit semantics
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "input.institutionId === 'caju'" site/dist/application/accounts/create-account.js
+          grep -q "includeInAvailable: !isRestrictedBenefit" site/dist/application/accounts/create-account.js
+          grep -q "account.institutionId === 'caju'" site/dist/application/planning/get-financial-position.js
+          grep -q "Benefício restrito · não entra no Livre para gastar" site/dist/presentation/home.js
+          grep -q "'Premiação'" site/dist/presentation/screens/movements-v0/new.js
+          grep -q "Caju · VA" site/dist/presentation/home.js
+
+      - name: Check dock icons
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "movement: \['M4 8h17'" site/dist/presentation/icons.js
+          grep -q "accounts: \['M3 9l9-5 9 5'" site/dist/presentation/icons.js
+          grep -q "fiscal: \['M7 3h9l4 4v14H7z'" site/dist/presentation/icons.js

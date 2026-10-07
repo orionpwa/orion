@@ -4,7 +4,7 @@ import { el } from '../../dom.js';
 import { moneyInputFieldV0, nativeInputFieldV0, choiceFieldV0 } from './controls.js';
 import { localIsoDate } from './shared.js';
 const EXPENSE_CATEGORIES = ['Alimentação', 'Moradia', 'Transporte', 'Saúde', 'Assinaturas', 'Lazer', 'Educação', 'Outros'];
-const INCOME_CATEGORIES = ['Salário', 'Benefício', 'Rendimento', 'Venda', 'Reembolso', 'Outros'];
+const INCOME_CATEGORIES = ['Salário', 'Premiação', 'Benefício', 'Rendimento', 'Venda', 'Reembolso', 'Outros'];
 const PAYMENT_METHODS = [
     { value: 'pix', label: 'Pix' },
     { value: 'debit', label: 'Débito' },
