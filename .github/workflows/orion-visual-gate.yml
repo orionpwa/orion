@@ -22,7 +22,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -q 'ux-v0-shell.css?v=6' site/index.html
+          grep -q 'ux-v0-shell.css?v=7' site/index.html
           grep -q 'ux-v3-modern-surfaces.css?v=1' site/index.html
           node --input-type=module <<'NODE'
           import { readFileSync } from 'node:fs';
@@ -67,7 +67,7 @@ jobs:
           }
           NODE
 
-      - name: Check dock V3.1 glass proportions and icon set
+      - name: Check dock V3.2 visible glass and icon set
         shell: bash
         run: |
           set -euo pipefail
@@ -76,21 +76,27 @@ jobs:
           const shell = readFileSync('site/styles/ux-v0-shell.css', 'utf8');
           const icons = readFileSync('site/dist/presentation/icons.js', 'utf8');
           const dockRules = [
-            'width:min(356px,calc(100% - 32px - var(--safe-left) - var(--safe-right)))',
+            'left:max(16px,var(--safe-left))',
+            'right:max(16px,var(--safe-right))',
+            'width:356px',
+            'max-width:calc(100% - 32px - var(--safe-left) - var(--safe-right))',
             'min-height:72px',
             'border-radius:36px',
-            'background:rgba(9,15,24,.24)',
-            '-webkit-backdrop-filter:blur(24px) saturate(175%) brightness(1.08)',
-            'backdrop-filter:blur(24px) saturate(175%) brightness(1.08)',
+            '.bottom-nav-v0{background:transparent}',
+            'rgba(9,15,24,.13)',
+            '-webkit-backdrop-filter:blur(14px) saturate(165%) brightness(1.12)',
+            'backdrop-filter:blur(14px) saturate(165%) brightness(1.12)',
             'min-height:58px',
             'width:27px',
             'width:30px',
             'padding-bottom:calc(104px + max(12px,var(--safe-bottom)))'
           ];
           for (const rule of dockRules) {
-            if (!shell.includes(rule)) throw new Error(`Dock V3.1 perdeu a regra: ${rule}`);
+            if (!shell.includes(rule)) throw new Error(`Dock V3.2 perdeu a regra: ${rule}`);
           }
-          if (shell.includes('isolation:isolate')) throw new Error('Dock não deve recriar backdrop root no V3.1.');
+          if (shell.includes('translate3d(-50%,0,0)') || shell.includes('isolation:isolate')) {
+            throw new Error('Dock V3.2 não deve criar transform/backdrop root que esconda o fundo no WebKit.');
+          }
           const rootIcons = [
             "home: [\n        'M4.75 4.75h6v6h-6z'",
             "movement: [\n        'M5 7.25h11.5'",
