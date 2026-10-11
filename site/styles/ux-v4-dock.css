@@ -1,7 +1,11 @@
 /* Orion 0.1.0 · Dock V4 Rebuild
    Reconstruído do zero após validação física no iPhone.
    Não depende das antigas regras do shell. A superfície glass é o próprio
-   container fixo, sem pseudo-elemento escuro entre o conteúdo e o blur. */
+   container fixo, sem pseudo-elemento escuro entre o conteúdo e o blur.
+
+   Material V4.1: o fundo foi clareado e o blur reduzido para preservar sinais
+   visuais do conteúdo que passa atrás do Dock. A intenção é vidro escuro, não
+   uma placa opaca. */
 
 .bottom-nav-v0{
   position:fixed;
@@ -19,18 +23,19 @@
   align-items:center;
   gap:2px;
   overflow:hidden;
-  border:1px solid rgba(226,236,250,.17);
+  border:1px solid rgba(226,236,250,.14);
   border-radius:36px;
   background:
-    linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.012) 46%,rgba(112,163,255,.022)),
-    rgba(17,24,35,.28);
-  -webkit-backdrop-filter:blur(30px) saturate(185%) brightness(1.08);
-  backdrop-filter:blur(30px) saturate(185%) brightness(1.08);
+    linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.014) 42%,rgba(112,163,255,.018)),
+    rgba(7,13,22,.10);
+  -webkit-backdrop-filter:blur(16px) saturate(175%) brightness(1.12) contrast(1.03);
+  backdrop-filter:blur(16px) saturate(175%) brightness(1.12) contrast(1.03);
   box-shadow:
-    0 16px 42px rgba(0,0,0,.24),
-    0 3px 12px rgba(0,0,0,.12),
-    inset 0 1px 0 rgba(255,255,255,.11),
-    inset 0 -1px 0 rgba(255,255,255,.025);
+    0 14px 34px rgba(0,0,0,.18),
+    0 3px 10px rgba(0,0,0,.10),
+    inset 0 1px 0 rgba(255,255,255,.15),
+    inset 0 -1px 0 rgba(255,255,255,.018);
+  background-clip:padding-box;
   -webkit-tap-highlight-color:transparent;
 }
 
@@ -53,33 +58,33 @@
   border:0;
   border-radius:27px;
   background:transparent;
-  color:rgba(173,187,204,.76);
+  color:rgba(184,197,213,.82);
   touch-action:manipulation;
   -webkit-tap-highlight-color:transparent;
   transition:background-color .16s ease,color .16s ease,transform .16s ease,box-shadow .16s ease,opacity .16s ease;
 }
 .nav-item-v0:active{transform:scale(.955)}
 .nav-item-v0.active{
-  color:#82adff;
+  color:#86b1ff;
   background:
-    radial-gradient(circle at 50% 24%,rgba(121,169,255,.17),rgba(73,116,191,.055) 58%,rgba(25,40,64,.018) 100%),
-    rgba(49,70,102,.055);
+    radial-gradient(circle at 50% 24%,rgba(121,169,255,.13),rgba(73,116,191,.035) 58%,rgba(25,40,64,.008) 100%),
+    rgba(55,83,126,.022);
   box-shadow:
-    inset 0 0 0 1px rgba(137,181,255,.13),
-    inset 0 1px 0 rgba(255,255,255,.07),
-    0 7px 20px rgba(25,70,142,.08);
+    inset 0 0 0 1px rgba(137,181,255,.14),
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 7px 18px rgba(25,70,142,.07);
 }
 .nav-item-v0.active::after{
   content:"";
   position:absolute;
   left:50%;
   bottom:4px;
-  width:20px;
+  width:18px;
   height:2px;
   border-radius:999px;
   transform:translateX(-50%);
-  background:linear-gradient(90deg,#70a3ff,#91beff);
-  box-shadow:0 0 10px rgba(112,163,255,.38);
+  background:linear-gradient(90deg,#70a3ff,#9bc4ff);
+  box-shadow:0 0 9px rgba(112,163,255,.32);
 }
 .nav-icon-v0{
   width:27px;
@@ -88,14 +93,14 @@
   transition:width .16s ease,height .16s ease,filter .16s ease,opacity .16s ease;
 }
 .nav-icon-v0 .nav-icon-fill{opacity:.16;transition:opacity .16s ease}
-.nav-item-v0:not(.active) .nav-icon-v0{opacity:.86}
+.nav-item-v0:not(.active) .nav-icon-v0{opacity:.92}
 .nav-item-v0.active .nav-icon-v0{
-  width:30px;
-  height:30px;
+  width:29px;
+  height:29px;
   stroke-width:1.95;
-  filter:drop-shadow(0 0 8px rgba(112,163,255,.20));
+  filter:drop-shadow(0 0 7px rgba(112,163,255,.17));
 }
-.nav-item-v0.active .nav-icon-v0 .nav-icon-fill{opacity:.28}
+.nav-item-v0.active .nav-icon-v0 .nav-icon-fill{opacity:.24}
 .nav-label-v0{
   position:absolute!important;
   width:1px!important;
@@ -119,6 +124,12 @@
 ){
   padding-bottom:calc(104px + max(12px,var(--safe-bottom)));
   scroll-padding-bottom:calc(104px + max(12px,var(--safe-bottom)));
+}
+
+@media(prefers-reduced-motion:reduce){
+  .nav-item-v0,
+  .nav-icon-v0,
+  .nav-icon-v0 .nav-icon-fill{transition:none}
 }
 
 @media(max-width:340px){
