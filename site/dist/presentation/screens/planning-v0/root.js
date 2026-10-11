@@ -6,7 +6,7 @@ export async function renderPlanningRootV0(context, actions) {
     const debtTotal = sumCents(position.debts.map((item) => item.position.outstanding));
     const commitmentTotal = position.commitments.plannedExpense;
     const allocationTotal = sumCents(position.allocations.map((item) => item.amount));
-    const root = el('div', 'planning-screen-v0');
+    const root = el('div', 'planning-screen-v0 planning-root-screen-v1');
     root.append(el('p', 'planning-root-intro-v0', ['Organize o que ainda vai acontecer sem misturar planejamento com movimentações já realizadas.']));
     const rows = el('div', 'planning-domain-list-v0');
     const domain = (title, support, value, onClick) => {
