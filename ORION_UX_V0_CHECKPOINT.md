@@ -4,14 +4,16 @@
 Este arquivo é a fonte de recuperação da UX e da evolução pós-V0 do Orion. Em conflito com documentação antiga, esta base vence salvo revisão explícita.
 
 ## Base técnica atual
-- Release atual: `0.1.0-development.12.63`.
+- Release estável: `0.1.0`.
+- Baseline de desenvolvimento imediatamente anterior: `0.1.0-development.12.63`.
 - Financial Core preservado.
 - IndexedDB financeiro permanece no schema 5.
 - Backup financeiro permanece no formato v2.
 - Database financeiro: `orion_finance_v01_rebuild`.
 - Produção via Cloudflare Pages a partir de `main`, diretório `site/`.
 - Documentos e Fiscal usam armazenamento documental separado do Financial Core.
-- Backup documental evoluiu até v3 na 12.63, preservando compatibilidade com formatos documentais anteriores.
+- Banco documental v3 e backup documental v3, com compatibilidade com formatos documentais anteriores.
+- Mercado automático, nuvem, telemetria e IA permanecem desativados na versão pessoal estável.
 
 ## Checkpoints estáveis e decisões consolidadas
 - `UX-V0-FINAL-STABLE` ✅
@@ -22,6 +24,7 @@ Este arquivo é a fonte de recuperação da UX e da evolução pós-V0 do Orion.
 - `FOCO-RESERVA-DIVIDAS-STABLE` ✅
 - `RESERVA-SIMPLES-DIVIDAS-PROGRESSO-STABLE` ✅
 - `SIMULACAO-QUITACAO-STABLE` ✅
+- `ORION-0.1.0-PERSONAL-STABLE` ✅
 
 ## Arquitetura de navegação
 ### V0 congelada
@@ -49,7 +52,7 @@ Dock atual:
 4. Contas
 5. Fiscal
 
-O dock usa o padrão flutuante em cápsula. Os ícones atuais foram refinados na 12.62 e fazem parte do baseline visual da 12.63.
+O dock usa o padrão flutuante em cápsula. Os ícones foram refinados na 12.62 e fazem parte do baseline visual estável.
 
 ## Direção atual do produto
 Orion é um controlador financeiro pessoal e patrimonial. Ele registra fatos, planejamento, patrimônio e evidências documentais/fiscais sem transformar esses dados em recomendação financeira automática.
@@ -61,14 +64,16 @@ Pertence ao Orion:
 - investimentos como posição patrimonial quando essa frente estiver ativa;
 - documentos financeiros pessoais;
 - preparação e organização fiscal;
-- cotações, quando habilitadas, apenas para atualizar valor patrimonial.
+- cotações, quando habilitadas em eventual versão futura, apenas para atualizar valor patrimonial.
 
 Não pertence ao Orion:
 - recomendação de compra;
 - ranking de ativos;
 - score fundamentalista;
 - screener para decidir o que comprar;
-- transformar briefing de mercado em recomendação automática.
+- transformar briefing de mercado em recomendação automática;
+- enviar dados financeiros pessoais a IA;
+- telemetria de comportamento como requisito da experiência.
 
 O experimento de Radar da 12.45 foi explicitamente retirado na 12.46. O Orion permanece ferramenta de controle, não de recomendação.
 
@@ -238,8 +243,26 @@ Dock:
 - backup documental evolui para v3 com compatibilidade de restauração dos formatos documentais anteriores;
 - Financial Core, schema financeiro 5 e backup financeiro v2 permanecem inalterados.
 
-## Baseline visual e funcional atual: 12.63
-O estado físico validado no iPhone em 12.63 é a referência para próximas mudanças de UX.
+## Fechamento 0.1.0 - pessoal estável
+A versão `0.1.0` encerra o ciclo de desenvolvimento 12.x sem criar uma nova frente funcional.
+
+Refinamentos de fechamento:
+- remove o sufixo `development` da versão exibida;
+- sincroniza versão, cache PWA e manifesto de release;
+- explicita no app que nuvem, telemetria, IA e mercado automático estão desativados;
+- restringe a CSP externa ao CDN necessário ao leitor PDF;
+- corrige a CSP de produção para permitir PDF.js, que antes era autorizado no HTML mas bloqueado pelo header do Cloudflare;
+- adiciona `index.html` ao cache estático para robustez da primeira reabertura offline;
+- permite cachear PDF.js após a primeira utilização para melhorar uso documental offline;
+- torna explícita a separação entre backup financeiro e backup documental;
+- amplia foco visível e preferências de movimento reduzido para áreas mais novas da UX;
+- substitui a antiga verificação de investimentos por um roteiro final sem exigir dados pessoais reais;
+- adiciona `Orion Final Gate` para congelar versão, privacidade, offline, backups e fronteiras técnicas.
+
+O fechamento não altera Financial Core, schema financeiro 5, backup financeiro v2 ou regras de cálculo.
+
+## Baseline visual e funcional estável: 0.1.0
+A composição visual validada no iPhone durante a 12.63 permanece a referência da 0.1.0. O fechamento final muda robustez, segurança, clareza e acessibilidade, não a arquitetura principal.
 
 ### Resumo
 - hero `Livre para gastar`;
@@ -270,7 +293,7 @@ O estado físico validado no iPhone em 12.63 é a referência para próximas mud
 
 ### Ajustes
 - Perfil;
-- Dados e backup;
+- Dados e backup financeiro;
 - Privacidade;
 - Sobre o Orion;
 - Recomeçar com uma base nova.
@@ -281,16 +304,18 @@ O estado físico validado no iPhone em 12.63 é a referência para próximas mud
 - reserva reduz o Livre, mas não reduz o saldo real da conta;
 - pagamento é o evento que reduz dívida;
 - simulação nunca deve virar fato financeiro;
-- cotação, quando usada, altera valor patrimonial, não caixa;
+- cotação, quando usada no futuro, altera valor patrimonial, não caixa;
 - documento fiscal não altera saldo atual automaticamente;
 - benefício restrito não entra no dinheiro livre;
 - Fiscal organiza evidências e preparação, não decide sozinho obrigação tributária;
-- investimentos não devem voltar ao uso normal antes de a prioridade financeira real justificar essa frente.
+- investimentos não devem voltar ao uso normal antes de a prioridade financeira real justificar essa frente;
+- dados financeiros e documentos não devem ser enviados a serviços de IA pela versão pessoal estável;
+- nuvem, telemetria e mercado automático só podem retornar por decisão deliberada, documentada e tecnicamente revisada.
 
-## Próxima sequência
-1. Tratar `12.63` como baseline oficial de recuperação.
-2. Não reabrir decisões V0 já congeladas sem necessidade observada no uso real.
-3. Validar no iPhone os fluxos da quinta raiz Fiscal conforme documentos reais forem sendo adicionados.
-4. Continuar o marco zero pessoal apenas com dados atuais e futuros, sem reconstrução histórica obrigatória.
-5. Refinar UX somente quando o uso real revelar atrito concreto.
-6. Qualquer 12.64 deve partir deste checkpoint e preservar Financial Core, schema 5, backup financeiro v2 e as fronteiras acima, salvo mudança deliberada e documentada.
+## Estado de encerramento
+1. `0.1.0` é a versão pessoal estável e a fonte de continuidade.
+2. Não existe `12.64` planejada.
+3. O uso pessoal não precisa ser compartilhado com IA para validar o produto.
+4. O roteiro `VERIFY_AFTER_DEPLOY.md` usa somente a base de teste e navegação sem salvar fatos financeiros.
+5. Uma nova versão só deve existir para corrigir bug concreto, necessidade pessoal deliberada ou mudança explícita de escopo.
+6. Qualquer evolução futura deve preservar este checkpoint e as fronteiras acima, salvo revisão consciente e documentada.
