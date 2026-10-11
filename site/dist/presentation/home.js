@@ -38,14 +38,23 @@ function selectReserve(allocations) {
 function phaseFor(snapshot) {
     const reserve = selectReserve(snapshot.allocations);
     if (!reserve) {
+        if (snapshot.allocated > 0) {
+            return {
+                kind: 'reserve',
+                title: 'Construindo proteção financeira',
+                value: `${formatBRL(snapshot.allocated)} protegidos`,
+                percent: null,
+                nextStep: 'Você já separou dinheiro do Livre. Defina um objetivo para acompanhar sua reserva mínima com clareza.',
+                action: 'allocations'
+            };
+        }
         return {
             kind: 'foundation',
             title: 'Estruturando a base financeira',
-            value: 'Reserva mínima ainda não criada',
+            value: 'Nenhum valor protegido ainda',
             percent: null,
             nextStep: 'Crie sua reserva mínima em Planejar. O valor reservado ficará automaticamente fora do Livre para gastar.',
-            action: 'allocations',
-            actionLabel: 'Planejar reserva'
+            action: 'allocations'
         };
     }
     if (reserve.targetAmount === undefined || reserve.targetAmount <= 0) {
@@ -55,8 +64,7 @@ function phaseFor(snapshot) {
             value: `${formatBRL(reserve.amount)} protegidos`,
             percent: null,
             nextStep: 'Defina um objetivo total para a reserva para acompanhar o progresso até o próximo marco.',
-            action: 'allocations',
-            actionLabel: 'Ver reserva'
+            action: 'allocations'
         };
     }
     if (reserve.amount < reserve.targetAmount) {
@@ -67,8 +75,7 @@ function phaseFor(snapshot) {
             value: `${formatBRL(reserve.amount)} / ${formatBRL(reserve.targetAmount)}`,
             percent: percentFor(reserve.amount, reserve.targetAmount),
             nextStep: `Faltam ${formatBRL(remaining)} para concluir a reserva mínima.`,
-            action: 'allocations',
-            actionLabel: 'Ver reserva'
+            action: 'allocations'
         };
     }
     if (snapshot.debtOutstanding > 0) {
@@ -78,8 +85,7 @@ function phaseFor(snapshot) {
             value: `${formatBRL(snapshot.debtOutstanding)} ainda em aberto`,
             percent: percentFor(snapshot.debtPaid, snapshot.debtOpening),
             nextStep: 'A reserva mínima está protegida. O próximo foco é reduzir as dívidas ativas sem usar esse valor reservado.',
-            action: 'debts',
-            actionLabel: 'Ver dívidas'
+            action: 'debts'
         };
     }
     return {
@@ -88,8 +94,7 @@ function phaseFor(snapshot) {
         value: `${formatBRL(reserve.amount)} em reserva`,
         percent: 100,
         nextStep: 'Reserva mínima concluída e nenhuma dívida ativa. Continue fortalecendo a base antes de abrir uma nova frente.',
-        action: 'planning',
-        actionLabel: 'Ver planejamento'
+        action: 'planning'
     };
 }
 function metricCard(label, value, support, className = '') {
@@ -137,7 +142,7 @@ function statusCard(status) {
         ])
     ]);
 }
-function phaseCard(phase, actions) {
+function phaseCard(phase) {
     const card = el('section', `summary-base-phase-v2 ${phase.kind}`, [
         el('div', 'summary-base-phase-heading-v2', [
             el('span', 'summary-base-kicker-v2', ['SUA FASE ATUAL']),
@@ -162,17 +167,6 @@ function phaseCard(phase, actions) {
             track
         ]));
     }
-    const action = el('button', 'summary-base-phase-action-v2', [phase.actionLabel, ' ›']);
-    action.type = 'button';
-    action.addEventListener('click', () => {
-        if (phase.action === 'allocations')
-            actions.onOpenAllocations();
-        else if (phase.action === 'debts')
-            actions.onOpenDebts();
-        else
-            actions.onOpenPlanning();
-    });
-    card.append(action);
     return card;
 }
 function section(title, children = []) {
@@ -200,7 +194,7 @@ export async function renderHomeV0(repositories, profile, actions) {
         el('strong', 'summary-base-hero-value-v2', [formatBRL(snapshot.freeToDecide)]),
         el('p', 'summary-base-hero-support-v2', ['Depois de separar reservas, benefícios restritos e considerar os compromissos planejados.'])
     ]));
-    root.append(phaseCard(phase, actions));
+    root.append(phaseCard(phase));
     root.append(el('div', 'summary-base-metrics-v2', [
         metricCard('Protegido', formatBRL(snapshot.allocated), 'Reservas separadas', 'protected'),
         metricCard('Comprometido', formatBRL(snapshot.plannedExpense), 'Compromissos do mês', 'committed'),
