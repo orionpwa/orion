@@ -66,24 +66,26 @@ jobs:
           grep -q "PDFJS_CDN_HOST" site/service-worker.js
           grep -q "PDFJS_CDN_PREFIX" site/service-worker.js
 
-      - name: Check translucent dock and iOS safe area
+      - name: Check rebuilt translucent dock and iOS safe area
         shell: bash
         run: |
           set -euo pipefail
-          grep -q "position:absolute" site/styles/ux-v0-shell.css
-          grep -q "left:max(16px,var(--safe-left))" site/styles/ux-v0-shell.css
-          grep -q "right:max(16px,var(--safe-right))" site/styles/ux-v0-shell.css
-          grep -q "bottom:max(9px,calc(var(--safe-bottom) - 9px))" site/styles/ux-v0-shell.css
-          grep -q "width:356px" site/styles/ux-v0-shell.css
-          grep -q "max-width:calc(100% - 32px - var(--safe-left) - var(--safe-right))" site/styles/ux-v0-shell.css
-          grep -q "min-height:72px" site/styles/ux-v0-shell.css
-          grep -q "background:rgba(9,15,24,.065)" site/styles/ux-v0-shell.css
-          grep -q -- "-webkit-backdrop-filter:blur(20px) saturate(190%) brightness(1.16)" site/styles/ux-v0-shell.css
-          grep -q "backdrop-filter:blur(20px) saturate(190%) brightness(1.16)" site/styles/ux-v0-shell.css
-          grep -q "rgba(9,15,24,.018)" site/styles/ux-v0-shell.css
-          grep -q "app-shell-v0:not(.internal-route-v0)" site/styles/ux-v0-shell.css
-          grep -q "scroll-padding-bottom" site/styles/ux-v0-shell.css
-          grep -q "ux-v0-shell.css?v=8" site/index.html
+          ! grep -q "\.bottom-nav-v0" site/styles/ux-v0-shell.css
+          ! grep -q "\.nav-item-v0" site/styles/ux-v0-shell.css
+          grep -q "position:fixed" site/styles/ux-v4-dock.css
+          grep -q "left:max(16px,var(--safe-left))" site/styles/ux-v4-dock.css
+          grep -q "right:max(16px,var(--safe-right))" site/styles/ux-v4-dock.css
+          grep -q "bottom:max(9px,calc(var(--safe-bottom) - 9px))" site/styles/ux-v4-dock.css
+          grep -q "width:356px" site/styles/ux-v4-dock.css
+          grep -q "max-width:calc(100% - 32px - var(--safe-left) - var(--safe-right))" site/styles/ux-v4-dock.css
+          grep -q "min-height:72px" site/styles/ux-v4-dock.css
+          grep -q "rgba(17,24,35,.28)" site/styles/ux-v4-dock.css
+          grep -q -- "-webkit-backdrop-filter:blur(30px) saturate(185%) brightness(1.08)" site/styles/ux-v4-dock.css
+          grep -q "backdrop-filter:blur(30px) saturate(185%) brightness(1.08)" site/styles/ux-v4-dock.css
+          grep -q "app-shell-v0:not(.internal-route-v0)" site/styles/ux-v4-dock.css
+          grep -q "scroll-padding-bottom" site/styles/ux-v4-dock.css
+          grep -q "ux-v0-shell.css?v=9" site/index.html
+          grep -q "ux-v4-dock.css?v=1" site/index.html
 
       - name: Check movement category presentation
         shell: bash
