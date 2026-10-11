@@ -1,10 +1,42 @@
 import { el } from './dom.js';
 const PATHS = {
-    home: ['M3.5 10.75 12 3.75l8.5 7', 'M5.5 9.75v9.5h13v-9.5', 'M8.75 19.25v-5.5h6.5v5.5', 'M9.25 10.75h5.5'],
-    movement: ['M4.25 7.25h11.5', 'm13.25 4.75 2.5 2.5-2.5 2.5', 'M19.75 16.75H8.25', 'm10.75 14.25-2.5 2.5 2.5 2.5', 'M5.25 12h13.5'],
-    plan: ['M6.25 5.25h11.5a2 2 0 0 1 2 2v10.5a2 2 0 0 1-2 2H6.25a2 2 0 0 1-2-2V7.25a2 2 0 0 1 2-2Z', 'M8 3.5v3.75', 'M16 3.5v3.75', 'M4.25 9.5h15.5', 'm8.75 14.5 1.75 1.75 3.75-4'],
-    accounts: ['M5.25 6.5h12.5a2 2 0 0 1 2 2v9.25a2 2 0 0 1-2 2H5.25a2 2 0 0 1-2-2V8.5a2 2 0 0 1 2-2Z', 'M7 4.5h9.5a1.75 1.75 0 0 1 1.75 1.75v.25H7z', 'M3.25 10h16.5', 'M15.5 12.5h4.25v4H15.5a2 2 0 1 1 0-4Z', 'M17.35 14.5h.01'],
-    fiscal: ['M6 3.75h8.25L18 7.5v12.75H6z', 'M14.25 3.75v4H18', 'M8.75 10.5h4.5', 'M8.75 13.25h2.75', 'm10.25 16.25 1.8 1.8 4-4.5'],
+    home: [
+        'M4.75 4.75h6v6h-6z',
+        'M13.25 4.75h6v4.25h-6z',
+        'M13.25 11.25h6v8h-6z',
+        'M4.75 13.25h6v6h-6z',
+        { d: 'M14.65 12.65h3.2v5.2h-3.2z', fill: 'currentColor', stroke: 'none', className: 'nav-icon-fill' }
+    ],
+    movement: [
+        'M5 7.25h11.5',
+        'm14 4.75 2.5 2.5-2.5 2.5',
+        'M19 16.75H7.5',
+        'm10 14.25-2.5 2.5 2.5 2.5',
+        { d: 'M10 10.25h4a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v0a2 2 0 0 1 2-2Z', fill: 'currentColor', stroke: 'none', className: 'nav-icon-fill' }
+    ],
+    plan: [
+        'M6 5.25h12a2 2 0 0 1 2 2v10.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7.25a2 2 0 0 1 2-2Z',
+        'M8 3.5v3.75',
+        'M16 3.5v3.75',
+        'M4 9.25h16',
+        'm9 14.25 1.8 1.8 4-4.35',
+        { d: 'M5.5 6.75h13v1.25h-13z', fill: 'currentColor', stroke: 'none', className: 'nav-icon-fill' }
+    ],
+    accounts: [
+        'M6.25 5h10.5a2 2 0 0 1 2 2v1.25H6.25a2 2 0 0 0-2 2V7a2 2 0 0 1 2-2Z',
+        'M5.25 8.25h13.5a2 2 0 0 1 2 2v7.75a2 2 0 0 1-2 2H5.25a2 2 0 0 1-2-2v-7.75a2 2 0 0 1 2-2Z',
+        'M3.25 11h17.5',
+        'M15.25 13h5.5v3.5h-5.5a1.75 1.75 0 1 1 0-3.5Z',
+        { d: 'M6.25 13h4v2.5h-4z', fill: 'currentColor', stroke: 'none', className: 'nav-icon-fill' }
+    ],
+    fiscal: [
+        'M6 3.75h8.25L18 7.5v12.75H6z',
+        'M14.25 3.75v4H18',
+        'M8.75 10.25h4.75',
+        'M8.75 13h3.25',
+        'm10.25 16.25 1.8 1.8 4-4.5',
+        { d: 'M15 14.5a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5Z', fill: 'currentColor', stroke: 'none', className: 'nav-icon-fill' }
+    ],
     plus: ['M12 5v14', 'M5 12h14'],
     chevron: ['m9 6 6 6-6 6'],
     wallet: ['M4 7h16v12H4z', 'M4 10h16', 'M15 14h3'],
@@ -30,9 +62,16 @@ export function icon(name, className = 'icon') {
     svg.setAttribute('viewBox', '0 0 24 24');
     svg.setAttribute('aria-hidden', 'true');
     svg.classList.add(className);
-    for (const d of PATHS[name]) {
+    for (const segment of PATHS[name]) {
+        const spec = typeof segment === 'string' ? { d: segment } : segment;
         const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttribute('d', d);
+        path.setAttribute('d', spec.d);
+        if (spec.fill)
+            path.setAttribute('fill', spec.fill);
+        if (spec.stroke)
+            path.setAttribute('stroke', spec.stroke);
+        if (spec.className)
+            path.setAttribute('class', spec.className);
         svg.append(path);
     }
     return svg;
