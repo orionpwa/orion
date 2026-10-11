@@ -22,6 +22,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          grep -q 'ux-v0-shell.css?v=4' site/index.html
           grep -q 'ux-v3-modern-surfaces.css?v=1' site/index.html
           node --input-type=module <<'NODE'
           import { readFileSync } from 'node:fs';
@@ -63,6 +64,38 @@ jobs:
           if (depth !== 0) throw new Error('CSS possui bloco não fechado.');
           if (!css.includes('backdrop-filter:blur(24px) saturate(140%)')) {
             throw new Error('Topo translúcido perdeu o material definido.');
+          }
+          NODE
+
+      - name: Check dock V2 proportions and icon set
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { readFileSync } from 'node:fs';
+          const shell = readFileSync('site/styles/ux-v0-shell.css', 'utf8');
+          const icons = readFileSync('site/dist/presentation/icons.js', 'utf8');
+          const dockRules = [
+            'width:min(356px,calc(100% - 32px - var(--safe-left) - var(--safe-right)))',
+            'min-height:72px',
+            'border-radius:36px',
+            'backdrop-filter:blur(30px) saturate(155%)',
+            'min-height:58px',
+            'width:27px',
+            'width:30px'
+          ];
+          for (const rule of dockRules) {
+            if (!shell.includes(rule)) throw new Error(`Dock V2 perdeu a regra: ${rule}`);
+          }
+          const rootIcons = [
+            "home: ['M3.75 10.5 12 3.75l8.25 6.75'",
+            "movement: ['M4.25 7.75h14.5'",
+            "plan: ['M6.25 5.25h11.5a2 2 0 0 1 2 2v10.5a2 2 0 0 1-2 2H6.25a2 2 0 0 1-2-2V7.25a2 2 0 0 1 2-2Z'",
+            "accounts: ['M5.25 6.25h12.5a2 2 0 0 1 2 2v9.5a2 2 0 0 1-2 2H5.25a2 2 0 0 1-2-2V8.25a2 2 0 0 1 2-2Z'",
+            "fiscal: ['M6.5 3.75h8l3.5 3.5v13H6.5z'"
+          ];
+          for (const marker of rootIcons) {
+            if (!icons.includes(marker)) throw new Error(`Ícone principal não corresponde ao conjunto V2: ${marker}`);
           }
           NODE
 
