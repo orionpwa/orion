@@ -1,0 +1,76 @@
+name: Orion Visual Gate
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  visual-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check modern visual layer is loaded last
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'ux-v3-modern-surfaces.css?v=1' site/index.html
+          node --input-type=module <<'NODE'
+          import { readFileSync } from 'node:fs';
+          const html = readFileSync('site/index.html', 'utf8');
+          const modern = html.indexOf('ux-v3-modern-surfaces.css?v=1');
+          const coherence = html.indexOf('ux-v2-summary-coherence.css?v=3');
+          if (modern < 0 || coherence < 0 || modern < coherence) {
+            throw new Error('A camada moderna deve ser carregada depois das camadas V2.');
+          }
+          NODE
+
+      - name: Check visual layer structure
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { readFileSync } from 'node:fs';
+          const css = readFileSync('site/styles/ux-v3-modern-surfaces.css', 'utf8');
+          const required = [
+            '.app-header-v0',
+            '.movements-filter-button-v0',
+            '.movement-row-v0',
+            '.planning-domain-list-v0',
+            '.accounts-account-section-v1',
+            '.settings-profile-summary-v0',
+            '.settings-list-v0',
+            '.fiscal-hero-v1',
+            '.fiscal-action-v1'
+          ];
+          for (const selector of required) {
+            if (!css.includes(selector)) throw new Error(`Refinamento ausente para ${selector}`);
+          }
+          let depth = 0;
+          for (const char of css) {
+            if (char === '{') depth += 1;
+            if (char === '}') depth -= 1;
+            if (depth < 0) throw new Error('CSS possui fechamento de bloco excedente.');
+          }
+          if (depth !== 0) throw new Error('CSS possui bloco não fechado.');
+          if (!css.includes('backdrop-filter:blur(24px) saturate(140%)')) {
+            throw new Error('Topo translúcido perdeu o material definido.');
+          }
+          NODE
+
+      - name: Protect financial core and release identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "APP_VERSION = '0.1.0'" site/dist/app/version.js
+          grep -q "DATA_SCHEMA_VERSION = 5" site/dist/app/version.js
+          grep -q "BACKUP_FORMAT_VERSION = 2" site/dist/app/version.js
+          grep -q 'const CACHE_NAME = "orion-0-1-0-static-v1";' site/service-worker.js
