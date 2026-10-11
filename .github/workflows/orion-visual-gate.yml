@@ -22,17 +22,19 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -q 'ux-v0-shell.css?v=8' site/index.html
+          grep -q 'ux-v0-shell.css?v=9' site/index.html
           grep -q 'ux-v3-modern-surfaces.css?v=1' site/index.html
           grep -q 'ux-v4-movements.css?v=1' site/index.html
+          grep -q 'ux-v4-dock.css?v=1' site/index.html
           node --input-type=module <<'NODE'
           import { readFileSync } from 'node:fs';
           const html = readFileSync('site/index.html', 'utf8');
           const coherence = html.indexOf('ux-v2-summary-coherence.css?v=3');
           const modern = html.indexOf('ux-v3-modern-surfaces.css?v=1');
           const movements = html.indexOf('ux-v4-movements.css?v=1');
-          if (coherence < 0 || modern < coherence || movements < modern) {
-            throw new Error('As camadas modernas precisam respeitar V2 → V3 → Movimentos V4.');
+          const dock = html.indexOf('ux-v4-dock.css?v=1');
+          if (coherence < 0 || modern < coherence || movements < modern || dock < movements) {
+            throw new Error('As camadas modernas precisam respeitar V2 → V3 → Movimentos V4 → Dock V4.');
           }
           NODE
 
@@ -44,6 +46,7 @@ jobs:
           import { readFileSync } from 'node:fs';
           const css = readFileSync('site/styles/ux-v3-modern-surfaces.css', 'utf8');
           const movementsCss = readFileSync('site/styles/ux-v4-movements.css', 'utf8');
+          const dockCss = readFileSync('site/styles/ux-v4-dock.css', 'utf8');
           const required = [
             '.app-header-v0',
             '.movements-filter-button-v0',
@@ -68,7 +71,20 @@ jobs:
           for (const selector of movementRequired) {
             if (!movementsCss.includes(selector)) throw new Error(`Movimentos V4 perdeu ${selector}`);
           }
-          for (const content of [css, movementsCss]) {
+          const dockRequired = [
+            '.bottom-nav-v0',
+            'position:fixed',
+            'background:',
+            'rgba(17,24,35,.28)',
+            '-webkit-backdrop-filter:blur(30px) saturate(185%) brightness(1.08)',
+            'backdrop-filter:blur(30px) saturate(185%) brightness(1.08)',
+            '.nav-item-v0.active',
+            'padding-bottom:calc(104px + max(12px,var(--safe-bottom)))'
+          ];
+          for (const marker of dockRequired) {
+            if (!dockCss.includes(marker)) throw new Error(`Dock V4 perdeu ${marker}`);
+          }
+          for (const content of [css, movementsCss, dockCss]) {
             let depth = 0;
             for (const char of content) {
               if (char === '{') depth += 1;
@@ -102,35 +118,34 @@ jobs:
           if (!list.includes('movement-row-icon-v0 tone-${visual.tone}')) throw new Error('Lista de movimentos precisa renderizar o tom da categoria.');
           NODE
 
-      - name: Check dock V3.3 direct glass and icon set
+      - name: Check dock V4 clean rebuild and icon set
         shell: bash
         run: |
           set -euo pipefail
           node --input-type=module <<'NODE'
           import { readFileSync } from 'node:fs';
           const shell = readFileSync('site/styles/ux-v0-shell.css', 'utf8');
+          const dock = readFileSync('site/styles/ux-v4-dock.css', 'utf8');
           const icons = readFileSync('site/dist/presentation/icons.js', 'utf8');
+          if (shell.includes('.bottom-nav-v0') || shell.includes('.nav-item-v0') || shell.includes('.nav-icon-v0')) {
+            throw new Error('O Dock antigo não pode permanecer no shell: V4 deve ser a única fonte visual.');
+          }
           const dockRules = [
+            'position:fixed',
             'left:max(16px,var(--safe-left))',
             'right:max(16px,var(--safe-right))',
             'width:356px',
-            'max-width:calc(100% - 32px - var(--safe-left) - var(--safe-right))',
             'min-height:72px',
             'border-radius:36px',
-            'background:rgba(9,15,24,.065)',
-            '-webkit-backdrop-filter:blur(20px) saturate(190%) brightness(1.16)',
-            'backdrop-filter:blur(20px) saturate(190%) brightness(1.16)',
-            'rgba(9,15,24,.018)',
+            'rgba(17,24,35,.28)',
+            '-webkit-backdrop-filter:blur(30px) saturate(185%) brightness(1.08)',
+            'backdrop-filter:blur(30px) saturate(185%) brightness(1.08)',
             'min-height:58px',
             'width:27px',
-            'width:30px',
-            'padding-bottom:calc(104px + max(12px,var(--safe-bottom)))'
+            'width:30px'
           ];
           for (const rule of dockRules) {
-            if (!shell.includes(rule)) throw new Error(`Dock V3.3 perdeu a regra: ${rule}`);
-          }
-          if (shell.includes('translate3d(-50%,0,0)') || shell.includes('isolation:isolate')) {
-            throw new Error('Dock V3.3 não deve criar transform/backdrop root que esconda o fundo no WebKit.');
+            if (!dock.includes(rule)) throw new Error(`Dock V4 perdeu a regra: ${rule}`);
           }
           const rootIcons = [
             "home: [\n        'M4.75 4.75h6v6h-6z'",
