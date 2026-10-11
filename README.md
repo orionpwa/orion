@@ -1,14 +1,29 @@
-# Orion Finance — Cloudflare Pages — 12.53
+# Orion Finance — 0.1.0 pessoal estável
 
-Orion Finance v0.1 — Fase 12.53 Personal Ready. A fase ativa continua focada em reserva e dívidas, com carteira de investimentos e mercado desativados. A 12.52 de simulação de quitação foi congelada como estável e o fluxo de `Recomeçar com uma base nova` foi revisado para a transição dos dados de teste para uma base financeira real: o Orion cria e baixa um backup antes da substituição local, reabre o onboarding e permite começar pelos saldos atuais, sem exigir reconstrução do histórico anterior.
+Orion é um PWA local-first de controle financeiro, patrimonial e organização fiscal para uso pessoal. A versão 0.1.0 fecha o ciclo de desenvolvimento iniciado na Fase 12 e parte do baseline 12.63.
 
-Configuração:
-- Framework: **None**
-- Build command: **exit 0**
-- Build output directory: **site**
-- Production branch: **main**
-- Pages Functions: diretório **functions/** na raiz do projeto
+## Escopo ativo
 
-Financial Core, IndexedDB schema 5, backup v2 e migrations permanecem preservados.
+- Resumo com Livre para gastar, fase atual, valores protegidos/comprometidos, dívidas e disponível.
+- Movimentos: receitas, despesas e transferências.
+- Planejar: compromissos, dívidas, metas e reservas.
+- Contas e cartões de crédito.
+- Patrimônio e outros ativos, sem recomendação de investimento.
+- Fiscal: holerites, preparação anual, Informe de Rendimentos, informes financeiros e Dossiê Fiscal.
+- Backup/restauração local e recomeço seguro da base.
 
-A sequência oficial de entrada em uso pessoal está documentada em `PERSONAL_READY.md`.
+## Privacidade
+
+Os dados financeiros permanecem no dispositivo. Não há login, sincronização em nuvem, analytics de comportamento ou envio de dados financeiros/documentos a serviços de IA. O gateway de mercado está desativado na versão pessoal 0.1.0. A leitura de PDF é feita no navegador; a biblioteca PDF.js é obtida do CDN na primeira utilização quando ainda não estiver disponível.
+
+## Base técnica congelada
+
+- Financial Core preservado.
+- IndexedDB financeiro: schema 5.
+- Backup financeiro: formato v2.
+- Documentos: banco v3 e backup documental v3.
+- Database financeiro: `orion_finance_v01_rebuild`.
+- Produção: Cloudflare Pages, branch `main`, diretório `site/`.
+- Framework: nenhum; build command `exit 0`.
+
+O histórico de decisões e fronteiras está em `ORION_UX_V0_CHECKPOINT.md`. A checagem manual final está em `VERIFY_AFTER_DEPLOY.md`.

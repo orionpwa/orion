@@ -1,0 +1,83 @@
+name: Orion Final Gate
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main, 'release/**']
+
+jobs:
+  final-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check stable release identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "APP_VERSION = '0.1.0'" site/dist/app/version.js
+          grep -q 'const CACHE_NAME = "orion-0-1-0-static-v1";' site/service-worker.js
+          node --input-type=module <<'NODE'
+          import { readFileSync } from 'node:fs';
+          const manifest = JSON.parse(readFileSync('site/RELEASE_MANIFEST.json', 'utf8'));
+          if (manifest.appVersion !== '0.1.0') throw new Error('Manifesto não aponta para 0.1.0.');
+          if (manifest.releaseKind !== 'personal-stable') throw new Error('Release final deve ser personal-stable.');
+          if (manifest.financialCore?.dataSchemaVersion !== 5) throw new Error('Schema financeiro mudou.');
+          if (manifest.financialCore?.backupFormatVersion !== 2) throw new Error('Backup financeiro mudou.');
+          if (manifest.documents?.databaseVersion !== 3 || manifest.documents?.backupFormatVersion !== 3) throw new Error('Camada documental final incoerente.');
+          for (const key of ['cloudSyncEnabled', 'telemetryEnabled', 'aiEnabled', 'marketGatewayEnabled']) {
+            if (manifest.privacy?.[key] !== false) throw new Error(`${key} deve permanecer desativado.`);
+          }
+          NODE
+
+      - name: Check privacy boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q '"marketGatewayUrl": ""' site/runtime-config.json
+          grep -q "IA e telemetria" site/dist/presentation/screens/settings-v0/privacy.js
+          grep -q "não envia seus saldos, movimentações ou documentos para IA" site/dist/presentation/screens/settings-v0/privacy.js
+          grep -q "consulta automática de mercado está desligada" site/dist/presentation/screens/settings-v0/privacy.js
+          grep -q "telemetryEnabled.*false" site/RELEASE_MANIFEST.json
+          grep -q "aiEnabled.*false" site/RELEASE_MANIFEST.json
+          grep -q "marketGatewayEnabled.*false" site/RELEASE_MANIFEST.json
+          grep -q "connect-src 'self' https://cdnjs.cloudflare.com" site/_headers
+
+      - name: Check local-first essentials
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "DATA_SCHEMA_VERSION = 5" site/dist/app/version.js
+          grep -q "BACKUP_FORMAT_VERSION = 2" site/dist/app/version.js
+          grep -q "DB_VERSION = 3" site/dist/data/documents/database.js
+          grep -q "DOCUMENTS_BACKUP_FORMAT_VERSION = 3" site/dist/data/documents/backup.js
+          grep -q "Navegação principal" site/dist/presentation/shell.js
+          grep -q "Resumo" site/dist/presentation/shell.js
+          grep -q "Fiscal" site/dist/presentation/shell.js
+          grep -q "focus-visible" site/styles/ux-v0-refinement.css
+          grep -q '"./index.html"' site/service-worker.js
+          grep -q "PDFJS_CDN_HOST" site/service-worker.js
+          grep -q "PDFJS_CDN_PREFIX" site/service-worker.js
+
+      - name: Check backup clarity
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "Criar backup financeiro" site/dist/presentation/screens/settings-v0/data.js
+          grep -q "backup separado em Fiscal > Documentos" site/dist/presentation/screens/settings-v0/data.js
+          grep -q "Backup do arquivo documental" site/dist/presentation/screens/documents-v1.js
+
+      - name: Check final documentation
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "0.1.0 pessoal estável" README.md
+          grep -q "Verificação final após deploy" VERIFY_AFTER_DEPLOY.md
+          grep -q "Não é necessário inserir movimentações, saldos ou documentos pessoais reais" VERIFY_AFTER_DEPLOY.md
