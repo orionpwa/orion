@@ -1,0 +1,125 @@
+/* Orion 0.1.0 · Vitalidade visual
+   Camada final de acabamento: cor funcional sem alterar estrutura ou regras. */
+
+:root{
+  --orion-v2-bg:#070b11;
+  --orion-v2-surface:#0d151f;
+  --orion-v2-surface-2:#101a27;
+  --orion-v2-line:rgba(129,158,198,.16);
+  --orion-v2-blue:#70a3ff;
+  --orion-v2-cyan:#67c9ff;
+  --orion-v2-gold:#d9b96f;
+  --orion-v2-green:#63d79e;
+  --orion-v2-red:#ff8c86;
+}
+
+/* Fundos das raízes e telas internas: continuam escuros, mas deixam de ser preto plano. */
+.movements-screen-v0,
+.movement-internal-screen-v0,
+.planning-screen-v0,
+.accounts-screen-v0,
+.account-internal-screen-v0,
+.settings-screen-v0{
+  background:
+    radial-gradient(circle at 92% 2%,rgba(112,163,255,.055),transparent 26%),
+    linear-gradient(180deg,#070b11 0%,#080d14 56%,#070b11 100%);
+}
+
+/* Ações de texto passam a compartilhar a assinatura safira do Orion. */
+.movements-filter-button-v0,
+.movements-text-action-v0,
+.planning-inline-primary-v0,
+.accounts-inline-primary-v0,
+.accounts-text-action-v0{
+  color:var(--orion-v2-blue);
+}
+.movements-filter-chevron-v0,
+.planning-domain-side-v0>span,
+.planning-entity-chevron-v0,
+.account-row-chevron-v0,
+.account-choice-chevron-v0,
+.settings-row-chevron-v0{
+  color:#7899c4;
+}
+
+/* Movimentos: entrada e saída voltam a ser reconhecíveis sem depender só do sinal. */
+.movement-row-value-v0.positive,
+.movement-detail-amount-v0.positive{color:var(--orion-v2-green)}
+.movement-row-value-v0.negative,
+.movement-detail-amount-v0.negative{color:var(--orion-v2-red)}
+.movement-row-value-v0.neutral,
+.movement-detail-amount-v0.neutral{color:#b8c3d2}
+.movement-kind-picker-v0{border-color:rgba(112,163,255,.16);background:rgba(8,16,26,.58)}
+.movement-kind-button-v0.active{background:linear-gradient(145deg,#5f96f8,#3d7fe9);color:#fff;box-shadow:0 7px 18px rgba(70,132,236,.16)}
+
+/* Controles recebem profundidade azulada e foco consistente. */
+.movement-field-control-v0,
+.planning-field-control-v0,
+.account-field-control-v0,
+.settings-field-control-v0{
+  border-color:rgba(129,158,198,.24);
+  background:linear-gradient(180deg,#101923,#0d151f);
+  box-shadow:inset 0 1px rgba(255,255,255,.018);
+}
+.movement-field-control-v0:focus,
+.movement-field-control-v0:focus-visible,
+.planning-field-control-v0:focus,
+.planning-field-control-v0:focus-visible,
+.account-field-control-v0:focus,
+.account-field-control-v0:focus-visible,
+.settings-field-control-v0:focus,
+.settings-field-control-v0:focus-visible{
+  border-color:rgba(112,163,255,.72);
+  box-shadow:0 0 0 3px rgba(112,163,255,.09);
+}
+
+/* Primárias deixam o branco puro e passam para safira. */
+.movement-button-primary-v0,
+.planning-primary-action-v0,
+.account-primary-action-v0,
+.settings-primary-action-v0:not(.danger){
+  border-color:rgba(112,163,255,.68);
+  background:linear-gradient(145deg,#689dfb,#427fdc);
+  color:#07101b;
+  box-shadow:0 9px 22px rgba(62,126,222,.16),inset 0 1px rgba(255,255,255,.18);
+}
+.movement-button-secondary-v0,
+.planning-secondary-action-v0,
+.account-secondary-action-v0,
+.settings-secondary-action-v0{
+  border-color:rgba(129,158,198,.22);
+  background:rgba(112,163,255,.025);
+}
+
+/* Planejar: cada domínio ganha um leve trilho cromático, sem virar card pesado. */
+.planning-domain-list-v0{border-radius:16px;background:linear-gradient(180deg,rgba(112,163,255,.018),transparent 56%)}
+.planning-domain-row-v0{border-top-color:rgba(129,158,198,.14)}
+.planning-domain-row-v0:first-child{border-top-color:rgba(112,163,255,.25)}
+.planning-domain-side-v0 strong{color:#dce7f5}
+.planning-goal-progress-track-v0{border:1px solid rgba(217,185,111,.16);background:#0a111a}
+.planning-goal-progress-fill-v0{background:linear-gradient(90deg,#d6b467,#edca7c);box-shadow:0 0 12px rgba(217,185,111,.16)}
+.planning-goal-progress-head-v0 strong{color:var(--orion-v2-gold)}
+
+/* Contas: logos e divisões ganham profundidade, sem colorir os saldos arbitrariamente. */
+.account-logo-v0{border:1px solid rgba(129,158,198,.15);background:linear-gradient(145deg,#121c27,#0e151e);box-shadow:0 8px 18px rgba(0,0,0,.12)}
+.account-row-v0{border-top-color:rgba(129,158,198,.14)}
+.accounts-card-section-v1{border-top-color:rgba(112,163,255,.17)}
+.accounts-section-title-v1 h2{color:#eef4fb}
+
+/* Ajustes: mantém a sobriedade, mas conversa com o restante do produto. */
+.settings-profile-summary-v0{border-bottom-color:rgba(112,163,255,.16)}
+.settings-list-v0,
+.settings-data-action-host-v0,
+.settings-info-list-v0{border-top-color:rgba(129,158,198,.15)}
+.settings-row-v0,
+.settings-action-v0,
+.settings-info-block-v0{border-bottom-color:rgba(129,158,198,.14)}
+.settings-row-v0:active,
+.settings-action-v0:active{background:rgba(112,163,255,.035)}
+.settings-row-value-v0{color:#aebed2}
+.settings-support-v0 h2{color:#eef4fb}
+
+/* Foco final: visível e coerente com a cor de ação do Orion. */
+.app-shell-v0 :where(button,input,select,textarea,a[href],[role="button"]):focus-visible{
+  outline-color:rgba(112,163,255,.84);
+}
