@@ -25,14 +25,14 @@ jobs:
           grep -q 'ux-v0-shell.css?v=9' site/index.html
           grep -q 'ux-v3-modern-surfaces.css?v=1' site/index.html
           grep -q 'ux-v4-movements.css?v=1' site/index.html
-          grep -q 'ux-v4-dock.css?v=2' site/index.html
+          grep -q 'ux-v4-dock.css?v=3' site/index.html
           node --input-type=module <<'NODE'
           import { readFileSync } from 'node:fs';
           const html = readFileSync('site/index.html', 'utf8');
           const coherence = html.indexOf('ux-v2-summary-coherence.css?v=3');
           const modern = html.indexOf('ux-v3-modern-surfaces.css?v=1');
           const movements = html.indexOf('ux-v4-movements.css?v=1');
-          const dock = html.indexOf('ux-v4-dock.css?v=2');
+          const dock = html.indexOf('ux-v4-dock.css?v=3');
           if (coherence < 0 || modern < coherence || movements < modern || dock < movements) {
             throw new Error('As camadas modernas precisam respeitar V2 → V3 → Movimentos V4 → Dock V4.');
           }
@@ -75,16 +75,19 @@ jobs:
             '.bottom-nav-v0',
             'position:fixed',
             'background:',
-            'rgba(7,13,22,.10)',
-            '-webkit-backdrop-filter:blur(16px) saturate(175%) brightness(1.12) contrast(1.03)',
-            'backdrop-filter:blur(16px) saturate(175%) brightness(1.12) contrast(1.03)',
+            'rgba(5,10,18,.055)',
+            '-webkit-backdrop-filter:blur(22px) saturate(190%) brightness(1.14) contrast(1.02)',
+            'backdrop-filter:blur(22px) saturate(190%) brightness(1.14) contrast(1.02)',
+            'will-change:backdrop-filter',
+            '-webkit-overflow-scrolling:auto',
+            'contain:none',
             '.nav-item-v0.active',
             'background-clip:padding-box',
             '@media(prefers-reduced-motion:reduce)',
             'padding-bottom:calc(104px + max(12px,var(--safe-bottom)))'
           ];
           for (const marker of dockRequired) {
-            if (!dockCss.includes(marker)) throw new Error(`Dock V4.1 perdeu ${marker}`);
+            if (!dockCss.includes(marker)) throw new Error(`Dock V4.2 perdeu ${marker}`);
           }
           for (const content of [css, movementsCss, dockCss]) {
             let depth = 0;
@@ -139,15 +142,17 @@ jobs:
             'width:356px',
             'min-height:72px',
             'border-radius:36px',
-            'rgba(7,13,22,.10)',
-            '-webkit-backdrop-filter:blur(16px) saturate(175%) brightness(1.12) contrast(1.03)',
-            'backdrop-filter:blur(16px) saturate(175%) brightness(1.12) contrast(1.03)',
+            'rgba(5,10,18,.055)',
+            '-webkit-backdrop-filter:blur(22px) saturate(190%) brightness(1.14) contrast(1.02)',
+            'backdrop-filter:blur(22px) saturate(190%) brightness(1.14) contrast(1.02)',
+            '-webkit-overflow-scrolling:auto',
+            'contain:none',
             'min-height:58px',
             'width:27px',
             'width:29px'
           ];
           for (const rule of dockRules) {
-            if (!dock.includes(rule)) throw new Error(`Dock V4.1 perdeu a regra: ${rule}`);
+            if (!dock.includes(rule)) throw new Error(`Dock V4.2 perdeu a regra: ${rule}`);
           }
           const rootIcons = [
             "home: [\n        'M4.75 4.75h6v6h-6z'",

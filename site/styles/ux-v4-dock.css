@@ -1,11 +1,12 @@
 /* Orion 0.1.0 · Dock V4 Rebuild
    Reconstruído do zero após validação física no iPhone.
-   Não depende das antigas regras do shell. A superfície glass é o próprio
-   container fixo, sem pseudo-elemento escuro entre o conteúdo e o blur.
+   Não depende das antigas regras do shell.
 
-   Material V4.1: o fundo foi clareado e o blur reduzido para preservar sinais
-   visuais do conteúdo que passa atrás do Dock. A intenção é vidro escuro, não
-   uma placa opaca. */
+   Material V4.2: mantém a geometria aprovada e corrige a composição no iOS.
+   As telas raiz deixam de forçar a antiga camada de momentum scrolling para
+   que o WebKit consiga amostrar o conteúdo real atrás do Dock. A película fica
+   quase transparente: se houver texto, cards ou divisórias por trás, eles devem
+   continuar reconhecíveis como formas, porém desfocados. */
 
 .bottom-nav-v0{
   position:fixed;
@@ -23,23 +24,24 @@
   align-items:center;
   gap:2px;
   overflow:hidden;
-  border:1px solid rgba(226,236,250,.14);
+  border:1px solid rgba(226,236,250,.12);
   border-radius:36px;
   background:
-    linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.014) 42%,rgba(112,163,255,.018)),
-    rgba(7,13,22,.10);
-  -webkit-backdrop-filter:blur(16px) saturate(175%) brightness(1.12) contrast(1.03);
-  backdrop-filter:blur(16px) saturate(175%) brightness(1.12) contrast(1.03);
+    linear-gradient(180deg,rgba(255,255,255,.060),rgba(255,255,255,.010) 45%,rgba(112,163,255,.012)),
+    rgba(5,10,18,.055);
+  -webkit-backdrop-filter:blur(22px) saturate(190%) brightness(1.14) contrast(1.02);
+  backdrop-filter:blur(22px) saturate(190%) brightness(1.14) contrast(1.02);
+  will-change:backdrop-filter;
   box-shadow:
-    0 14px 34px rgba(0,0,0,.18),
-    0 3px 10px rgba(0,0,0,.10),
-    inset 0 1px 0 rgba(255,255,255,.15),
-    inset 0 -1px 0 rgba(255,255,255,.018);
+    0 14px 32px rgba(0,0,0,.16),
+    0 3px 9px rgba(0,0,0,.08),
+    inset 0 1px 0 rgba(255,255,255,.14),
+    inset 0 -1px 0 rgba(255,255,255,.015);
   background-clip:padding-box;
   -webkit-tap-highlight-color:transparent;
 }
 
-/* Fallback só para engines sem backdrop-filter. O iPhone/WebKit usa a regra acima. */
+/* Fallback apenas para engines sem backdrop-filter. */
 @supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
   .bottom-nav-v0{
     background:linear-gradient(180deg,rgba(19,28,41,.94),rgba(8,13,21,.96));
@@ -58,7 +60,7 @@
   border:0;
   border-radius:27px;
   background:transparent;
-  color:rgba(184,197,213,.82);
+  color:rgba(184,197,213,.84);
   touch-action:manipulation;
   -webkit-tap-highlight-color:transparent;
   transition:background-color .16s ease,color .16s ease,transform .16s ease,box-shadow .16s ease,opacity .16s ease;
@@ -67,12 +69,12 @@
 .nav-item-v0.active{
   color:#86b1ff;
   background:
-    radial-gradient(circle at 50% 24%,rgba(121,169,255,.13),rgba(73,116,191,.035) 58%,rgba(25,40,64,.008) 100%),
-    rgba(55,83,126,.022);
+    radial-gradient(circle at 50% 24%,rgba(121,169,255,.105),rgba(73,116,191,.025) 58%,rgba(25,40,64,.005) 100%),
+    rgba(55,83,126,.014);
   box-shadow:
-    inset 0 0 0 1px rgba(137,181,255,.14),
-    inset 0 1px 0 rgba(255,255,255,.08),
-    0 7px 18px rgba(25,70,142,.07);
+    inset 0 0 0 1px rgba(137,181,255,.12),
+    inset 0 1px 0 rgba(255,255,255,.07),
+    0 6px 16px rgba(25,70,142,.055);
 }
 .nav-item-v0.active::after{
   content:"";
@@ -84,7 +86,7 @@
   border-radius:999px;
   transform:translateX(-50%);
   background:linear-gradient(90deg,#70a3ff,#9bc4ff);
-  box-shadow:0 0 9px rgba(112,163,255,.32);
+  box-shadow:0 0 9px rgba(112,163,255,.30);
 }
 .nav-icon-v0{
   width:27px;
@@ -93,14 +95,14 @@
   transition:width .16s ease,height .16s ease,filter .16s ease,opacity .16s ease;
 }
 .nav-icon-v0 .nav-icon-fill{opacity:.16;transition:opacity .16s ease}
-.nav-item-v0:not(.active) .nav-icon-v0{opacity:.92}
+.nav-item-v0:not(.active) .nav-icon-v0{opacity:.93}
 .nav-item-v0.active .nav-icon-v0{
   width:29px;
   height:29px;
   stroke-width:1.95;
-  filter:drop-shadow(0 0 7px rgba(112,163,255,.17));
+  filter:drop-shadow(0 0 7px rgba(112,163,255,.16));
 }
-.nav-item-v0.active .nav-icon-v0 .nav-icon-fill{opacity:.24}
+.nav-item-v0.active .nav-icon-v0 .nav-icon-fill{opacity:.23}
 .nav-label-v0{
   position:absolute!important;
   width:1px!important;
@@ -113,8 +115,13 @@
   border:0!important;
 }
 
-/* O conteúdo continua fisicamente atrás do dock para alimentar o blur, mas a
-   área final da rolagem garante que nenhum item fique inacessível. */
+/*
+ * Safari/iOS pode promover um scroller com -webkit-overflow-scrolling:touch
+ * para uma camada de composição separada. Quando isso ocorre, o elemento fixo
+ * recebe o fundo do shell no backdrop, mas não os pixels do conteúdo rolável.
+ * iOS moderno já possui momentum scrolling nativo, portanto as raízes usam auto
+ * enquanto o Dock estiver presente, mantendo o conteúdo no backdrop amostrado.
+ */
 .app-shell-v0:not(.internal-route-v0) :is(
   .summary-screen-v0,
   .movements-screen-v0,
@@ -122,6 +129,9 @@
   .accounts-screen-v0,
   .fiscal-screen-v1
 ){
+  -webkit-overflow-scrolling:auto;
+  contain:none;
+  isolation:auto;
   padding-bottom:calc(104px + max(12px,var(--safe-bottom)));
   scroll-padding-bottom:calc(104px + max(12px,var(--safe-bottom)));
 }
