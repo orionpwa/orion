@@ -48,6 +48,7 @@ jobs:
           grep -q "telemetryEnabled.*false" site/RELEASE_MANIFEST.json
           grep -q "aiEnabled.*false" site/RELEASE_MANIFEST.json
           grep -q "marketGatewayEnabled.*false" site/RELEASE_MANIFEST.json
+          grep -q "connect-src 'self' https://cdnjs.cloudflare.com" site/_headers
 
       - name: Check local-first essentials
         shell: bash
@@ -61,6 +62,17 @@ jobs:
           grep -q "Resumo" site/dist/presentation/shell.js
           grep -q "Fiscal" site/dist/presentation/shell.js
           grep -q "focus-visible" site/styles/ux-v0-refinement.css
+          grep -q '"./index.html"' site/service-worker.js
+          grep -q "PDFJS_CDN_HOST" site/service-worker.js
+          grep -q "PDFJS_CDN_PREFIX" site/service-worker.js
+
+      - name: Check backup clarity
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "Criar backup financeiro" site/dist/presentation/screens/settings-v0/data.js
+          grep -q "backup separado em Fiscal > Documentos" site/dist/presentation/screens/settings-v0/data.js
+          grep -q "Backup do arquivo documental" site/dist/presentation/screens/documents-v1.js
 
       - name: Check final documentation
         shell: bash
