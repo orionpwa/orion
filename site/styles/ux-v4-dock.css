@@ -1,0 +1,138 @@
+/* Orion 0.1.0 · Dock V4 Rebuild
+   Reconstruído do zero após validação física no iPhone.
+   Não depende das antigas regras do shell. A superfície glass é o próprio
+   container fixo, sem pseudo-elemento escuro entre o conteúdo e o blur. */
+
+.bottom-nav-v0{
+  position:fixed;
+  z-index:90;
+  left:max(16px,var(--safe-left));
+  right:max(16px,var(--safe-right));
+  bottom:max(9px,calc(var(--safe-bottom) - 9px));
+  width:356px;
+  max-width:calc(100% - 32px - var(--safe-left) - var(--safe-right));
+  min-height:72px;
+  margin:0 auto;
+  padding:6px 8px;
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  align-items:center;
+  gap:2px;
+  overflow:hidden;
+  border:1px solid rgba(226,236,250,.17);
+  border-radius:36px;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.012) 46%,rgba(112,163,255,.022)),
+    rgba(17,24,35,.28);
+  -webkit-backdrop-filter:blur(30px) saturate(185%) brightness(1.08);
+  backdrop-filter:blur(30px) saturate(185%) brightness(1.08);
+  box-shadow:
+    0 16px 42px rgba(0,0,0,.24),
+    0 3px 12px rgba(0,0,0,.12),
+    inset 0 1px 0 rgba(255,255,255,.11),
+    inset 0 -1px 0 rgba(255,255,255,.025);
+  -webkit-tap-highlight-color:transparent;
+}
+
+/* Fallback só para engines sem backdrop-filter. O iPhone/WebKit usa a regra acima. */
+@supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+  .bottom-nav-v0{
+    background:linear-gradient(180deg,rgba(19,28,41,.94),rgba(8,13,21,.96));
+  }
+}
+
+.bottom-nav-v0[hidden]{display:none}
+
+.nav-item-v0{
+  position:relative;
+  min-width:0;
+  min-height:58px;
+  padding:0;
+  display:grid;
+  place-items:center;
+  border:0;
+  border-radius:27px;
+  background:transparent;
+  color:rgba(173,187,204,.76);
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+  transition:background-color .16s ease,color .16s ease,transform .16s ease,box-shadow .16s ease,opacity .16s ease;
+}
+.nav-item-v0:active{transform:scale(.955)}
+.nav-item-v0.active{
+  color:#82adff;
+  background:
+    radial-gradient(circle at 50% 24%,rgba(121,169,255,.17),rgba(73,116,191,.055) 58%,rgba(25,40,64,.018) 100%),
+    rgba(49,70,102,.055);
+  box-shadow:
+    inset 0 0 0 1px rgba(137,181,255,.13),
+    inset 0 1px 0 rgba(255,255,255,.07),
+    0 7px 20px rgba(25,70,142,.08);
+}
+.nav-item-v0.active::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:4px;
+  width:20px;
+  height:2px;
+  border-radius:999px;
+  transform:translateX(-50%);
+  background:linear-gradient(90deg,#70a3ff,#91beff);
+  box-shadow:0 0 10px rgba(112,163,255,.38);
+}
+.nav-icon-v0{
+  width:27px;
+  height:27px;
+  stroke-width:1.85;
+  transition:width .16s ease,height .16s ease,filter .16s ease,opacity .16s ease;
+}
+.nav-icon-v0 .nav-icon-fill{opacity:.16;transition:opacity .16s ease}
+.nav-item-v0:not(.active) .nav-icon-v0{opacity:.86}
+.nav-item-v0.active .nav-icon-v0{
+  width:30px;
+  height:30px;
+  stroke-width:1.95;
+  filter:drop-shadow(0 0 8px rgba(112,163,255,.20));
+}
+.nav-item-v0.active .nav-icon-v0 .nav-icon-fill{opacity:.28}
+.nav-label-v0{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  padding:0!important;
+  margin:-1px!important;
+  overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;
+  border:0!important;
+}
+
+/* O conteúdo continua fisicamente atrás do dock para alimentar o blur, mas a
+   área final da rolagem garante que nenhum item fique inacessível. */
+.app-shell-v0:not(.internal-route-v0) :is(
+  .summary-screen-v0,
+  .movements-screen-v0,
+  .planning-screen-v0,
+  .accounts-screen-v0,
+  .fiscal-screen-v1
+){
+  padding-bottom:calc(104px + max(12px,var(--safe-bottom)));
+  scroll-padding-bottom:calc(104px + max(12px,var(--safe-bottom)));
+}
+
+@media(max-width:340px){
+  .bottom-nav-v0{
+    left:max(10px,var(--safe-left));
+    right:max(10px,var(--safe-right));
+    width:324px;
+    max-width:calc(100% - 20px - var(--safe-left) - var(--safe-right));
+    min-height:68px;
+    padding:5px 7px;
+    gap:1px;
+    border-radius:34px;
+  }
+  .nav-item-v0{min-height:54px;border-radius:25px}
+  .nav-icon-v0{width:25px;height:25px}
+  .nav-item-v0.active .nav-icon-v0{width:28px;height:28px}
+}
