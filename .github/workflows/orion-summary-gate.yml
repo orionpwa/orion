@@ -90,7 +90,7 @@ jobs:
           if (benefitAppend < 0) throw new Error('Benefícios devem permanecer visíveis no Resumo.');
           if (phaseAppend < 0 || benefitAppend > phaseAppend) throw new Error('Benefícios devem aparecer antes do card de fase, próximos ao Livre.');
           if (source.includes("section('Benefícios'")) throw new Error('O antigo card amplo de Benefícios não deve ser duplicado mais abaixo.');
-          if (!source.includes('Uso restrito · não soma ao Livre para gastar')) throw new Error('A separação semântica entre benefício e Livre deve continuar explícita.');
+          if (!source.includes('Benefício restrito · não entra no Livre para gastar')) throw new Error('A separação semântica entre benefício e Livre deve continuar explícita.');
           NODE
           grep -q "summary-base-benefit-companion-v2" site/styles/ux-v2-summary-coherence.css
           grep -q "BENEFÍCIOS PARA USO" site/dist/presentation/home.js
