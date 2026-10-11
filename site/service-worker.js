@@ -1,6 +1,9 @@
 const CACHE_NAME = "orion-0-1-0-static-v1";
+const PDFJS_CDN_HOST = "cdnjs.cloudflare.com";
+const PDFJS_CDN_PREFIX = "/ajax/libs/pdf.js/6.3.289/";
 const STATIC_PATHS = [
   "./",
+  "./index.html",
   "./assets/institutions/bradesco.png",
   "./assets/institutions/caju.png",
   "./assets/institutions/inter.png",
@@ -227,7 +230,22 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
-  if (url.origin !== self.location.origin) return;
+
+  if (url.origin !== self.location.origin) {
+    if (url.hostname !== PDFJS_CDN_HOST || !url.pathname.startsWith(PDFJS_CDN_PREFIX)) return;
+    event.respondWith((async () => {
+      const cache = await caches.open(CACHE_NAME);
+      try {
+        const response = await fetch(event.request);
+        if (response.ok) await cache.put(event.request, response.clone());
+        return response;
+      } catch {
+        const cached = await cache.match(event.request);
+        return cached ?? Response.error();
+      }
+    })());
+    return;
+  }
 
   if (url.pathname.endsWith('/runtime-config.json')) {
     event.respondWith(fetch(event.request, { cache: 'no-store' }));
