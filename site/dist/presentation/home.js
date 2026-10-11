@@ -24,15 +24,33 @@ function metricCard(label, value, support, className = '') {
         el('small', 'summary-base-metric-support-v2', [support])
     ]);
 }
-function benefitRow(item) {
-    const label = item.account.institutionId === 'caju' ? 'Caju · VA' : item.account.name;
-    return el('div', 'summary-base-benefit-v2', [
-        el('div', 'summary-base-benefit-copy-v2', [
-            el('strong', '', [label]),
-            el('span', '', ['Benefício restrito · não entra no Livre para gastar'])
-        ]),
-        el('strong', 'summary-base-benefit-value-v2', [formatBRL(item.balance)])
+function benefitLabel(item) {
+    return item.account.institutionId === 'caju' ? 'Caju · VA' : item.account.name;
+}
+function benefitCompanion(snapshot) {
+    const card = el('section', 'summary-base-benefit-companion-v2', [
+        el('div', 'summary-base-benefit-companion-head-v2', [
+            el('span', 'summary-base-kicker-v2', ['BENEFÍCIOS PARA USO']),
+            el('small', '', ['Fora do Livre'])
+        ])
     ]);
+    const list = el('div', 'summary-base-benefit-companion-list-v2');
+    for (const item of snapshot.benefits) {
+        list.append(el('div', 'summary-base-benefit-companion-row-v2', [
+            el('div', 'summary-base-benefit-companion-copy-v2', [
+                el('strong', '', [benefitLabel(item)]),
+                el('small', '', ['Benefício restrito · não entra no Livre para gastar'])
+            ]),
+            el('strong', 'summary-base-benefit-companion-value-v2', [formatBRL(item.balance)])
+        ]));
+    }
+    card.append(list);
+    if (snapshot.benefits.length > 1) {
+        card.append(el('small', 'summary-base-benefit-companion-total-v2', [
+            `Total em benefícios: ${formatBRL(snapshot.benefitTotal)}`
+        ]));
+    }
+    return card;
 }
 function commitmentRow(item) {
     const meta = item.status === 'overdue'
@@ -153,6 +171,8 @@ export async function renderHomeV0(repositories, profile, actions) {
         el('strong', 'summary-base-hero-value-v2', [formatBRL(snapshot.freeToDecide)]),
         el('p', 'summary-base-hero-support-v2', ['Após reservas, benefícios restritos e compromissos planejados.'])
     ]));
+    if (snapshot.benefits.length > 0)
+        root.append(benefitCompanion(snapshot));
     root.append(phaseCard(phase, actions));
     root.append(el('div', 'summary-base-metrics-v2', [
         metricCard('Protegido', formatBRL(snapshot.allocated), 'Reservas separadas', 'protected'),
@@ -160,13 +180,6 @@ export async function renderHomeV0(repositories, profile, actions) {
         metricCard('Dívidas', formatBRL(snapshot.debtOutstanding), 'Saldo ainda a eliminar', 'debt'),
         metricCard('Disponível', formatBRL(snapshot.availableNow), 'Dinheiro livre em contas', 'available')
     ]));
-    if (snapshot.benefits.length > 0) {
-        const benefits = section('Benefícios', [], 'summary-base-surface-v2 benefits');
-        for (const item of snapshot.benefits)
-            benefits.append(benefitRow(item));
-        benefits.append(el('small', 'summary-base-benefit-total-v2', [`Total em benefícios: ${formatBRL(snapshot.benefitTotal)}`]));
-        root.append(benefits);
-    }
     root.append(section('Situação do mês', [statusCard(snapshot.status)], 'summary-base-flat-v2'));
     const commitments = section('Próximos compromissos', [], 'summary-base-flat-v2');
     if (snapshot.upcomingCommitments.length === 0) {

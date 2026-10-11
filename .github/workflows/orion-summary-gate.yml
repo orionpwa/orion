@@ -78,10 +78,27 @@ jobs:
           grep -q "summary-base-phase-action-v2" site/dist/presentation/home.js
           grep -q "summary-base-phase-action-v2" site/styles/ux-v2-summary-coherence.css
 
+      - name: Check benefits stay visible beside primary cash without merging balances
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { readFileSync } from 'node:fs';
+          const source = readFileSync('./site/dist/presentation/home.js', 'utf8');
+          const benefitAppend = source.indexOf('root.append(benefitCompanion(snapshot));');
+          const phaseAppend = source.indexOf('root.append(phaseCard(phase, actions));');
+          if (benefitAppend < 0) throw new Error('Benefícios devem permanecer visíveis no Resumo.');
+          if (phaseAppend < 0 || benefitAppend > phaseAppend) throw new Error('Benefícios devem aparecer antes do card de fase, próximos ao Livre.');
+          if (source.includes("section('Benefícios'")) throw new Error('O antigo card amplo de Benefícios não deve ser duplicado mais abaixo.');
+          if (!source.includes('Benefício restrito · não entra no Livre para gastar')) throw new Error('A separação semântica entre benefício e Livre deve continuar explícita.');
+          NODE
+          grep -q "summary-base-benefit-companion-v2" site/styles/ux-v2-summary-coherence.css
+          grep -q "BENEFÍCIOS PARA USO" site/dist/presentation/home.js
+
       - name: Check offline assets for summary refinement
         shell: bash
         run: |
           set -euo pipefail
           grep -q "financial-phase.js" site/service-worker.js
           grep -q "ux-v2-summary-coherence.css" site/service-worker.js
-          grep -q "ux-v2-summary-coherence.css?v=1" site/index.html
+          grep -q "ux-v2-summary-coherence.css?v=2" site/index.html
