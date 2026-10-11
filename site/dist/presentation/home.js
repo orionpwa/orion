@@ -39,7 +39,7 @@ function benefitCompanion(snapshot) {
         list.append(el('div', 'summary-base-benefit-companion-row-v2', [
             el('div', 'summary-base-benefit-companion-copy-v2', [
                 el('strong', '', [benefitLabel(item)]),
-                el('small', '', ['Uso restrito · não soma ao Livre para gastar'])
+                el('small', '', ['Benefício restrito · não entra no Livre para gastar'])
             ]),
             el('strong', 'summary-base-benefit-companion-value-v2', [formatBRL(item.balance)])
         ]));
