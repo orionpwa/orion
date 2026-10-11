@@ -1,5 +1,5 @@
 /* Orion 0.1.0 · Coerência do Resumo
-   O card de fase reflete a meta/reserva real e benefícios ficam junto do saldo principal sem somar ao Livre. */
+   O card de fase reflete a meta/reserva real, benefícios ficam junto do saldo principal e o status mensal vira sinal compacto. */
 .summary-base-phase-v2{
   padding-bottom:11px;
 }
@@ -67,6 +67,45 @@
 }
 .summary-base-phase-action-v2:active{
   opacity:.76;
+}
+
+/* Situação mensal: apenas um sinal discreto, sem ocupar uma seção inteira. */
+.summary-base-month-signal-v2{
+  --signal-accent:var(--base-gold);
+  position:absolute;
+  z-index:3;
+  top:14px;
+  right:15px;
+  min-height:27px;
+  padding:0 10px 0 8px;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  border:1px solid color-mix(in srgb,var(--signal-accent) 26%,transparent);
+  border-radius:999px;
+  background:color-mix(in srgb,var(--signal-accent) 7%,rgba(8,14,22,.66));
+  color:var(--signal-accent);
+  box-shadow:inset 0 1px rgba(255,255,255,.025),0 5px 18px rgba(0,0,0,.08);
+  backdrop-filter:blur(12px) saturate(120%);
+  -webkit-backdrop-filter:blur(12px) saturate(120%);
+}
+.summary-base-month-signal-v2.comfortable{--signal-accent:var(--base-positive)}
+.summary-base-month-signal-v2.attention{--signal-accent:var(--base-gold)}
+.summary-base-month-signal-v2.tight{--signal-accent:var(--base-negative)}
+.summary-base-month-signal-dot-v2{
+  width:7px;
+  height:7px;
+  flex:0 0 7px;
+  border-radius:50%;
+  background:var(--signal-accent);
+  box-shadow:0 0 10px color-mix(in srgb,var(--signal-accent) 34%,transparent);
+}
+.summary-base-month-signal-v2 strong{
+  font-size:10px;
+  line-height:1;
+  font-weight:760;
+  letter-spacing:.01em;
+  white-space:nowrap;
 }
 
 /* Benefícios são uma disponibilidade paralela ao Livre, não parte dele. */
@@ -157,4 +196,6 @@
   .summary-base-benefit-companion-v2{padding-left:12px;padding-right:12px}
   .summary-base-benefit-companion-row-v2{gap:10px}
   .summary-base-benefit-companion-value-v2{font-size:15px}
+  .summary-base-month-signal-v2{top:12px;right:12px;padding-left:7px;padding-right:8px}
+  .summary-base-month-signal-v2 strong{font-size:9px}
 }

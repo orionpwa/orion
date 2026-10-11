@@ -64,21 +64,14 @@ function commitmentRow(item) {
         el('strong', 'summary-base-commitment-value-v2', [formatBRL(item.amount)])
     ]);
 }
-function statusDescription(status) {
-    if (status === 'tight')
-        return 'O dinheiro livre ou disponível ficou abaixo de zero. Priorize somente o essencial.';
-    if (status === 'attention')
-        return 'O mês pede atenção ao resultado e ao dinheiro já comprometido.';
-    return 'O caixa atual comporta o que está planejado neste momento.';
-}
-function statusCard(status) {
-    return el('div', `summary-base-status-v2 ${status}`, [
-        el('span', 'summary-base-status-dot-v2'),
-        el('div', 'summary-base-status-copy-v2', [
-            el('strong', '', [financialStatusLabel(status)]),
-            el('span', '', [statusDescription(status)])
-        ])
+function statusBadge(status) {
+    const label = financialStatusLabel(status);
+    const badge = el('div', `summary-base-month-signal-v2 ${status}`, [
+        el('span', 'summary-base-month-signal-dot-v2'),
+        el('strong', '', [label])
     ]);
+    badge.setAttribute('aria-label', `Situação do mês: ${label}`);
+    return badge;
 }
 function runPhaseAction(phase, actions) {
     if (phase.action === 'allocations')
@@ -166,11 +159,13 @@ export async function renderHomeV0(repositories, profile, actions) {
     const phase = buildDashboardPhase(snapshot);
     const root = el('div', 'summary-screen-v0 summary-base-v2');
     root.append(el('div', 'summary-base-period-v2', [monthLabel()]));
-    root.append(el('section', 'summary-base-hero-v2', [
+    const hero = el('section', 'summary-base-hero-v2', [
         el('span', 'summary-base-kicker-v2', ['LIVRE PARA GASTAR']),
         el('strong', 'summary-base-hero-value-v2', [formatBRL(snapshot.freeToDecide)]),
         el('p', 'summary-base-hero-support-v2', ['Após reservas, benefícios restritos e compromissos planejados.'])
-    ]));
+    ]);
+    hero.append(statusBadge(snapshot.status));
+    root.append(hero);
     if (snapshot.benefits.length > 0)
         root.append(benefitCompanion(snapshot));
     root.append(phaseCard(phase, actions));
@@ -180,7 +175,6 @@ export async function renderHomeV0(repositories, profile, actions) {
         metricCard('Dívidas', formatBRL(snapshot.debtOutstanding), 'Saldo ainda a eliminar', 'debt'),
         metricCard('Disponível', formatBRL(snapshot.availableNow), 'Dinheiro livre em contas', 'available')
     ]));
-    root.append(section('Situação do mês', [statusCard(snapshot.status)], 'summary-base-flat-v2'));
     const commitments = section('Próximos compromissos', [], 'summary-base-flat-v2');
     if (snapshot.upcomingCommitments.length === 0) {
         commitments.append(el('div', 'summary-base-empty-v2', ['Nenhum compromisso pendente neste mês.']));

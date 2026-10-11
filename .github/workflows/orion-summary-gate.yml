@@ -78,6 +78,18 @@ jobs:
           grep -q "summary-base-phase-action-v2" site/dist/presentation/home.js
           grep -q "summary-base-phase-action-v2" site/styles/ux-v2-summary-coherence.css
 
+      - name: Check monthly status is a compact hero signal
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "function statusBadge" site/dist/presentation/home.js
+          grep -q "summary-base-month-signal-v2" site/dist/presentation/home.js
+          grep -q "Situação do mês:" site/dist/presentation/home.js
+          ! grep -q "section('Situação do mês'" site/dist/presentation/home.js
+          ! grep -q "O mês pede atenção ao resultado" site/dist/presentation/home.js
+          grep -q "summary-base-month-signal-v2" site/styles/ux-v2-summary-coherence.css
+          grep -q "summary-base-month-signal-dot-v2" site/styles/ux-v2-summary-coherence.css
+
       - name: Check benefits stay visible beside primary cash without merging balances
         shell: bash
         run: |
@@ -101,4 +113,4 @@ jobs:
           set -euo pipefail
           grep -q "financial-phase.js" site/service-worker.js
           grep -q "ux-v2-summary-coherence.css" site/service-worker.js
-          grep -q "ux-v2-summary-coherence.css?v=2" site/index.html
+          grep -q "ux-v2-summary-coherence.css?v=3" site/index.html

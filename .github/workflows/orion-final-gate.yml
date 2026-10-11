@@ -66,6 +66,17 @@ jobs:
           grep -q "PDFJS_CDN_HOST" site/service-worker.js
           grep -q "PDFJS_CDN_PREFIX" site/service-worker.js
 
+      - name: Check translucent dock and iOS safe area
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "position:absolute" site/styles/ux-v0-shell.css
+          grep -q "bottom:max(10px,calc(var(--safe-bottom) - 10px))" site/styles/ux-v0-shell.css
+          grep -q "backdrop-filter:blur(26px) saturate(145%)" site/styles/ux-v0-shell.css
+          grep -q "app-shell-v0:not(.internal-route-v0)" site/styles/ux-v0-shell.css
+          grep -q "scroll-padding-bottom" site/styles/ux-v0-shell.css
+          grep -q "ux-v0-shell.css?v=3" site/index.html
+
       - name: Check backup clarity
         shell: bash
         run: |
