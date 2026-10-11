@@ -1,0 +1,365 @@
+/* Orion 0.1.0 · Chromatic depth
+   Camada de acabamento cromático: devolve profundidade e vida às superfícies
+   sem transformar o app em uma interface saturada. Não altera dados, regras,
+   persistência, navegação ou estrutura funcional. */
+
+:root{
+  --orion-azure:#78a9ff;
+  --orion-cyan:#68c9ef;
+  --orion-teal:#67d1c0;
+  --orion-emerald:#63d79e;
+  --orion-gold:#d9b96f;
+  --orion-violet:#a691f7;
+  --orion-coral:#ff8c86;
+}
+
+/* O fundo deixa de ser um único azul-preto e passa a carregar luz ambiente
+   diferente em cada domínio. As intensidades continuam baixas de propósito. */
+.summary-base-v2{
+  background:
+    radial-gradient(ellipse at 88% -3%,rgba(92,145,236,.16),transparent 34%),
+    radial-gradient(ellipse at 4% 36%,rgba(217,185,111,.055),transparent 28%),
+    radial-gradient(ellipse at 92% 88%,rgba(104,201,239,.035),transparent 28%),
+    linear-gradient(180deg,#08101a 0%,#080d14 44%,#070b11 100%);
+}
+.movements-screen-v0,
+.movement-internal-screen-v0{
+  background:
+    radial-gradient(ellipse at 94% -4%,rgba(166,145,247,.10),transparent 30%),
+    radial-gradient(ellipse at 0% 42%,rgba(104,201,239,.045),transparent 27%),
+    linear-gradient(180deg,#08101a 0%,#070c13 54%,#070b11 100%);
+}
+.planning-screen-v0{
+  background:
+    radial-gradient(ellipse at 91% -4%,rgba(112,163,255,.105),transparent 31%),
+    radial-gradient(ellipse at 7% 36%,rgba(217,185,111,.045),transparent 27%),
+    linear-gradient(180deg,#08101a 0%,#080d14 55%,#070b11 100%);
+}
+.accounts-screen-v0,
+.account-internal-screen-v0{
+  background:
+    radial-gradient(ellipse at 92% -5%,rgba(103,209,192,.09),transparent 31%),
+    radial-gradient(ellipse at 3% 48%,rgba(112,163,255,.045),transparent 28%),
+    linear-gradient(180deg,#081019 0%,#070d14 56%,#070b11 100%);
+}
+.fiscal-screen-v1{
+  background:
+    radial-gradient(ellipse at 91% -4%,rgba(217,185,111,.085),transparent 31%),
+    radial-gradient(ellipse at 5% 43%,rgba(166,145,247,.045),transparent 28%),
+    radial-gradient(ellipse at 96% 82%,rgba(104,201,239,.025),transparent 26%),
+    linear-gradient(180deg,#0a1018 0%,#080d14 53%,#070b11 100%);
+}
+.settings-screen-v0{
+  background:
+    radial-gradient(ellipse at 90% -5%,rgba(166,145,247,.065),transparent 29%),
+    radial-gradient(ellipse at 5% 34%,rgba(112,163,255,.045),transparent 27%),
+    linear-gradient(180deg,#08101a 0%,#070c13 58%,#070b11 100%);
+}
+
+/* ===== Resumo ===== */
+.summary-base-hero-v2{
+  border-color:rgba(112,163,255,.30);
+  background:
+    radial-gradient(circle at 86% 8%,rgba(112,163,255,.24),transparent 38%),
+    radial-gradient(circle at 12% 108%,rgba(104,201,239,.065),transparent 34%),
+    linear-gradient(145deg,#132238 0%,#0d1825 53%,#0b131d 100%);
+  box-shadow:
+    0 18px 44px rgba(0,0,0,.20),
+    0 0 34px rgba(65,119,204,.055),
+    inset 0 1px rgba(255,255,255,.035);
+}
+.summary-base-hero-v2::after{
+  border-color:rgba(120,169,255,.18);
+  box-shadow:0 0 56px rgba(104,201,239,.075);
+}
+.summary-base-hero-value-v2{
+  text-shadow:0 0 30px rgba(104,201,239,.10);
+}
+.summary-base-benefit-companion-v2{
+  border-color:rgba(217,185,111,.28);
+  background:
+    radial-gradient(circle at 94% 0%,rgba(217,185,111,.15),transparent 42%),
+    radial-gradient(circle at 4% 115%,rgba(99,215,158,.045),transparent 38%),
+    linear-gradient(145deg,rgba(28,27,25,.97),rgba(14,20,28,.98));
+  box-shadow:
+    0 12px 28px rgba(0,0,0,.10),
+    inset 0 1px rgba(255,255,255,.025);
+}
+.summary-base-phase-v2{
+  box-shadow:
+    0 13px 30px rgba(0,0,0,.11),
+    inset 0 1px rgba(255,255,255,.028);
+}
+.summary-base-phase-v2.reserve{
+  background:
+    radial-gradient(circle at 93% 0%,rgba(217,185,111,.18),transparent 38%),
+    radial-gradient(circle at 8% 110%,rgba(166,145,247,.035),transparent 34%),
+    linear-gradient(145deg,#1a1c20,#101925 72%);
+}
+.summary-base-phase-v2.debt{
+  background:
+    radial-gradient(circle at 93% 0%,rgba(255,140,134,.16),transparent 38%),
+    linear-gradient(145deg,#1d171d,#101824 72%);
+}
+.summary-base-phase-v2.stable{
+  background:
+    radial-gradient(circle at 93% 0%,rgba(99,215,158,.16),transparent 38%),
+    linear-gradient(145deg,#13201e,#101824 72%);
+}
+.summary-base-metric-v2{
+  box-shadow:
+    0 11px 27px rgba(0,0,0,.09),
+    inset 0 1px rgba(255,255,255,.024);
+}
+.summary-base-metric-v2.protected{
+  background:
+    radial-gradient(circle at 95% 4%,rgba(217,185,111,.13),transparent 42%),
+    linear-gradient(150deg,#15191c,#0c151e 72%);
+}
+.summary-base-metric-v2.committed{
+  --metric-accent:#9ea8e8;
+  background:
+    radial-gradient(circle at 96% 4%,rgba(166,145,247,.095),transparent 42%),
+    linear-gradient(150deg,#111825,#0c141e 72%);
+}
+.summary-base-metric-v2.debt,
+.summary-base-metric-v2.negative{
+  background:
+    radial-gradient(circle at 96% 4%,rgba(255,140,134,.105),transparent 42%),
+    linear-gradient(150deg,#17161d,#0c141e 72%);
+}
+.summary-base-metric-v2.available{
+  background:
+    radial-gradient(circle at 96% 4%,rgba(112,163,255,.15),transparent 42%),
+    radial-gradient(circle at 0% 104%,rgba(104,201,239,.035),transparent 36%),
+    linear-gradient(150deg,#101b2a,#0b141f 72%);
+}
+.summary-base-metric-v2.positive{
+  background:
+    radial-gradient(circle at 96% 4%,rgba(99,215,158,.115),transparent 42%),
+    linear-gradient(150deg,#111d1d,#0b141e 72%);
+}
+
+/* ===== Movimentos ===== */
+.movements-filter-button-v0{
+  border-color:rgba(126,170,255,.27);
+  background:
+    radial-gradient(circle at 82% 0%,rgba(166,145,247,.10),transparent 55%),
+    linear-gradient(180deg,rgba(112,163,255,.11),rgba(112,163,255,.045));
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.045),
+    0 8px 22px rgba(35,73,134,.08);
+}
+.movement-row-v0{
+  border-color:rgba(145,169,201,.145);
+  box-shadow:
+    0 11px 28px rgba(0,0,0,.10),
+    inset 0 1px rgba(255,255,255,.024);
+}
+.movement-row-v0:has(.tone-violet){
+  background:
+    radial-gradient(circle at 0% 40%,rgba(166,145,247,.075),transparent 33%),
+    radial-gradient(circle at 100% 0%,rgba(112,163,255,.045),transparent 35%),
+    linear-gradient(150deg,rgba(16,23,36,.93),rgba(9,16,25,.98));
+}
+.movement-row-v0:has(.tone-blue){
+  background:
+    radial-gradient(circle at 0% 40%,rgba(112,163,255,.075),transparent 33%),
+    linear-gradient(150deg,rgba(15,24,37,.93),rgba(9,16,25,.98));
+}
+.movement-row-v0:has(.tone-cyan){
+  background:
+    radial-gradient(circle at 0% 40%,rgba(104,201,239,.07),transparent 33%),
+    linear-gradient(150deg,rgba(14,24,35,.93),rgba(9,16,25,.98));
+}
+.movement-row-v0:has(.tone-gold){
+  background:
+    radial-gradient(circle at 0% 40%,rgba(217,185,111,.065),transparent 33%),
+    linear-gradient(150deg,rgba(18,23,30,.93),rgba(9,16,25,.98));
+}
+.movement-row-v0:has(.tone-green){
+  background:
+    radial-gradient(circle at 0% 40%,rgba(99,215,158,.065),transparent 33%),
+    linear-gradient(150deg,rgba(13,25,31,.93),rgba(9,16,25,.98));
+}
+.movement-row-v0:has(.tone-red){
+  background:
+    radial-gradient(circle at 0% 40%,rgba(255,140,134,.06),transparent 33%),
+    linear-gradient(150deg,rgba(20,22,30,.93),rgba(9,16,25,.98));
+}
+.movement-row-icon-v0.tone-violet{background:rgba(166,145,247,.115);border-color:rgba(166,145,247,.24)}
+.movement-row-icon-v0.tone-blue{background:rgba(121,169,255,.115);border-color:rgba(121,169,255,.24)}
+.movement-row-icon-v0.tone-cyan{background:rgba(111,203,231,.11);border-color:rgba(111,203,231,.23)}
+.movement-row-icon-v0.tone-gold{background:rgba(216,184,109,.105);border-color:rgba(216,184,109,.23)}
+.movement-row-icon-v0.tone-green{background:rgba(104,214,159,.105);border-color:rgba(104,214,159,.23)}
+.movement-row-icon-v0.tone-red{background:rgba(255,145,138,.10);border-color:rgba(255,145,138,.22)}
+
+/* ===== Planejar ===== */
+.planning-root-screen-v1 .planning-root-intro-v0{
+  border-color:rgba(112,163,255,.19);
+  background:
+    radial-gradient(circle at 92% -15%,rgba(112,163,255,.14),transparent 44%),
+    radial-gradient(circle at 5% 110%,rgba(104,201,239,.04),transparent 35%),
+    linear-gradient(145deg,rgba(17,28,42,.82),rgba(9,16,25,.92));
+}
+.planning-root-screen-v1 .planning-domain-list-v0{
+  border-color:rgba(146,170,202,.17);
+  background:
+    radial-gradient(circle at 96% 0%,rgba(112,163,255,.085),transparent 38%),
+    radial-gradient(circle at 2% 100%,rgba(217,185,111,.035),transparent 36%),
+    linear-gradient(145deg,rgba(16,25,38,.93),rgba(9,16,25,.98));
+}
+.planning-root-screen-v1 .planning-domain-row-v0:nth-child(1){
+  background:linear-gradient(90deg,rgba(112,163,255,.045),transparent 58%);
+}
+.planning-root-screen-v1 .planning-domain-row-v0:nth-child(2){
+  background:linear-gradient(90deg,rgba(255,140,134,.035),transparent 58%);
+}
+.planning-root-screen-v1 .planning-domain-row-v0:nth-child(3){
+  background:linear-gradient(90deg,rgba(217,185,111,.045),transparent 58%);
+}
+.planning-list-screen-v0 .planning-list-top-v0{
+  background:
+    radial-gradient(circle at 96% -8%,rgba(112,163,255,.12),transparent 44%),
+    radial-gradient(circle at 4% 112%,rgba(166,145,247,.03),transparent 34%),
+    linear-gradient(145deg,rgba(17,27,41,.88),rgba(9,16,25,.95));
+}
+.planning-detail-hero-v0{
+  background:
+    radial-gradient(circle at 96% -2%,rgba(112,163,255,.17),transparent 40%),
+    radial-gradient(circle at 5% 110%,rgba(104,201,239,.04),transparent 35%),
+    linear-gradient(145deg,rgba(18,29,44,.94),rgba(9,16,25,.98));
+}
+.planning-goal-progress-v0{
+  background:
+    radial-gradient(circle at 100% 0%,rgba(217,184,109,.13),transparent 44%),
+    linear-gradient(145deg,rgba(27,27,28,.84),rgba(12,18,27,.93));
+}
+
+/* ===== Contas ===== */
+.accounts-account-section-v1{
+  border-color:rgba(103,209,192,.17);
+  background:
+    radial-gradient(circle at 95% 0%,rgba(103,209,192,.085),transparent 38%),
+    radial-gradient(circle at 4% 110%,rgba(112,163,255,.04),transparent 34%),
+    linear-gradient(150deg,rgba(15,25,35,.94),rgba(9,16,25,.98));
+  box-shadow:0 16px 36px rgba(0,0,0,.12),inset 0 1px rgba(255,255,255,.024);
+}
+.accounts-card-section-v1{
+  border-color:rgba(166,145,247,.14);
+  background:
+    radial-gradient(circle at 95% 0%,rgba(166,145,247,.065),transparent 38%),
+    linear-gradient(150deg,rgba(16,23,36,.93),rgba(9,16,25,.98));
+}
+.accounts-inline-primary-v0{
+  border-color:rgba(112,163,255,.24)!important;
+  background:
+    radial-gradient(circle at 82% 0%,rgba(104,201,239,.07),transparent 55%),
+    rgba(112,163,255,.075)!important;
+  color:#8cb7ff!important;
+}
+.account-row-v0{
+  transition:background-color .15s ease,transform .15s ease;
+}
+.account-row-v0:active{
+  background:rgba(103,209,192,.035);
+  transform:scale(.995);
+}
+
+/* ===== Ajustes ===== */
+.settings-profile-summary-v0{
+  border-color:rgba(126,170,255,.21);
+  background:
+    radial-gradient(circle at 94% 0%,rgba(166,145,247,.095),transparent 38%),
+    radial-gradient(circle at 4% 110%,rgba(104,201,239,.035),transparent 34%),
+    linear-gradient(150deg,rgba(17,27,42,.95),rgba(10,17,26,.98));
+  box-shadow:0 16px 36px rgba(0,0,0,.12),inset 0 1px rgba(255,255,255,.025);
+}
+.settings-list-v0{
+  border-color:rgba(145,169,201,.15);
+  background:
+    radial-gradient(circle at 100% 0%,rgba(112,163,255,.055),transparent 38%),
+    linear-gradient(150deg,rgba(15,23,35,.94),rgba(9,16,25,.98));
+}
+.settings-row-v0:nth-child(odd):active,
+.settings-action-v0:nth-child(odd):active{background:rgba(112,163,255,.045)}
+.settings-row-v0:nth-child(even):active,
+.settings-action-v0:nth-child(even):active{background:rgba(166,145,247,.035)}
+.settings-danger-zone-v0{
+  background:
+    radial-gradient(circle at 96% 0%,rgba(255,140,134,.075),transparent 38%),
+    linear-gradient(150deg,rgba(34,19,24,.74),rgba(15,17,23,.96));
+}
+
+/* ===== Fiscal ===== */
+.fiscal-hero-v1{
+  border-color:rgba(217,185,111,.18);
+  background:
+    radial-gradient(circle at 92% 2%,rgba(112,163,255,.16),transparent 36%),
+    radial-gradient(circle at 3% 112%,rgba(217,185,111,.075),transparent 38%),
+    linear-gradient(145deg,rgba(18,28,42,.98),rgba(10,16,24,.99));
+  box-shadow:
+    0 18px 42px rgba(0,0,0,.16),
+    0 0 32px rgba(112,163,255,.035),
+    inset 0 1px rgba(255,255,255,.028);
+}
+.fiscal-metric-v1{
+  box-shadow:0 10px 25px rgba(0,0,0,.08),inset 0 1px rgba(255,255,255,.02);
+}
+.fiscal-metric-v1:nth-child(1){
+  border-color:rgba(217,185,111,.14);
+  background:
+    radial-gradient(circle at 100% 0%,rgba(217,185,111,.085),transparent 44%),
+    linear-gradient(150deg,rgba(18,23,31,.92),rgba(10,17,26,.97));
+}
+.fiscal-metric-v1:nth-child(2){
+  border-color:rgba(99,215,158,.13);
+  background:
+    radial-gradient(circle at 100% 0%,rgba(99,215,158,.075),transparent 44%),
+    linear-gradient(150deg,rgba(13,24,31,.92),rgba(10,17,26,.97));
+}
+.fiscal-metric-v1:nth-child(3){
+  border-color:rgba(166,145,247,.13);
+  background:
+    radial-gradient(circle at 100% 0%,rgba(166,145,247,.075),transparent 44%),
+    linear-gradient(150deg,rgba(17,22,33,.92),rgba(10,17,26,.97));
+}
+.fiscal-action-v1{
+  border-color:rgba(145,169,201,.145);
+  background:
+    radial-gradient(circle at 100% 0%,rgba(112,163,255,.065),transparent 42%),
+    radial-gradient(circle at 0% 110%,rgba(217,185,111,.02),transparent 32%),
+    linear-gradient(150deg,rgba(15,23,35,.92),rgba(9,16,25,.97));
+  box-shadow:0 10px 26px rgba(0,0,0,.075),inset 0 1px rgba(255,255,255,.018);
+}
+.fiscal-action-v1:active{
+  border-color:rgba(112,163,255,.27);
+  background:
+    radial-gradient(circle at 100% 0%,rgba(112,163,255,.10),transparent 42%),
+    linear-gradient(150deg,rgba(17,26,39,.94),rgba(9,16,25,.98));
+}
+.fiscal-status-row-v1{
+  background:
+    radial-gradient(circle at 100% 0%,rgba(217,185,111,.04),transparent 42%),
+    linear-gradient(150deg,rgba(14,22,33,.86),rgba(9,16,25,.94));
+}
+
+/* A cor aparece como profundidade, não como tinta chapada. */
+@media(prefers-reduced-transparency:no-preference){
+  .summary-base-hero-v2,
+  .summary-base-benefit-companion-v2,
+  .summary-base-phase-v2,
+  .summary-base-metric-v2,
+  .movement-row-v0,
+  .planning-domain-list-v0,
+  .accounts-account-section-v1,
+  .accounts-card-section-v1,
+  .settings-profile-summary-v0,
+  .settings-list-v0,
+  .fiscal-hero-v1,
+  .fiscal-metric-v1,
+  .fiscal-action-v1{
+    -webkit-backdrop-filter:saturate(118%);
+    backdrop-filter:saturate(118%);
+  }
+}
