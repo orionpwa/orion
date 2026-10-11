@@ -52,31 +52,31 @@
 .app-content-v0{min-width:0;min-height:0;overflow:hidden}
 
 /*
- * Orion floating dock
- * Fica sobre o conteúdo, como barras nativas modernas: o que passa por trás
- * continua perceptível através do material translúcido. A margem inferior usa
- * a safe area do iOS, mas evita o afastamento excessivo observado no PWA.
+ * Orion floating dock · revisão V2
+ * Mais espesso e compacto horizontalmente, com material translúcido e ícones
+ * de maior presença. Continua sobreposto ao conteúdo e respeita a safe area.
  */
 .bottom-nav-v0{
   position:absolute;
   z-index:60;
-  left:max(12px,var(--safe-left));
-  right:max(12px,var(--safe-right));
-  bottom:max(10px,calc(var(--safe-bottom) - 10px));
-  width:auto;
-  min-height:60px;
+  left:50%;
+  right:auto;
+  bottom:max(9px,calc(var(--safe-bottom) - 9px));
+  width:min(356px,calc(100% - 32px - var(--safe-left) - var(--safe-right)));
+  min-height:72px;
   margin:0;
-  padding:5px;
+  padding:6px 8px;
   display:grid;
   grid-template-columns:repeat(5,minmax(0,1fr));
   align-items:center;
-  gap:4px;
-  border:1px solid rgba(190,210,235,.12);
-  border-radius:30px;
-  background:linear-gradient(180deg,rgba(18,25,35,.70),rgba(8,13,20,.76));
-  box-shadow:0 12px 34px rgba(0,0,0,.28),inset 0 1px rgba(255,255,255,.055);
-  backdrop-filter:blur(26px) saturate(145%);
-  -webkit-backdrop-filter:blur(26px) saturate(145%);
+  gap:2px;
+  border:1px solid rgba(190,210,235,.14);
+  border-radius:36px;
+  background:linear-gradient(180deg,rgba(20,29,40,.72),rgba(8,13,20,.80));
+  box-shadow:0 14px 38px rgba(0,0,0,.30),inset 0 1px rgba(255,255,255,.065);
+  backdrop-filter:blur(30px) saturate(155%);
+  -webkit-backdrop-filter:blur(30px) saturate(155%);
+  transform:translateX(-50%);
   isolation:isolate;
 }
 .bottom-nav-v0::before{
@@ -85,42 +85,55 @@
   inset:0;
   z-index:-1;
   border-radius:inherit;
-  background:linear-gradient(110deg,rgba(255,255,255,.018),transparent 38%,rgba(112,163,255,.025));
+  background:
+    radial-gradient(circle at 50% -20%,rgba(255,255,255,.045),transparent 42%),
+    linear-gradient(110deg,rgba(255,255,255,.018),transparent 38%,rgba(112,163,255,.035));
   pointer-events:none;
 }
 .bottom-nav-v0[hidden]{display:none}
 .nav-item-v0{
   position:relative;
   min-width:0;
-  min-height:50px;
+  min-height:58px;
   padding:0;
   display:grid;
   place-items:center;
   border:0;
-  border-radius:22px;
+  border-radius:27px;
   background:transparent;
   color:#8290a2;
   touch-action:manipulation;
   transition:background-color .16s ease,color .16s ease,transform .16s ease,box-shadow .16s ease;
 }
-.nav-item-v0:active{transform:scale(.96)}
+.nav-item-v0:active{transform:scale(.955)}
 .nav-item-v0.active{
-  color:#78a9ff;
-  background:radial-gradient(circle at 50% 28%,rgba(112,163,255,.17),rgba(112,163,255,.055) 62%,transparent 100%);
-  box-shadow:inset 0 0 0 1px rgba(112,163,255,.07),0 0 18px rgba(112,163,255,.04);
+  color:#7eacff;
+  background:
+    radial-gradient(circle at 50% 28%,rgba(112,163,255,.21),rgba(112,163,255,.075) 62%,rgba(112,163,255,.025) 100%);
+  box-shadow:inset 0 0 0 1px rgba(112,163,255,.09),0 7px 22px rgba(37,95,176,.10);
 }
 .nav-item-v0.active::after{
   content:"";
   position:absolute;
   bottom:4px;
-  width:18px;
+  width:20px;
   height:2px;
   border-radius:999px;
-  background:linear-gradient(90deg,#70a3ff,#8bbaff);
-  box-shadow:0 0 10px rgba(112,163,255,.36);
+  background:linear-gradient(90deg,#70a3ff,#91beff);
+  box-shadow:0 0 11px rgba(112,163,255,.42);
 }
-.nav-icon-v0{width:25px;height:25px;stroke-width:1.8}
-.nav-item-v0.active .nav-icon-v0{width:27px;height:27px;filter:drop-shadow(0 0 7px rgba(112,163,255,.18))}
+.nav-icon-v0{
+  width:27px;
+  height:27px;
+  stroke-width:2;
+  transition:width .16s ease,height .16s ease,filter .16s ease;
+}
+.nav-item-v0.active .nav-icon-v0{
+  width:30px;
+  height:30px;
+  stroke-width:2.05;
+  filter:drop-shadow(0 0 8px rgba(112,163,255,.22));
+}
 .nav-label-v0{
   position:absolute!important;
   width:1px!important;
@@ -142,16 +155,16 @@
   .accounts-screen-v0,
   .fiscal-screen-v1
 ){
-  padding-bottom:calc(94px + max(12px,var(--safe-bottom)));
-  scroll-padding-bottom:calc(94px + max(12px,var(--safe-bottom)));
+  padding-bottom:calc(104px + max(12px,var(--safe-bottom)));
+  scroll-padding-bottom:calc(104px + max(12px,var(--safe-bottom)));
 }
 
 @media(max-width:340px){
   .app-header-v0{grid-template-columns:minmax(64px,1fr) auto minmax(64px,1fr);padding-left:max(10px,var(--safe-left));padding-right:max(10px,var(--safe-right))}
   .shell-title-v0{font-size:17px}
   .shell-action-v0,.shell-back-v0{font-size:13px;padding-left:4px;padding-right:4px}
-  .bottom-nav-v0{left:max(8px,var(--safe-left));right:max(8px,var(--safe-right));padding:4px;gap:2px}
-  .nav-item-v0{min-height:48px}
-  .nav-icon-v0{width:23px;height:23px}
-  .nav-item-v0.active .nav-icon-v0{width:25px;height:25px}
+  .bottom-nav-v0{width:min(324px,calc(100% - 20px - var(--safe-left) - var(--safe-right)));min-height:68px;padding:5px 7px;gap:1px}
+  .nav-item-v0{min-height:54px;border-radius:25px}
+  .nav-icon-v0{width:25px;height:25px}
+  .nav-item-v0.active .nav-icon-v0{width:28px;height:28px}
 }
