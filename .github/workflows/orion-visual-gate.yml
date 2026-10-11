@@ -18,19 +18,21 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Check modern visual layer is loaded last
+      - name: Check modern visual layers load in order
         shell: bash
         run: |
           set -euo pipefail
-          grep -q 'ux-v0-shell.css?v=7' site/index.html
+          grep -q 'ux-v0-shell.css?v=8' site/index.html
           grep -q 'ux-v3-modern-surfaces.css?v=1' site/index.html
+          grep -q 'ux-v4-movements.css?v=1' site/index.html
           node --input-type=module <<'NODE'
           import { readFileSync } from 'node:fs';
           const html = readFileSync('site/index.html', 'utf8');
-          const modern = html.indexOf('ux-v3-modern-surfaces.css?v=1');
           const coherence = html.indexOf('ux-v2-summary-coherence.css?v=3');
-          if (modern < 0 || coherence < 0 || modern < coherence) {
-            throw new Error('A camada moderna deve ser carregada depois das camadas V2.');
+          const modern = html.indexOf('ux-v3-modern-surfaces.css?v=1');
+          const movements = html.indexOf('ux-v4-movements.css?v=1');
+          if (coherence < 0 || modern < coherence || movements < modern) {
+            throw new Error('As camadas modernas precisam respeitar V2 → V3 → Movimentos V4.');
           }
           NODE
 
@@ -41,6 +43,7 @@ jobs:
           node --input-type=module <<'NODE'
           import { readFileSync } from 'node:fs';
           const css = readFileSync('site/styles/ux-v3-modern-surfaces.css', 'utf8');
+          const movementsCss = readFileSync('site/styles/ux-v4-movements.css', 'utf8');
           const required = [
             '.app-header-v0',
             '.movements-filter-button-v0',
@@ -55,19 +58,51 @@ jobs:
           for (const selector of required) {
             if (!css.includes(selector)) throw new Error(`Refinamento ausente para ${selector}`);
           }
-          let depth = 0;
-          for (const char of css) {
-            if (char === '{') depth += 1;
-            if (char === '}') depth -= 1;
-            if (depth < 0) throw new Error('CSS possui fechamento de bloco excedente.');
+          const movementRequired = [
+            '.movement-row-icon-v0',
+            '.movement-category-icon-v0',
+            'grid-template-columns:44px minmax(0,1fr) auto',
+            '.movement-row-icon-v0.tone-violet',
+            '.movements-date-v0::after'
+          ];
+          for (const selector of movementRequired) {
+            if (!movementsCss.includes(selector)) throw new Error(`Movimentos V4 perdeu ${selector}`);
           }
-          if (depth !== 0) throw new Error('CSS possui bloco não fechado.');
+          for (const content of [css, movementsCss]) {
+            let depth = 0;
+            for (const char of content) {
+              if (char === '{') depth += 1;
+              if (char === '}') depth -= 1;
+              if (depth < 0) throw new Error('CSS possui fechamento de bloco excedente.');
+            }
+            if (depth !== 0) throw new Error('CSS possui bloco não fechado.');
+          }
           if (!css.includes('backdrop-filter:blur(24px) saturate(140%)')) {
             throw new Error('Topo translúcido perdeu o material definido.');
           }
           NODE
 
-      - name: Check dock V3.2 visible glass and icon set
+      - name: Check movement semantic icons
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { readFileSync } from 'node:fs';
+          const icons = readFileSync('site/dist/presentation/icons.js', 'utf8');
+          const shared = readFileSync('site/dist/presentation/screens/movements-v0/shared.js', 'utf8');
+          const list = readFileSync('site/dist/presentation/screens/movements-v0/list.js', 'utf8');
+          for (const iconName of ['food:', 'housing:', 'transport:', 'health:', 'subscriptions:', 'leisure:', 'education:', 'salary:', 'award:', 'benefit:', 'sale:', 'refund:']) {
+            if (!icons.includes(iconName)) throw new Error(`Ícone de categoria ausente: ${iconName}`);
+          }
+          for (const category of ["'Moradia': { icon: 'housing'", "'Assinaturas': { icon: 'subscriptions'", "'Premiação': { icon: 'award'", "'Salário': { icon: 'salary'"]) {
+            if (!shared.includes(category)) throw new Error(`Mapa visual de categoria ausente: ${category}`);
+          }
+          if (!shared.includes('export function movementVisual(transaction)')) throw new Error('Movimentos precisam compartilhar uma fonte visual semântica.');
+          if (!list.includes("icon(visual.icon, 'movement-category-icon-v0')")) throw new Error('Lista de movimentos precisa renderizar o ícone semântico.');
+          if (!list.includes('movement-row-icon-v0 tone-${visual.tone}')) throw new Error('Lista de movimentos precisa renderizar o tom da categoria.');
+          NODE
+
+      - name: Check dock V3.3 direct glass and icon set
         shell: bash
         run: |
           set -euo pipefail
@@ -82,20 +117,20 @@ jobs:
             'max-width:calc(100% - 32px - var(--safe-left) - var(--safe-right))',
             'min-height:72px',
             'border-radius:36px',
-            '.bottom-nav-v0{background:transparent}',
-            'rgba(9,15,24,.13)',
-            '-webkit-backdrop-filter:blur(14px) saturate(165%) brightness(1.12)',
-            'backdrop-filter:blur(14px) saturate(165%) brightness(1.12)',
+            'background:rgba(9,15,24,.065)',
+            '-webkit-backdrop-filter:blur(20px) saturate(190%) brightness(1.16)',
+            'backdrop-filter:blur(20px) saturate(190%) brightness(1.16)',
+            'rgba(9,15,24,.018)',
             'min-height:58px',
             'width:27px',
             'width:30px',
             'padding-bottom:calc(104px + max(12px,var(--safe-bottom)))'
           ];
           for (const rule of dockRules) {
-            if (!shell.includes(rule)) throw new Error(`Dock V3.2 perdeu a regra: ${rule}`);
+            if (!shell.includes(rule)) throw new Error(`Dock V3.3 perdeu a regra: ${rule}`);
           }
           if (shell.includes('translate3d(-50%,0,0)') || shell.includes('isolation:isolate')) {
-            throw new Error('Dock V3.2 não deve criar transform/backdrop root que esconda o fundo no WebKit.');
+            throw new Error('Dock V3.3 não deve criar transform/backdrop root que esconda o fundo no WebKit.');
           }
           const rootIcons = [
             "home: [\n        'M4.75 4.75h6v6h-6z'",
@@ -106,7 +141,7 @@ jobs:
             "className: 'nav-icon-fill'"
           ];
           for (const marker of rootIcons) {
-            if (!icons.includes(marker)) throw new Error(`Ícone principal não corresponde ao conjunto duotone V3.1: ${marker}`);
+            if (!icons.includes(marker)) throw new Error(`Ícone principal não corresponde ao conjunto duotone: ${marker}`);
           }
           if (!icons.includes("typeof segment === 'string' ? { d: segment } : segment")) {
             throw new Error('Renderer de ícones precisa suportar segmentos duotone.');

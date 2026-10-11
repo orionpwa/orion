@@ -77,13 +77,24 @@ jobs:
           grep -q "width:356px" site/styles/ux-v0-shell.css
           grep -q "max-width:calc(100% - 32px - var(--safe-left) - var(--safe-right))" site/styles/ux-v0-shell.css
           grep -q "min-height:72px" site/styles/ux-v0-shell.css
-          grep -q ".bottom-nav-v0{background:transparent}" site/styles/ux-v0-shell.css
-          grep -q "rgba(9,15,24,.13)" site/styles/ux-v0-shell.css
-          grep -q -- "-webkit-backdrop-filter:blur(14px) saturate(165%) brightness(1.12)" site/styles/ux-v0-shell.css
-          grep -q "backdrop-filter:blur(14px) saturate(165%) brightness(1.12)" site/styles/ux-v0-shell.css
+          grep -q "background:rgba(9,15,24,.065)" site/styles/ux-v0-shell.css
+          grep -q -- "-webkit-backdrop-filter:blur(20px) saturate(190%) brightness(1.16)" site/styles/ux-v0-shell.css
+          grep -q "backdrop-filter:blur(20px) saturate(190%) brightness(1.16)" site/styles/ux-v0-shell.css
+          grep -q "rgba(9,15,24,.018)" site/styles/ux-v0-shell.css
           grep -q "app-shell-v0:not(.internal-route-v0)" site/styles/ux-v0-shell.css
           grep -q "scroll-padding-bottom" site/styles/ux-v0-shell.css
-          grep -q "ux-v0-shell.css?v=7" site/index.html
+          grep -q "ux-v0-shell.css?v=8" site/index.html
+
+      - name: Check movement category presentation
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "ux-v4-movements.css?v=1" site/index.html
+          grep -q "movement-row-icon-v0" site/styles/ux-v4-movements.css
+          grep -q "movement-category-icon-v0" site/styles/ux-v4-movements.css
+          grep -q "movementVisual(transaction)" site/dist/presentation/screens/movements-v0/list.js
+          grep -q "Assinaturas.*subscriptions" site/dist/presentation/screens/movements-v0/shared.js
+          grep -q "Moradia.*housing" site/dist/presentation/screens/movements-v0/shared.js
 
       - name: Check backup clarity
         shell: bash

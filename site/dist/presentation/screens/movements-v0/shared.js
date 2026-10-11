@@ -6,6 +6,22 @@ export const DEFAULT_MOVEMENT_FILTERS_V0 = {
     startDate: '',
     endDate: ''
 };
+const CATEGORY_VISUALS = {
+    'Alimentação': { icon: 'food', tone: 'gold' },
+    'Moradia': { icon: 'housing', tone: 'blue' },
+    'Transporte': { icon: 'transport', tone: 'cyan' },
+    'Saúde': { icon: 'health', tone: 'red' },
+    'Assinaturas': { icon: 'subscriptions', tone: 'violet' },
+    'Lazer': { icon: 'leisure', tone: 'violet' },
+    'Educação': { icon: 'education', tone: 'blue' },
+    'Salário': { icon: 'salary', tone: 'green' },
+    'Premiação': { icon: 'award', tone: 'gold' },
+    'Benefício': { icon: 'benefit', tone: 'gold' },
+    'Rendimento': { icon: 'investment', tone: 'green' },
+    'Venda': { icon: 'sale', tone: 'blue' },
+    'Reembolso': { icon: 'refund', tone: 'cyan' },
+    'Outros': { icon: 'other', tone: 'slate' }
+};
 export function localIsoDate(date = new Date()) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -57,6 +73,23 @@ export function movementMeta(transaction, accountMap) {
         return `${from} → ${to}`;
     }
     return movementKindLabel(transaction);
+}
+export function movementVisual(transaction) {
+    if ('categoryId' in transaction && transaction.categoryId)
+        return CATEGORY_VISUALS[transaction.categoryId] ?? { icon: 'other', tone: 'slate' };
+    switch (transaction.kind) {
+        case 'income':
+        case 'yield':
+        case 'asset-yield': return { icon: 'income', tone: 'green' };
+        case 'expense': return { icon: 'expense', tone: 'red' };
+        case 'transfer': return { icon: 'transfer', tone: 'blue' };
+        case 'credit-card-payment':
+        case 'debt-payment': return { icon: 'payment', tone: 'gold' };
+        case 'asset-contribution':
+        case 'asset-withdrawal':
+        case 'asset-valuation': return { icon: 'investment', tone: 'blue' };
+        default: return { icon: 'other', tone: 'slate' };
+    }
 }
 export function movementSign(transaction) {
     if (transaction.kind === 'income' || transaction.kind === 'yield' || transaction.kind === 'asset-yield')
