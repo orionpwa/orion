@@ -1,6 +1,7 @@
 import { formatBRL } from '../../../domain/money/money.js';
 import { el } from '../../dom.js';
-import { activeMovementFilterCount, movementLabel, movementMeta, movementSign, movementTone, movementVisible, sortMovementsNewestFirst } from './shared.js';
+import { icon } from '../../icons.js';
+import { activeMovementFilterCount, movementLabel, movementMeta, movementSign, movementTone, movementVisible, movementVisual, sortMovementsNewestFirst } from './shared.js';
 function dateHeading(dateKey) {
     const [year, month, day] = dateKey.split('-');
     return `${day ?? '--'}/${month ?? '--'}/${year ?? '----'}`;
@@ -48,7 +49,9 @@ export async function renderMovementListV0(repositories, profile, filters, actio
             list.append(el('h2', 'movements-date-v0', [dateHeading(transaction.date)]));
         }
         const amount = `${movementSign(transaction)}${formatBRL(transaction.amount)}`;
+        const visual = movementVisual(transaction);
         const row = el('button', 'movement-row-v0', [
+            el('span', `movement-row-icon-v0 tone-${visual.tone}`, [icon(visual.icon, 'movement-category-icon-v0')]),
             el('div', 'movement-row-copy-v0', [
                 el('strong', 'movement-row-title-v0', [movementLabel(transaction)]),
                 el('span', 'movement-row-meta-v0', [movementMeta(transaction, accountMap)])
