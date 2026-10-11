@@ -71,13 +71,15 @@ jobs:
         run: |
           set -euo pipefail
           grep -q "position:absolute" site/styles/ux-v0-shell.css
-          grep -q "bottom:max(7px,calc(var(--safe-bottom) - 7px))" site/styles/ux-v0-shell.css
-          grep -q "width:min(372px,calc(100% - 20px - var(--safe-left) - var(--safe-right)))" site/styles/ux-v0-shell.css
-          grep -q "min-height:80px" site/styles/ux-v0-shell.css
-          grep -q "backdrop-filter:blur(36px) saturate(180%) contrast(108%) brightness(1.02)" site/styles/ux-v0-shell.css
+          grep -q "bottom:max(9px,calc(var(--safe-bottom) - 9px))" site/styles/ux-v0-shell.css
+          grep -q "width:min(356px,calc(100% - 32px - var(--safe-left) - var(--safe-right)))" site/styles/ux-v0-shell.css
+          grep -q "min-height:72px" site/styles/ux-v0-shell.css
+          grep -q "background:rgba(9,15,24,.24)" site/styles/ux-v0-shell.css
+          grep -q -- "-webkit-backdrop-filter:blur(24px) saturate(175%) brightness(1.08)" site/styles/ux-v0-shell.css
+          grep -q "backdrop-filter:blur(24px) saturate(175%) brightness(1.08)" site/styles/ux-v0-shell.css
           grep -q "app-shell-v0:not(.internal-route-v0)" site/styles/ux-v0-shell.css
           grep -q "scroll-padding-bottom" site/styles/ux-v0-shell.css
-          grep -q "ux-v0-shell.css?v=5" site/index.html
+          grep -q "ux-v0-shell.css?v=6" site/index.html
 
       - name: Check backup clarity
         shell: bash
