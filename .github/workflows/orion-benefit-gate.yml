@@ -33,6 +33,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -q "movement: \['M4.25 7.75h14.5'" site/dist/presentation/icons.js
-          grep -q "accounts: \['M5.25 6.25h12.5a2 2 0 0 1 2 2v9.5" site/dist/presentation/icons.js
-          grep -q "fiscal: \['M6.5 3.75h8l3.5 3.5v13H6.5z'" site/dist/presentation/icons.js
+          grep -q "movement: \['M4.25 7.25h11.5'" site/dist/presentation/icons.js
+          grep -q "accounts: \['M5.25 6.5h12.5a2 2 0 0 1 2 2v9.25" site/dist/presentation/icons.js
+          grep -q "fiscal: \['M6 3.75h8.25L18 7.5v12.75H6z'" site/dist/presentation/icons.js
