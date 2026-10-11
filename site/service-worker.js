@@ -204,7 +204,8 @@ const STATIC_PATHS = [
   "./styles/ux-v1-identity.css",
   "./styles/ux-v1-patrimony.css",
   "./styles/ux-v1-personal-ready.css",
-  "./styles/ux-v2-orion-base.css"
+  "./styles/ux-v2-orion-base.css",
+  "./styles/ux-v2-vitality.css"
 ];
 
 self.addEventListener('install', (event) => {

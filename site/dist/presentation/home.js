@@ -150,27 +150,35 @@ function phaseCard(phase) {
         ]),
         el('div', 'summary-base-phase-value-v2', [phase.value])
     ]);
-    if (phase.percent !== null) {
-        const track = el('div', 'summary-base-progress-track-v2');
-        const fill = el('span', 'summary-base-progress-fill-v2');
+    const progress = el('div', `summary-base-progress-v2${phase.percent === null ? ' no-target' : ''}`);
+    const progressHead = el('div', 'summary-base-progress-copy-v2', [
+        el('span', '', ['Progresso']),
+        el('strong', '', [phase.percent === null ? (phase.kind === 'foundation' ? 'A iniciar' : 'Sem objetivo') : `${phase.percent}%`])
+    ]);
+    const track = el('div', 'summary-base-progress-track-v2');
+    const fill = el('span', 'summary-base-progress-fill-v2');
+    if (phase.percent === null) {
+        track.setAttribute('aria-label', 'Objetivo ainda não definido');
+        progress.append(progressHead, track, el('small', 'summary-base-progress-hint-v2', [
+            phase.kind === 'foundation'
+                ? 'Comece protegendo um valor e defina o objetivo da reserva.'
+                : 'Defina um objetivo para visualizar o percentual de progresso.'
+        ]));
+    }
+    else {
         fill.style.width = `${phase.percent}%`;
         track.setAttribute('role', 'progressbar');
         track.setAttribute('aria-valuemin', '0');
         track.setAttribute('aria-valuemax', '100');
         track.setAttribute('aria-valuenow', String(phase.percent));
         track.append(fill);
-        card.append(el('div', 'summary-base-progress-v2', [
-            el('div', 'summary-base-progress-copy-v2', [
-                el('span', '', ['Progresso']),
-                el('strong', '', [`${phase.percent}%`])
-            ]),
-            track
-        ]));
+        progress.append(progressHead, track);
     }
+    card.append(progress);
     return card;
 }
-function section(title, children = []) {
-    return el('section', 'summary-base-section-v2', [
+function section(title, children = [], className = '') {
+    return el('section', `summary-base-section-v2 ${className}`.trim(), [
         el('h2', 'summary-base-section-title-v2', [title]),
         ...children
     ]);
@@ -192,7 +200,7 @@ export async function renderHomeV0(repositories, profile, actions) {
     root.append(el('section', 'summary-base-hero-v2', [
         el('span', 'summary-base-kicker-v2', ['LIVRE PARA GASTAR']),
         el('strong', 'summary-base-hero-value-v2', [formatBRL(snapshot.freeToDecide)]),
-        el('p', 'summary-base-hero-support-v2', ['Depois de separar reservas, benefícios restritos e considerar os compromissos planejados.'])
+        el('p', 'summary-base-hero-support-v2', ['Após reservas, benefícios restritos e compromissos planejados.'])
     ]));
     root.append(phaseCard(phase));
     root.append(el('div', 'summary-base-metrics-v2', [
@@ -202,7 +210,7 @@ export async function renderHomeV0(repositories, profile, actions) {
         metricCard('Disponível', formatBRL(snapshot.availableNow), 'Dinheiro livre em contas', 'available')
     ]));
     if (snapshot.benefits.length > 0) {
-        const benefits = section('Benefícios');
+        const benefits = section('Benefícios', [], 'summary-base-surface-v2 benefits');
         for (const item of snapshot.benefits)
             benefits.append(benefitRow(item));
         benefits.append(el('small', 'summary-base-benefit-total-v2', [`Total em benefícios: ${formatBRL(snapshot.benefitTotal)}`]));
@@ -218,9 +226,9 @@ export async function renderHomeV0(repositories, profile, actions) {
         else
             actions.onOpenPlanning();
     });
-    root.append(section('Próximo passo', [nextAction]));
-    root.append(section('Situação do mês', [statusCard(snapshot.status)]));
-    const commitments = section('Próximos compromissos');
+    root.append(section('Próximo passo', [nextAction], 'summary-base-guidance-v2'));
+    root.append(section('Situação do mês', [statusCard(snapshot.status)], 'summary-base-flat-v2'));
+    const commitments = section('Próximos compromissos', [], 'summary-base-flat-v2');
     if (snapshot.upcomingCommitments.length === 0) {
         commitments.append(el('div', 'summary-base-empty-v2', ['Nenhum compromisso pendente neste mês.']));
     }
@@ -231,7 +239,7 @@ export async function renderHomeV0(repositories, profile, actions) {
         commitments.append(list);
     }
     root.append(commitments);
-    const month = section('Este mês');
+    const month = section('Este mês', [], 'summary-base-surface-v2 month');
     if (snapshot.monthTransactionCount === 0) {
         const goToMovements = el('button', 'summary-base-link-v2', ['Ir para Movimentos ›']);
         goToMovements.type = 'button';
@@ -253,7 +261,7 @@ export async function renderHomeV0(repositories, profile, actions) {
         month.append(goToMovements);
     }
     root.append(month);
-    const resources = section('Mais recursos');
+    const resources = section('Mais recursos', [], 'summary-base-flat-v2 resources');
     resources.append(resourceRow('Patrimônio', 'Ativos, passivos e patrimônio líquido', actions.onOpenPatrimony));
     root.append(resources);
     return root;
