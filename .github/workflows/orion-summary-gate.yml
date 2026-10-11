@@ -1,0 +1,87 @@
+name: Orion Summary Gate
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  summary-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check summary runtime syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check site/dist/application/dashboard/financial-phase.js
+          node --check site/dist/presentation/home.js
+
+      - name: Check reserve goal is the summary source of truth
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { buildDashboardPhase, selectPrimaryProtectionAllocation } from './site/dist/application/dashboard/financial-phase.js';
+
+          const assert = (condition, message) => {
+            if (!condition) throw new Error(message);
+          };
+
+          const emergency = { id: 'alloc-emergency', name: 'Emergência', amount: 10000, targetAmount: 50000 };
+          const phase = buildDashboardPhase({
+            allocations: [emergency],
+            allocated: 10000,
+            debtOutstanding: 0,
+            debtOpening: 0,
+            debtPaid: 0
+          });
+          assert(phase.kind === 'reserve', 'Emergência deve ser reconhecida como proteção ativa.');
+          assert(phase.context === 'Emergência', 'Resumo deve mostrar o nome da meta real.');
+          assert(phase.current === 10000 && phase.target === 50000, 'Resumo deve usar os valores da meta cadastrada.');
+          assert(phase.percent === 20, 'R$ 100 de R$ 500 deve resultar em 20%.');
+          assert(phase.remaining === 40000, 'Resumo deve calcular corretamente o valor restante.');
+          assert(phase.actionLabel === 'Ver reserva', 'Meta acompanhada deve oferecer acesso à reserva.');
+
+          const primary = selectPrimaryProtectionAllocation([
+            { id: 'travel', name: 'Viagem', amount: 30000, targetAmount: 100000 },
+            emergency
+          ]);
+          assert(primary?.id === 'alloc-emergency', 'Reserva/emergência deve ter prioridade sobre metas genéricas.');
+
+          const debtPhase = buildDashboardPhase({
+            allocations: [{ ...emergency, amount: 50000 }],
+            allocated: 50000,
+            debtOutstanding: 90000,
+            debtOpening: 100000,
+            debtPaid: 10000
+          });
+          assert(debtPhase.kind === 'debt', 'Após concluir a proteção, dívidas ativas devem virar o foco.');
+          assert(debtPhase.percent === 10, 'Progresso da quitação deve usar dívida paga sobre dívida inicial.');
+          NODE
+
+      - name: Check summary redundancy removal
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -q "function selectReserve" site/dist/presentation/home.js
+          ! grep -q "Próximo passo" site/dist/presentation/home.js
+          grep -q "buildDashboardPhase" site/dist/presentation/home.js
+          grep -q "summary-base-phase-action-v2" site/dist/presentation/home.js
+          grep -q "summary-base-phase-action-v2" site/styles/ux-v2-summary-coherence.css
+
+      - name: Check offline assets for summary refinement
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "financial-phase.js" site/service-worker.js
+          grep -q "ux-v2-summary-coherence.css" site/service-worker.js
+          grep -q "ux-v2-summary-coherence.css?v=1" site/index.html
