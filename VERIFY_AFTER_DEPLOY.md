@@ -1,12 +1,14 @@
-# Verificação após deploy — 12.48
+# Verificação final após deploy — Orion 0.1.0
 
-1. Confirme `0.1.0-development.12.48` em Ajustes > Sobre o Orion.
-2. Vá em Resumo > Mais recursos > Patrimônio > Ver investimentos.
-3. Confirme que ações/FIIs/ETFs/BDRs já cadastrados continuam exibindo a mesma quantidade e custo.
-4. Em `Adicionar investimento`, confirme a opção `Criptoativo`.
-5. Cadastre BTC como criptoativo e registre uma compra de teste com quantidade fracionária, por exemplo `0,00080000`.
-6. Confirme que a conta de liquidação diminui pelo valor bruto + taxas e que a compra não vira despesa de consumo.
-7. Confirme que o detalhe do BTC preserva até 8 casas decimais.
-8. Com `BRAPI_TOKEN` configurado no Cloudflare, toque em `Atualizar cotações` e confirme que o valor atual muda sem criar movimento financeiro.
-9. Sem cotação disponível, confirme que a posição continua mostrada pelo custo.
-10. Feche e reabra o PWA e confirme persistência, atualização e funcionamento normal das demais áreas.
+Esta checagem usa apenas a base de teste. Não é necessário inserir movimentações, saldos ou documentos pessoais reais para validar o fechamento.
+
+1. Em `Ajustes > Sobre o Orion`, confirme a versão `0.1.0` e execute `Verificar funcionamento`.
+2. Feche e reabra o PWA. Confirme que abre normalmente, mantém a base de teste e não exibe versão antiga.
+3. Percorra as cinco raízes do dock: Resumo, Movimentos, Planejar, Contas e Fiscal. Confirme destaque do item ativo, rolagem e ausência do dock nas telas internas.
+4. Em `Ajustes > Privacidade`, confirme: dados locais, IA/telemetria não utilizadas, mercado desativado e nuvem desativada.
+5. Faça `Criar backup` da base de teste. Não é necessário restaurá-lo se não quiser substituir os dados atuais.
+6. Em Movimentos, abra `Novo` e volte sem salvar. Em Planejar e Contas, abra um formulário de criação e cancele. Isso valida navegação sem criar fatos financeiros.
+7. Em Fiscal, abra Documentos, Preparação para IR, Informe de Rendimentos, Informes financeiros e Dossiê Fiscal. Não é necessário enviar documentos pessoais.
+8. Ative modo avião e reabra o Orion. Resumo, Movimentos, Planejar, Contas, Ajustes e dados já armazenados devem continuar acessíveis. A leitura de um PDF novo pode exigir que PDF.js já tenha sido carregado anteriormente.
+9. Volte à internet. Confirme que o app não solicita login e não apresenta sincronização em nuvem ou atualização automática de mercado.
+10. Se todos os itens acima passarem, considere `0.1.0` fechada para uso pessoal e só abra nova versão para correção concreta ou necessidade futura deliberada.
