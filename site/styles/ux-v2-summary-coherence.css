@@ -1,0 +1,79 @@
+/* Orion 0.1.0 · Coerência do Resumo
+   O card de fase passa a refletir a meta/reserva real e absorve o antigo bloco "Próximo passo". */
+.summary-base-phase-v2{
+  padding-bottom:11px;
+}
+.summary-base-phase-value-v2{
+  margin-top:5px;
+  color:#bcc7d5;
+  font-size:12px;
+  font-weight:650;
+  line-height:1.4;
+}
+.summary-base-progress-v2{
+  gap:6px;
+  margin-top:11px;
+}
+.summary-base-progress-copy-v2{
+  font-size:10px;
+  font-variant-numeric:tabular-nums;
+}
+.summary-base-progress-copy-v2 > span:first-child{
+  color:#a6b3c4;
+}
+.summary-base-progress-copy-v2 strong{
+  font-size:12px;
+  font-variant-numeric:tabular-nums;
+}
+.summary-base-progress-track-v2{
+  height:6px;
+}
+.summary-base-progress-v2.no-target .summary-base-progress-track-v2{
+  overflow:hidden;
+  background:linear-gradient(90deg,color-mix(in srgb,var(--phase-accent) 7%,transparent),rgba(255,255,255,.025));
+}
+.summary-base-progress-v2.no-target .summary-base-progress-track-v2::before{
+  content:none;
+}
+.summary-base-progress-hint-v2{
+  color:#7f8ea1;
+  font-size:10px;
+  line-height:1.4;
+}
+.summary-base-phase-action-v2{
+  position:relative;
+  z-index:1;
+  width:100%;
+  min-height:38px;
+  margin-top:9px;
+  padding:8px 0 0;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:12px;
+  border:0;
+  border-top:1px solid color-mix(in srgb,var(--phase-accent) 18%,transparent);
+  background:transparent;
+  color:var(--phase-accent);
+  font:inherit;
+  font-size:11px;
+  font-weight:760;
+  text-align:left;
+}
+.summary-base-phase-action-chevron-v2{
+  font-size:20px;
+  line-height:1;
+  text-shadow:0 0 10px color-mix(in srgb,var(--phase-accent) 30%,transparent);
+}
+.summary-base-phase-action-v2:active{
+  opacity:.76;
+}
+/* O antigo cartão de orientação foi incorporado ao card de fase. */
+.summary-base-guidance-v2,
+.summary-base-next-action-v2{
+  display:none!important;
+}
+@media(max-width:360px){
+  .summary-base-phase-title-v2{font-size:17px}
+  .summary-base-progress-copy-v2{gap:8px}
+}

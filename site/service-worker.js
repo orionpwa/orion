@@ -35,6 +35,7 @@ const STATIC_PATHS = [
   "./dist/application/credit-cards/record-card-purchase.js",
   "./dist/application/credit-cards/update-credit-card.js",
   "./dist/application/dashboard/financial-status.js",
+  "./dist/application/dashboard/financial-phase.js",
   "./dist/application/dashboard/get-dashboard.js",
   "./dist/application/debts/create-debt.js",
   "./dist/application/debts/pay-debt.js",
@@ -205,7 +206,8 @@ const STATIC_PATHS = [
   "./styles/ux-v1-patrimony.css",
   "./styles/ux-v1-personal-ready.css",
   "./styles/ux-v2-orion-base.css",
-  "./styles/ux-v2-vitality.css"
+  "./styles/ux-v2-vitality.css",
+  "./styles/ux-v2-summary-coherence.css"
 ];
 
 self.addEventListener('install', (event) => {

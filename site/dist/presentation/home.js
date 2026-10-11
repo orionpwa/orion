@@ -1,5 +1,6 @@
 import { getDashboardSnapshot } from '../application/dashboard/get-dashboard.js';
 import { financialStatusLabel } from '../application/dashboard/financial-status.js';
+import { buildDashboardPhase } from '../application/dashboard/financial-phase.js';
 import { formatBRL } from '../domain/money/money.js';
 import { el } from './dom.js';
 function monthLabel(now = new Date()) {
@@ -15,87 +16,6 @@ function shortDate(dateKey) {
     return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short' })
         .format(date)
         .replace('.', '');
-}
-function normalizeLabel(value) {
-    return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-}
-function percentFor(current, target) {
-    if (!Number.isFinite(target) || target <= 0)
-        return null;
-    return Math.min(100, Math.max(0, Math.round((Math.max(0, current) / target) * 100)));
-}
-function selectReserve(allocations) {
-    const reserves = allocations.filter((item) => normalizeLabel(item.name).includes('reserva'));
-    reserves.sort((left, right) => {
-        const leftMinimum = normalizeLabel(left.name).includes('minima') ? 0 : 1;
-        const rightMinimum = normalizeLabel(right.name).includes('minima') ? 0 : 1;
-        if (leftMinimum !== rightMinimum)
-            return leftMinimum - rightMinimum;
-        return left.name.localeCompare(right.name, 'pt-BR');
-    });
-    return reserves[0] ?? null;
-}
-function phaseFor(snapshot) {
-    const reserve = selectReserve(snapshot.allocations);
-    if (!reserve) {
-        if (snapshot.allocated > 0) {
-            return {
-                kind: 'reserve',
-                title: 'Construindo proteção financeira',
-                value: `${formatBRL(snapshot.allocated)} protegidos`,
-                percent: null,
-                nextStep: 'Você já separou dinheiro do Livre. Defina um objetivo para acompanhar sua reserva mínima com clareza.',
-                action: 'allocations'
-            };
-        }
-        return {
-            kind: 'foundation',
-            title: 'Estruturando a base financeira',
-            value: 'Nenhum valor protegido ainda',
-            percent: null,
-            nextStep: 'Crie sua reserva mínima em Planejar. O valor reservado ficará automaticamente fora do Livre para gastar.',
-            action: 'allocations'
-        };
-    }
-    if (reserve.targetAmount === undefined || reserve.targetAmount <= 0) {
-        return {
-            kind: 'reserve',
-            title: 'Construindo reserva mínima',
-            value: `${formatBRL(reserve.amount)} protegidos`,
-            percent: null,
-            nextStep: 'Defina um objetivo total para a reserva para acompanhar o progresso até o próximo marco.',
-            action: 'allocations'
-        };
-    }
-    if (reserve.amount < reserve.targetAmount) {
-        const remaining = Math.max(0, reserve.targetAmount - reserve.amount);
-        return {
-            kind: 'reserve',
-            title: 'Construindo reserva mínima',
-            value: `${formatBRL(reserve.amount)} / ${formatBRL(reserve.targetAmount)}`,
-            percent: percentFor(reserve.amount, reserve.targetAmount),
-            nextStep: `Faltam ${formatBRL(remaining)} para concluir a reserva mínima.`,
-            action: 'allocations'
-        };
-    }
-    if (snapshot.debtOutstanding > 0) {
-        return {
-            kind: 'debt',
-            title: 'Quitando dívidas',
-            value: `${formatBRL(snapshot.debtOutstanding)} ainda em aberto`,
-            percent: percentFor(snapshot.debtPaid, snapshot.debtOpening),
-            nextStep: 'A reserva mínima está protegida. O próximo foco é reduzir as dívidas ativas sem usar esse valor reservado.',
-            action: 'debts'
-        };
-    }
-    return {
-        kind: 'stable',
-        title: 'Base financeira protegida',
-        value: `${formatBRL(reserve.amount)} em reserva`,
-        percent: 100,
-        nextStep: 'Reserva mínima concluída e nenhuma dívida ativa. Continue fortalecendo a base antes de abrir uma nova frente.',
-        action: 'planning'
-    };
 }
 function metricCard(label, value, support, className = '') {
     return el('div', `summary-base-metric-v2 ${className}`.trim(), [
@@ -142,39 +62,70 @@ function statusCard(status) {
         ])
     ]);
 }
-function phaseCard(phase) {
+function runPhaseAction(phase, actions) {
+    if (phase.action === 'allocations')
+        actions.onOpenAllocations();
+    else if (phase.action === 'debts')
+        actions.onOpenDebts();
+    else
+        actions.onOpenPlanning();
+}
+function phaseProgressMeta(phase) {
+    if (phase.target === null)
+        return phase.progressHint;
+    if (phase.kind === 'debt')
+        return phase.remaining > 0
+            ? `${formatBRL(phase.remaining)} ainda em aberto.`
+            : 'Dívidas quitadas.';
+    if (phase.remaining > 0)
+        return `Faltam ${formatBRL(phase.remaining)} para ${formatBRL(phase.target)}.`;
+    return `Objetivo de ${formatBRL(phase.target)} alcançado.`;
+}
+function phaseCard(phase, actions) {
     const card = el('section', `summary-base-phase-v2 ${phase.kind}`, [
         el('div', 'summary-base-phase-heading-v2', [
             el('span', 'summary-base-kicker-v2', ['SUA FASE ATUAL']),
             el('strong', 'summary-base-phase-title-v2', [phase.title])
         ]),
-        el('div', 'summary-base-phase-value-v2', [phase.value])
+        el('div', 'summary-base-phase-value-v2', [phase.context])
     ]);
-    const progress = el('div', `summary-base-progress-v2${phase.percent === null ? ' no-target' : ''}`);
+    const hasTarget = phase.target !== null && phase.percent !== null;
+    const progress = el('div', `summary-base-progress-v2${hasTarget ? '' : ' no-target'}`);
+    const progressLeft = hasTarget
+        ? `${formatBRL(phase.current)} de ${formatBRL(phase.target)}`
+        : 'Progresso';
+    const progressRight = hasTarget
+        ? `${phase.percent}%`
+        : phase.kind === 'foundation' ? 'A iniciar' : 'Sem objetivo';
     const progressHead = el('div', 'summary-base-progress-copy-v2', [
-        el('span', '', ['Progresso']),
-        el('strong', '', [phase.percent === null ? (phase.kind === 'foundation' ? 'A iniciar' : 'Sem objetivo') : `${phase.percent}%`])
+        el('span', '', [progressLeft]),
+        el('strong', '', [progressRight])
     ]);
     const track = el('div', 'summary-base-progress-track-v2');
-    const fill = el('span', 'summary-base-progress-fill-v2');
-    if (phase.percent === null) {
-        track.setAttribute('aria-label', 'Objetivo ainda não definido');
-        progress.append(progressHead, track, el('small', 'summary-base-progress-hint-v2', [
-            phase.kind === 'foundation'
-                ? 'Comece protegendo um valor e defina o objetivo da reserva.'
-                : 'Defina um objetivo para visualizar o percentual de progresso.'
-        ]));
-    }
-    else {
+    if (hasTarget) {
+        const fill = el('span', 'summary-base-progress-fill-v2');
         fill.style.width = `${phase.percent}%`;
         track.setAttribute('role', 'progressbar');
         track.setAttribute('aria-valuemin', '0');
         track.setAttribute('aria-valuemax', '100');
         track.setAttribute('aria-valuenow', String(phase.percent));
         track.append(fill);
-        progress.append(progressHead, track);
     }
+    else {
+        track.setAttribute('aria-label', 'Objetivo ainda não definido');
+    }
+    const meta = phaseProgressMeta(phase);
+    progress.append(progressHead, track);
+    if (meta)
+        progress.append(el('small', 'summary-base-progress-hint-v2', [meta]));
     card.append(progress);
+    const action = el('button', 'summary-base-phase-action-v2', [
+        el('span', '', [phase.actionLabel]),
+        el('span', 'summary-base-phase-action-chevron-v2', ['›'])
+    ]);
+    action.type = 'button';
+    action.addEventListener('click', () => runPhaseAction(phase, actions));
+    card.append(action);
     return card;
 }
 function section(title, children = [], className = '') {
@@ -194,7 +145,7 @@ function resourceRow(title, support, onClick) {
 }
 export async function renderHomeV0(repositories, profile, actions) {
     const snapshot = await getDashboardSnapshot(repositories, profile.id);
-    const phase = phaseFor(snapshot);
+    const phase = buildDashboardPhase(snapshot);
     const root = el('div', 'summary-screen-v0 summary-base-v2');
     root.append(el('div', 'summary-base-period-v2', [monthLabel()]));
     root.append(el('section', 'summary-base-hero-v2', [
@@ -202,7 +153,7 @@ export async function renderHomeV0(repositories, profile, actions) {
         el('strong', 'summary-base-hero-value-v2', [formatBRL(snapshot.freeToDecide)]),
         el('p', 'summary-base-hero-support-v2', ['Após reservas, benefícios restritos e compromissos planejados.'])
     ]));
-    root.append(phaseCard(phase));
+    root.append(phaseCard(phase, actions));
     root.append(el('div', 'summary-base-metrics-v2', [
         metricCard('Protegido', formatBRL(snapshot.allocated), 'Reservas separadas', 'protected'),
         metricCard('Comprometido', formatBRL(snapshot.plannedExpense), 'Compromissos do mês', 'committed'),
@@ -216,17 +167,6 @@ export async function renderHomeV0(repositories, profile, actions) {
         benefits.append(el('small', 'summary-base-benefit-total-v2', [`Total em benefícios: ${formatBRL(snapshot.benefitTotal)}`]));
         root.append(benefits);
     }
-    const nextAction = el('button', 'summary-base-next-action-v2', [phase.nextStep, el('span', '', ['›'])]);
-    nextAction.type = 'button';
-    nextAction.addEventListener('click', () => {
-        if (phase.action === 'allocations')
-            actions.onOpenAllocations();
-        else if (phase.action === 'debts')
-            actions.onOpenDebts();
-        else
-            actions.onOpenPlanning();
-    });
-    root.append(section('Próximo passo', [nextAction], 'summary-base-guidance-v2'));
     root.append(section('Situação do mês', [statusCard(snapshot.status)], 'summary-base-flat-v2'));
     const commitments = section('Próximos compromissos', [], 'summary-base-flat-v2');
     if (snapshot.upcomingCommitments.length === 0) {
