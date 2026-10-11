@@ -25,6 +25,7 @@ jobs:
           grep -q 'ux-v0-shell.css?v=9' site/index.html
           grep -q 'ux-v3-modern-surfaces.css?v=1' site/index.html
           grep -q 'ux-v4-movements.css?v=1' site/index.html
+          grep -q 'ux-v5-planning.css?v=1' site/index.html
           grep -q 'ux-v4-dock.css?v=3' site/index.html
           node --input-type=module <<'NODE'
           import { readFileSync } from 'node:fs';
@@ -32,9 +33,10 @@ jobs:
           const coherence = html.indexOf('ux-v2-summary-coherence.css?v=3');
           const modern = html.indexOf('ux-v3-modern-surfaces.css?v=1');
           const movements = html.indexOf('ux-v4-movements.css?v=1');
+          const planning = html.indexOf('ux-v5-planning.css?v=1');
           const dock = html.indexOf('ux-v4-dock.css?v=3');
-          if (coherence < 0 || modern < coherence || movements < modern || dock < movements) {
-            throw new Error('As camadas modernas precisam respeitar V2 → V3 → Movimentos V4 → Dock V4.');
+          if (coherence < 0 || modern < coherence || movements < modern || planning < movements || dock < planning) {
+            throw new Error('As camadas modernas precisam respeitar V2 → V3 → Movimentos V4 → Planejar V5 → Dock V4.');
           }
           NODE
 
@@ -46,6 +48,7 @@ jobs:
           import { readFileSync } from 'node:fs';
           const css = readFileSync('site/styles/ux-v3-modern-surfaces.css', 'utf8');
           const movementsCss = readFileSync('site/styles/ux-v4-movements.css', 'utf8');
+          const planningCss = readFileSync('site/styles/ux-v5-planning.css', 'utf8');
           const dockCss = readFileSync('site/styles/ux-v4-dock.css', 'utf8');
           const required = [
             '.app-header-v0',
@@ -71,25 +74,39 @@ jobs:
           for (const selector of movementRequired) {
             if (!movementsCss.includes(selector)) throw new Error(`Movimentos V4 perdeu ${selector}`);
           }
+          const planningRequired = [
+            '.planning-root-screen-v1 .planning-root-intro-v0',
+            '.planning-list-screen-v0 .planning-list-top-v0',
+            '.planning-empty-v0',
+            '.planning-entity-row-v0',
+            '.planning-detail-hero-v0',
+            '.planning-goal-progress-v0',
+            '.planning-detail-list-v0',
+            '.planning-primary-action-v0'
+          ];
+          for (const selector of planningRequired) {
+            if (!planningCss.includes(selector)) throw new Error(`Planejar V5 perdeu ${selector}`);
+          }
           const dockRequired = [
             '.bottom-nav-v0',
             'position:fixed',
             'background:',
-            'rgba(5,10,18,.055)',
-            '-webkit-backdrop-filter:blur(22px) saturate(190%) brightness(1.14) contrast(1.02)',
-            'backdrop-filter:blur(22px) saturate(190%) brightness(1.14) contrast(1.02)',
+            'rgba(5,10,18,.028)',
+            '-webkit-backdrop-filter:blur(28px) saturate(205%) brightness(1.16) contrast(1.015)',
+            'backdrop-filter:blur(28px) saturate(205%) brightness(1.16) contrast(1.015)',
             'will-change:backdrop-filter',
             '-webkit-overflow-scrolling:auto',
             'contain:none',
             '.nav-item-v0.active',
+            'rgba(55,83,126,.075)',
             'background-clip:padding-box',
             '@media(prefers-reduced-motion:reduce)',
             'padding-bottom:calc(104px + max(12px,var(--safe-bottom)))'
           ];
           for (const marker of dockRequired) {
-            if (!dockCss.includes(marker)) throw new Error(`Dock V4.2 perdeu ${marker}`);
+            if (!dockCss.includes(marker)) throw new Error(`Dock V4.3 perdeu ${marker}`);
           }
-          for (const content of [css, movementsCss, dockCss]) {
+          for (const content of [css, movementsCss, planningCss, dockCss]) {
             let depth = 0;
             for (const char of content) {
               if (char === '{') depth += 1;
@@ -142,9 +159,9 @@ jobs:
             'width:356px',
             'min-height:72px',
             'border-radius:36px',
-            'rgba(5,10,18,.055)',
-            '-webkit-backdrop-filter:blur(22px) saturate(190%) brightness(1.14) contrast(1.02)',
-            'backdrop-filter:blur(22px) saturate(190%) brightness(1.14) contrast(1.02)',
+            'rgba(5,10,18,.028)',
+            '-webkit-backdrop-filter:blur(28px) saturate(205%) brightness(1.16) contrast(1.015)',
+            'backdrop-filter:blur(28px) saturate(205%) brightness(1.16) contrast(1.015)',
             '-webkit-overflow-scrolling:auto',
             'contain:none',
             'min-height:58px',
@@ -152,7 +169,7 @@ jobs:
             'width:29px'
           ];
           for (const rule of dockRules) {
-            if (!dock.includes(rule)) throw new Error(`Dock V4.2 perdeu a regra: ${rule}`);
+            if (!dock.includes(rule)) throw new Error(`Dock V4.3 perdeu a regra: ${rule}`);
           }
           const rootIcons = [
             "home: [\n        'M4.75 4.75h6v6h-6z'",

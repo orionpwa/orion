@@ -79,9 +79,9 @@ jobs:
           grep -q "width:356px" site/styles/ux-v4-dock.css
           grep -q "max-width:calc(100% - 32px - var(--safe-left) - var(--safe-right))" site/styles/ux-v4-dock.css
           grep -q "min-height:72px" site/styles/ux-v4-dock.css
-          grep -q "rgba(5,10,18,.055)" site/styles/ux-v4-dock.css
-          grep -q -- "-webkit-backdrop-filter:blur(22px) saturate(190%) brightness(1.14) contrast(1.02)" site/styles/ux-v4-dock.css
-          grep -q "backdrop-filter:blur(22px) saturate(190%) brightness(1.14) contrast(1.02)" site/styles/ux-v4-dock.css
+          grep -q "rgba(5,10,18,.028)" site/styles/ux-v4-dock.css
+          grep -q -- "-webkit-backdrop-filter:blur(28px) saturate(205%) brightness(1.16) contrast(1.015)" site/styles/ux-v4-dock.css
+          grep -q "backdrop-filter:blur(28px) saturate(205%) brightness(1.16) contrast(1.015)" site/styles/ux-v4-dock.css
           grep -q -- "-webkit-overflow-scrolling:auto" site/styles/ux-v4-dock.css
           grep -q "contain:none" site/styles/ux-v4-dock.css
           grep -q "will-change:backdrop-filter" site/styles/ux-v4-dock.css
@@ -90,6 +90,18 @@ jobs:
           grep -q "scroll-padding-bottom" site/styles/ux-v4-dock.css
           grep -q "ux-v0-shell.css?v=9" site/index.html
           grep -q "ux-v4-dock.css?v=3" site/index.html
+
+      - name: Check planning visual refinement
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "ux-v5-planning.css?v=1" site/index.html
+          grep -q "planning-root-screen-v1" site/dist/presentation/screens/planning-v0/root.js
+          grep -q "planning-list-screen-v0 .planning-list-top-v0" site/styles/ux-v5-planning.css
+          grep -q "planning-empty-v0" site/styles/ux-v5-planning.css
+          grep -q "planning-detail-hero-v0" site/styles/ux-v5-planning.css
+          grep -q "planning-goal-progress-v0" site/styles/ux-v5-planning.css
+          grep -q "planning-detail-list-v0" site/styles/ux-v5-planning.css
 
       - name: Check movement category presentation
         shell: bash
