@@ -1,0 +1,304 @@
+/* Orion 0.1.0 · Planning V5
+   Refinamento visual das telas de Planejar sem alterar regras financeiras,
+   persistência, schema ou navegação. */
+
+.planning-screen-v0{
+  --plan-surface:rgba(14,22,33,.82);
+  --plan-surface-strong:rgba(16,25,38,.92);
+  --plan-line:rgba(146,170,202,.13);
+  --plan-line-strong:rgba(112,163,255,.22);
+  --plan-text:#f2f5fa;
+  --plan-muted:#95a3b6;
+  --plan-muted-2:#748399;
+  --plan-blue:#7eaaff;
+  --plan-gold:#d9b86d;
+  --plan-red:#ff8c86;
+  --plan-green:#62d59c;
+  padding-top:16px;
+}
+
+/* Raiz: a introdução vira uma pequena superfície de orientação. */
+.planning-root-screen-v1 .planning-root-intro-v0{
+  position:relative;
+  margin:0 0 13px;
+  padding:14px 15px 14px 17px;
+  border:1px solid rgba(112,163,255,.13);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 92% -18%,rgba(112,163,255,.10),transparent 42%),
+    linear-gradient(145deg,rgba(16,25,38,.74),rgba(9,16,25,.86));
+  color:#9dabbc;
+  font-size:12.5px;
+  line-height:1.5;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025),0 10px 28px rgba(0,0,0,.10);
+}
+.planning-root-screen-v1 .planning-root-intro-v0::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:15px;
+  bottom:15px;
+  width:3px;
+  border-radius:999px;
+  background:linear-gradient(180deg,#78a9ff,#587eb7);
+  opacity:.8;
+}
+.planning-root-screen-v1 .planning-domain-list-v0{
+  margin-top:0;
+  padding:5px;
+  border-radius:22px;
+  border-color:rgba(146,170,202,.14);
+  background:
+    radial-gradient(circle at 92% 0%,rgba(112,163,255,.065),transparent 36%),
+    linear-gradient(145deg,rgba(15,24,36,.90),rgba(9,16,25,.96));
+  box-shadow:0 18px 42px rgba(0,0,0,.15),inset 0 1px 0 rgba(255,255,255,.022);
+}
+.planning-root-screen-v1 .planning-domain-row-v0{
+  min-height:76px;
+  padding-top:15px;
+  padding-bottom:15px;
+}
+.planning-root-screen-v1 .planning-domain-copy-v0 strong{font-size:15.5px;letter-spacing:-.015em}
+.planning-root-screen-v1 .planning-domain-side-v0 strong{font-size:15px;font-variant-numeric:tabular-nums}
+
+/* Listas internas: informação + ação em um card compacto. */
+.planning-list-screen-v0 .planning-list-top-v0{
+  position:relative;
+  gap:12px;
+  margin:0 0 14px;
+  padding:15px 16px 14px;
+  overflow:hidden;
+  border:1px solid var(--plan-line);
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 96% -8%,rgba(112,163,255,.08),transparent 42%),
+    linear-gradient(145deg,rgba(16,25,38,.84),rgba(9,16,25,.93));
+  box-shadow:0 14px 34px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.022);
+}
+.planning-list-screen-v0 .planning-list-top-v0::after{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:3px;
+  background:linear-gradient(180deg,rgba(126,170,255,.9),rgba(126,170,255,.24));
+}
+.planning-list-screen-v0 .planning-list-top-v0 p{
+  max-width:34rem;
+  color:#9ba9ba;
+  font-size:12.5px;
+  line-height:1.52;
+}
+.planning-inline-primary-v0{
+  justify-self:start;
+  min-height:36px;
+  padding:0 13px;
+  border:1px solid rgba(112,163,255,.20);
+  border-radius:999px;
+  background:linear-gradient(180deg,rgba(112,163,255,.115),rgba(112,163,255,.050));
+  color:#89b2ff;
+  font-size:12.5px;
+  font-weight:760;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+.planning-inline-primary-v0:active{transform:scale(.98);background:rgba(112,163,255,.13)}
+
+/* Empty state deixa de ser uma linha perdida em uma tela vazia. */
+.planning-empty-v0{
+  position:relative;
+  margin-top:0;
+  min-height:126px;
+  padding:54px 18px 18px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(146,170,202,.11);
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(112,163,255,.045),transparent 52%),
+    linear-gradient(145deg,rgba(13,21,32,.62),rgba(8,14,22,.76));
+  color:#8392a6;
+  font-size:12.5px;
+  line-height:1.45;
+  text-align:center;
+}
+.planning-empty-v0::before{
+  content:"";
+  position:absolute;
+  top:20px;
+  width:24px;
+  height:24px;
+  border:1px solid rgba(126,170,255,.22);
+  border-radius:9px;
+  background:
+    linear-gradient(90deg,transparent 47%,rgba(126,170,255,.65) 47%,rgba(126,170,255,.65) 53%,transparent 53%),
+    linear-gradient(transparent 47%,rgba(126,170,255,.65) 47%,rgba(126,170,255,.65) 53%,transparent 53%),
+    rgba(112,163,255,.055);
+  box-shadow:0 8px 20px rgba(39,79,145,.10);
+}
+
+/* Listas com itens viram superfícies individuais, em vez de linhas soltas. */
+.planning-entity-list-v0{
+  gap:9px;
+  margin-top:0;
+}
+.planning-entity-row-v0{
+  min-height:76px;
+  padding:13px 14px;
+  border:1px solid rgba(146,170,202,.115);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(112,163,255,.045),transparent 38%),
+    linear-gradient(145deg,rgba(15,23,34,.82),rgba(9,16,25,.91));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.018);
+  transition:transform .15s ease,border-color .15s ease,background-color .15s ease;
+}
+.planning-entity-row-v0:last-child{border-bottom:1px solid rgba(146,170,202,.115)}
+.planning-entity-row-v0:active{transform:scale(.993);border-color:rgba(112,163,255,.22)}
+.planning-entity-copy-v0 strong{color:#eef3f9;font-size:14.5px;font-weight:735;letter-spacing:-.012em}
+.planning-entity-copy-v0 small,.planning-entity-value-v0 small{color:#8391a4;font-size:11px}
+.planning-entity-value-v0 strong{color:#e7edf6;font-size:14.5px;font-variant-numeric:tabular-nums}
+.planning-entity-chevron-v0{color:#7f9fc9;font-size:23px}
+
+/* Detalhes: hero, progresso e dados passam a formar módulos distintos. */
+.planning-detail-screen-v0{
+  padding-top:16px;
+}
+.planning-detail-hero-v0{
+  position:relative;
+  gap:7px;
+  padding:18px 18px 17px;
+  overflow:hidden;
+  border:1px solid rgba(112,163,255,.17);
+  border-radius:22px;
+  background:
+    radial-gradient(circle at 96% -2%,rgba(112,163,255,.12),transparent 38%),
+    linear-gradient(145deg,rgba(17,27,40,.92),rgba(9,16,25,.97));
+  box-shadow:0 16px 38px rgba(0,0,0,.14),inset 0 1px 0 rgba(255,255,255,.025);
+}
+.planning-detail-hero-v0::after{
+  content:"";
+  position:absolute;
+  right:-34px;
+  bottom:-58px;
+  width:150px;
+  height:150px;
+  border:1px solid rgba(112,163,255,.13);
+  border-radius:50%;
+  box-shadow:0 0 0 20px rgba(112,163,255,.025);
+  pointer-events:none;
+}
+.planning-detail-hero-v0 small{color:#8db3f6;font-size:10px;letter-spacing:.16em}
+.planning-detail-hero-v0 strong{font-size:clamp(36px,10vw,48px);color:#f5f7fb}
+.planning-detail-hero-v0 span{color:#9eacbd;font-size:15px}
+.planning-goal-progress-v0{
+  margin-top:11px;
+  padding:15px 16px;
+  gap:10px;
+  border:1px solid rgba(217,184,109,.16);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(217,184,109,.08),transparent 42%),
+    linear-gradient(145deg,rgba(22,24,28,.78),rgba(12,18,27,.90));
+}
+.planning-goal-progress-head-v0{font-size:12px}
+.planning-goal-progress-head-v0 span{color:#9ca9b8}
+.planning-goal-progress-head-v0 strong{color:var(--plan-gold);font-size:15px;font-variant-numeric:tabular-nums}
+.planning-goal-progress-track-v0{
+  height:6px;
+  border:1px solid rgba(217,184,109,.18);
+  background:rgba(217,184,109,.055);
+}
+.planning-goal-progress-fill-v0{
+  background:linear-gradient(90deg,#cda95d,#e3c57e);
+  box-shadow:0 0 12px rgba(217,184,109,.18);
+}
+.planning-goal-progress-meta-v0{color:#8c9aac;font-size:11.5px}
+.planning-detail-list-v0{
+  margin-top:11px;
+  padding:4px 15px;
+  overflow:hidden;
+  border:1px solid var(--plan-line);
+  border-radius:19px;
+  background:linear-gradient(145deg,rgba(14,22,33,.77),rgba(8,15,23,.88));
+}
+.planning-detail-row-v0{
+  min-height:58px;
+  padding:11px 0;
+  border-bottom:1px solid rgba(146,170,202,.10);
+}
+.planning-detail-row-v0:last-child{border-bottom:0}
+.planning-detail-row-v0 dt{color:#8c9bad;font-size:12px}
+.planning-detail-row-v0 dd{color:#e9eef6;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums}
+.planning-detail-note-v0{
+  margin:11px 0 0;
+  padding:13px 15px;
+  border-left:3px solid rgba(217,184,109,.55);
+  border-radius:0 14px 14px 0;
+  background:rgba(217,184,109,.045);
+  color:#a9b4c2;
+  font-size:12px;
+  letter-spacing:.015em;
+}
+.planning-action-stack-v0{gap:9px;margin-top:14px}
+.planning-primary-action-v0,
+.planning-secondary-action-v0,
+.planning-danger-action-v0,
+.planning-danger-confirm-v0{
+  min-height:50px;
+  border-radius:15px;
+  font-size:13px;
+}
+.planning-primary-action-v0{
+  border:1px solid rgba(126,170,255,.32);
+  background:linear-gradient(135deg,#6d9cf4,#4f82df);
+  color:#07111f;
+  box-shadow:0 10px 24px rgba(57,104,186,.18),inset 0 1px 0 rgba(255,255,255,.18);
+}
+.planning-secondary-action-v0{
+  border-color:rgba(146,170,202,.16);
+  background:linear-gradient(145deg,rgba(14,22,33,.70),rgba(9,15,23,.82));
+  color:#e9eef6;
+}
+.planning-danger-zone-v0{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px solid rgba(255,140,134,.10);
+}
+.planning-danger-action-v0,.planning-danger-confirm-v0{
+  border-color:rgba(255,140,134,.26);
+  background:rgba(71,27,31,.10);
+  color:#ff948f;
+}
+
+/* Formulários herdados também ganham a mesma linguagem. */
+.planning-form-v0{gap:12px}
+.planning-form-support-v0{
+  padding:12px 14px;
+  border:1px solid rgba(112,163,255,.12);
+  border-radius:15px;
+  background:rgba(112,163,255,.035);
+  color:#91a0b3;
+  font-size:12px;
+}
+.planning-field-control-v0{
+  min-height:52px;
+  border-color:rgba(146,170,202,.15);
+  border-radius:15px;
+  background:linear-gradient(145deg,rgba(15,23,34,.82),rgba(9,16,25,.90));
+  color:#f0f4f9;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.018);
+}
+.planning-field-control-v0:focus,.planning-field-control-v0:focus-visible{
+  border-color:rgba(112,163,255,.44);
+  box-shadow:0 0 0 3px rgba(112,163,255,.07);
+}
+.planning-field-label-v0{color:#8796aa;font-size:10px;letter-spacing:.10em}
+
+@media(max-width:340px){
+  .planning-list-screen-v0 .planning-list-top-v0,
+  .planning-detail-hero-v0,
+  .planning-goal-progress-v0,
+  .planning-detail-list-v0{border-radius:16px}
+  .planning-entity-row-v0{border-radius:15px;padding-left:12px;padding-right:12px}
+}
