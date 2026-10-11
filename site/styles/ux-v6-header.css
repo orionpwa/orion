@@ -1,0 +1,97 @@
+/* Orion 0.1.0 · Header refinement
+   Refino do topo principal para iPhone/PWA: menos massa escura, material de vidro,
+   hierarquia mais nítida e ações compactas. Não altera navegação ou conteúdo. */
+
+.app-header-v0{
+  position:relative;
+  z-index:70;
+  min-height:calc(48px + var(--safe-top));
+  padding:var(--safe-top) max(14px,var(--safe-right)) 0 max(14px,var(--safe-left));
+  border-bottom:1px solid rgba(177,198,226,.10);
+  background:
+    radial-gradient(ellipse at 50% 108%,rgba(112,163,255,.075),transparent 48%),
+    linear-gradient(180deg,rgba(7,12,19,.62),rgba(7,12,19,.40));
+  box-shadow:
+    0 8px 26px rgba(0,0,0,.10),
+    inset 0 1px 0 rgba(255,255,255,.025);
+  -webkit-backdrop-filter:blur(28px) saturate(165%) brightness(1.05);
+  backdrop-filter:blur(28px) saturate(165%) brightness(1.05);
+}
+
+.app-header-v0::before{
+  content:"";
+  position:absolute;
+  left:12px;
+  right:12px;
+  top:var(--safe-top);
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.055),transparent);
+  pointer-events:none;
+}
+
+.app-header-v0::after{
+  content:"";
+  position:absolute;
+  left:8%;
+  right:8%;
+  bottom:-1px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(112,163,255,.20) 50%,transparent);
+  pointer-events:none;
+}
+
+.shell-title-v0{
+  font-size:16.5px;
+  line-height:1.15;
+  font-weight:770;
+  letter-spacing:-.026em;
+  color:#f3f6fb;
+  text-shadow:0 1px 10px rgba(0,0,0,.18);
+}
+
+.shell-action-v0,
+.shell-back-v0{
+  min-height:34px;
+  border-radius:999px;
+  color:#88b3ff;
+  font-size:12.5px;
+  font-weight:700;
+  letter-spacing:-.012em;
+  transition:background-color .15s ease,border-color .15s ease,color .15s ease,transform .15s ease,box-shadow .15s ease;
+}
+
+.shell-action-v0{
+  padding:0 10px;
+  border:1px solid rgba(135,177,249,.12);
+  background:linear-gradient(180deg,rgba(112,163,255,.070),rgba(112,163,255,.025));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.shell-back-v0{
+  padding:0 6px 0 4px;
+  border:1px solid transparent;
+  background:transparent;
+}
+
+.shell-action-v0:active,
+.shell-back-v0:active{
+  background:rgba(112,163,255,.095);
+  border-color:rgba(135,177,249,.16);
+  transform:scale(.97);
+}
+
+@supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+  .app-header-v0{
+    background:linear-gradient(180deg,rgba(8,13,20,.97),rgba(8,13,20,.93));
+  }
+}
+
+@media(max-width:370px){
+  .app-header-v0{
+    min-height:calc(46px + var(--safe-top));
+    padding-left:max(12px,var(--safe-left));
+    padding-right:max(12px,var(--safe-right));
+  }
+  .shell-title-v0{font-size:16px}
+  .shell-action-v0,.shell-back-v0{font-size:12px}
+}
