@@ -7,7 +7,7 @@
   grid-template-rows:auto minmax(0,1fr) auto;
   color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;
-  background:#0a0a0a;
+  background:#070b11;
 }
 .pwa-standalone .app-shell-v0{height:100vh}
 .app-shell-v0.internal-route-v0{grid-template-rows:auto minmax(0,1fr)}
@@ -18,8 +18,9 @@
   grid-template-columns:minmax(72px,1fr) auto minmax(72px,1fr);
   align-items:center;
   gap:8px;
-  border-bottom:1px solid rgba(255,255,255,.14);
-  background:#0a0a0a;
+  border-bottom:1px solid rgba(112,163,255,.13);
+  background:linear-gradient(180deg,rgba(7,11,17,.98),rgba(8,13,20,.96));
+  box-shadow:0 8px 24px rgba(0,0,0,.10);
 }
 .shell-header-leading-v0{justify-self:start;min-width:0}
 .shell-header-trailing-v0{justify-self:end;min-width:0}
@@ -38,7 +39,7 @@
   padding:0 8px;
   border:0;
   background:transparent;
-  color:inherit;
+  color:#78a9ff;
   font:inherit;
   font-size:14px;
   font-weight:650;
@@ -49,20 +50,20 @@
 .shell-action-v0{text-align:right}
 .app-content-v0{min-width:0;min-height:0;overflow:hidden}
 
-/* Orion floating dock: inspired by the compact mobile capsule pattern, without copying a product-specific identity. */
+/* Orion floating dock: compacto, translúcido e com ênfase apenas no destino ativo. */
 .bottom-nav-v0{
   width:auto;
-  min-height:66px;
-  margin:8px max(12px,var(--safe-right)) calc(8px + var(--safe-bottom)) max(12px,var(--safe-left));
-  padding:6px;
+  min-height:62px;
+  margin:7px max(12px,var(--safe-right)) calc(7px + var(--safe-bottom)) max(12px,var(--safe-left));
+  padding:5px;
   display:grid;
   grid-template-columns:repeat(5,minmax(0,1fr));
   align-items:center;
   gap:4px;
-  border:1px solid rgba(255,255,255,.11);
-  border-radius:30px;
-  background:rgba(30,34,38,.96);
-  box-shadow:0 14px 38px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.035);
+  border:1px solid rgba(112,163,255,.13);
+  border-radius:28px;
+  background:linear-gradient(180deg,rgba(17,24,33,.96),rgba(10,15,22,.97));
+  box-shadow:0 12px 30px rgba(0,0,0,.32),inset 0 1px rgba(255,255,255,.035);
   backdrop-filter:blur(20px);
   -webkit-backdrop-filter:blur(20px);
 }
@@ -70,35 +71,35 @@
 .nav-item-v0{
   position:relative;
   min-width:0;
-  min-height:54px;
+  min-height:50px;
   padding:0;
   display:grid;
   place-items:center;
   border:0;
-  border-radius:24px;
+  border-radius:22px;
   background:transparent;
-  color:#c6ccd3;
+  color:#8290a2;
   touch-action:manipulation;
-  transition:background-color .16s ease,color .16s ease,transform .16s ease;
+  transition:background-color .16s ease,color .16s ease,transform .16s ease,box-shadow .16s ease;
 }
 .nav-item-v0:active{transform:scale(.96)}
 .nav-item-v0.active{
-  color:#eef5ff;
-  background:rgba(255,255,255,.085);
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.028);
+  color:#78a9ff;
+  background:radial-gradient(circle at 50% 28%,rgba(112,163,255,.16),rgba(112,163,255,.055) 62%,transparent 100%);
+  box-shadow:inset 0 0 0 1px rgba(112,163,255,.065),0 0 20px rgba(112,163,255,.035);
 }
 .nav-item-v0.active::after{
   content:"";
   position:absolute;
-  bottom:5px;
-  width:16px;
+  bottom:4px;
+  width:18px;
   height:2px;
   border-radius:999px;
-  background:var(--blue);
-  box-shadow:0 0 10px rgba(41,147,255,.45);
+  background:linear-gradient(90deg,#70a3ff,#8bbaff);
+  box-shadow:0 0 10px rgba(112,163,255,.36);
 }
-.nav-icon-v0{width:27px;height:27px;stroke-width:1.85}
-.nav-item-v0.active .nav-icon-v0{width:29px;height:29px}
+.nav-icon-v0{width:25px;height:25px;stroke-width:1.8}
+.nav-item-v0.active .nav-icon-v0{width:27px;height:27px;filter:drop-shadow(0 0 7px rgba(112,163,255,.18))}
 .nav-label-v0{
   position:absolute!important;
   width:1px!important;
@@ -114,8 +115,8 @@
   .app-header-v0{grid-template-columns:minmax(64px,1fr) auto minmax(64px,1fr);padding-left:max(10px,var(--safe-left));padding-right:max(10px,var(--safe-right))}
   .shell-title-v0{font-size:17px}
   .shell-action-v0,.shell-back-v0{font-size:13px;padding-left:4px;padding-right:4px}
-  .bottom-nav-v0{margin-left:max(8px,var(--safe-left));margin-right:max(8px,var(--safe-right));padding:5px;gap:2px}
-  .nav-item-v0{min-height:50px}
-  .nav-icon-v0{width:24px;height:24px}
-  .nav-item-v0.active .nav-icon-v0{width:26px;height:26px}
+  .bottom-nav-v0{margin-left:max(8px,var(--safe-left));margin-right:max(8px,var(--safe-right));padding:4px;gap:2px}
+  .nav-item-v0{min-height:48px}
+  .nav-icon-v0{width:23px;height:23px}
+  .nav-item-v0.active .nav-icon-v0{width:25px;height:25px}
 }
