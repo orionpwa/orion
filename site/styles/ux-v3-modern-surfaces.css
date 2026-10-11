@@ -1,0 +1,352 @@
+/* Orion 0.1.0 · Modern surfaces
+   Refinamento visual final das telas principais. Não altera regras, dados ou navegação. */
+
+.app-shell-v0{
+  --modern-bg:#070b11;
+  --modern-bg-2:#09101a;
+  --modern-surface:rgba(15,23,34,.86);
+  --modern-surface-strong:rgba(17,27,40,.94);
+  --modern-surface-soft:rgba(255,255,255,.025);
+  --modern-line:rgba(145,169,201,.14);
+  --modern-line-strong:rgba(112,163,255,.24);
+  --modern-text:#f3f6fb;
+  --modern-muted:#94a2b5;
+  --modern-muted-2:#748297;
+  --modern-blue:#78a9ff;
+  --modern-gold:#d9b96f;
+  --modern-red:#ff8c86;
+  --modern-green:#63d79e;
+  background:
+    radial-gradient(circle at 82% -6%,rgba(112,163,255,.08),transparent 29%),
+    linear-gradient(180deg,#070b11 0%,#080d14 58%,#070b11 100%);
+}
+
+/* Topo: mais compacto, mais limpo e com material próprio. */
+.app-header-v0{
+  position:relative;
+  z-index:70;
+  min-height:calc(52px + var(--safe-top));
+  padding:var(--safe-top) max(16px,var(--safe-right)) 0 max(16px,var(--safe-left));
+  border-bottom:1px solid rgba(151,172,201,.11);
+  background:
+    radial-gradient(circle at 50% 118%,rgba(112,163,255,.055),transparent 44%),
+    linear-gradient(180deg,rgba(7,11,17,.96),rgba(7,12,19,.88));
+  box-shadow:0 10px 28px rgba(0,0,0,.13);
+  backdrop-filter:blur(24px) saturate(140%);
+  -webkit-backdrop-filter:blur(24px) saturate(140%);
+}
+.app-header-v0::after{
+  content:"";
+  position:absolute;
+  left:18%;
+  right:18%;
+  bottom:-1px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(112,163,255,.18),transparent);
+  pointer-events:none;
+}
+.shell-title-v0{
+  font-size:17px;
+  font-weight:760;
+  letter-spacing:-.022em;
+  color:var(--modern-text);
+}
+.shell-action-v0,.shell-back-v0{
+  min-height:38px;
+  padding:0 7px;
+  border-radius:11px;
+  color:#82adfb;
+  font-size:13px;
+  font-weight:690;
+  letter-spacing:-.01em;
+  transition:background-color .15s ease,color .15s ease,transform .15s ease;
+}
+.shell-action-v0:active,.shell-back-v0:active{
+  background:rgba(112,163,255,.07);
+  transform:scale(.97);
+}
+
+/* Fundo compartilhado das raízes para que não pareçam páginas pretas independentes. */
+.summary-screen-v0,
+.movements-screen-v0,
+.planning-screen-v0,
+.accounts-screen-v0,
+.fiscal-screen-v1,
+.settings-screen-v0{
+  background:
+    radial-gradient(circle at 94% 0%,rgba(112,163,255,.055),transparent 30%),
+    radial-gradient(circle at 4% 34%,rgba(217,185,111,.022),transparent 24%),
+    linear-gradient(180deg,#080d14 0%,#070b11 60%,#070b11 100%);
+}
+
+/* ===== Movimentos ===== */
+.movements-screen-v0{padding-top:15px}
+.movements-toolbar-v0{
+  min-height:38px;
+  padding:0 0 8px;
+  border-bottom:0;
+}
+.movements-filter-button-v0{
+  min-height:34px;
+  padding:0 11px;
+  border:1px solid rgba(112,163,255,.17);
+  border-radius:999px;
+  background:linear-gradient(180deg,rgba(112,163,255,.075),rgba(112,163,255,.035));
+  color:#8db5ff;
+  box-shadow:inset 0 1px rgba(255,255,255,.025);
+}
+.movements-date-v0{
+  padding:15px 4px 8px;
+  color:#8290a3;
+  font-size:11px;
+  font-weight:760;
+  letter-spacing:.055em;
+  font-variant-numeric:tabular-nums;
+}
+.movement-row-v0{
+  min-height:66px;
+  margin-bottom:7px;
+  padding:12px 13px;
+  border:1px solid rgba(145,169,201,.11);
+  border-radius:16px;
+  background:
+    radial-gradient(circle at 96% 8%,rgba(112,163,255,.035),transparent 34%),
+    linear-gradient(150deg,rgba(15,23,34,.86),rgba(10,17,26,.94));
+  box-shadow:inset 0 1px rgba(255,255,255,.015);
+  transition:border-color .15s ease,background-color .15s ease,transform .15s ease;
+}
+.movement-row-v0:active{
+  transform:scale(.992);
+  border-color:rgba(112,163,255,.22);
+}
+.movement-row-title-v0{font-size:14px;font-weight:700;color:#eef3f9}
+.movement-row-meta-v0{color:#8795a8;font-size:11px}
+.movement-row-value-v0{font-size:14px;font-variant-numeric:tabular-nums}
+
+/* ===== Planejar ===== */
+.planning-screen-v0{padding-top:18px}
+.planning-root-intro-v0{
+  padding:0 3px;
+  color:#95a3b5;
+  font-size:13px;
+  line-height:1.5;
+}
+.planning-domain-list-v0{
+  margin-top:15px;
+  padding:4px;
+  overflow:hidden;
+  border:1px solid rgba(145,169,201,.13);
+  border-radius:21px;
+  background:
+    radial-gradient(circle at 96% 2%,rgba(112,163,255,.055),transparent 34%),
+    linear-gradient(150deg,rgba(15,23,34,.90),rgba(10,17,26,.96));
+  box-shadow:0 14px 34px rgba(0,0,0,.14),inset 0 1px rgba(255,255,255,.018);
+}
+.planning-domain-row-v0{
+  position:relative;
+  min-height:76px;
+  padding:14px 12px 14px 17px;
+  border-top:1px solid rgba(145,169,201,.10);
+  border-radius:16px;
+  transition:background-color .15s ease,transform .15s ease;
+}
+.planning-domain-row-v0:first-child{border-top:0}
+.planning-domain-row-v0:last-child{border-bottom:0}
+.planning-domain-row-v0::before{
+  content:"";
+  position:absolute;
+  left:5px;
+  top:50%;
+  width:3px;
+  height:28px;
+  border-radius:999px;
+  transform:translateY(-50%);
+  background:#789bca;
+  opacity:.62;
+}
+.planning-domain-row-v0:nth-child(2)::before{background:var(--modern-red);opacity:.54}
+.planning-domain-row-v0:nth-child(3)::before{background:var(--modern-gold);opacity:.68}
+.planning-domain-row-v0:active{background:rgba(112,163,255,.045);transform:scale(.994)}
+.planning-domain-copy-v0 strong{font-size:15px;font-weight:720;color:#eef3f9}
+.planning-domain-copy-v0 small{color:#8492a5;font-size:11px}
+.planning-domain-side-v0 strong{color:#dbe5f2;font-size:14px;font-variant-numeric:tabular-nums}
+.planning-domain-side-v0>span{color:#7798c3;font-size:22px}
+
+/* ===== Contas ===== */
+.accounts-screen-v0{padding-top:16px}
+.accounts-account-section-v1,
+.accounts-card-section-v1{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  column-gap:12px;
+  align-items:center;
+  padding:14px;
+  border:1px solid rgba(145,169,201,.13);
+  border-radius:21px;
+  background:
+    radial-gradient(circle at 96% 2%,rgba(112,163,255,.045),transparent 34%),
+    linear-gradient(150deg,rgba(15,23,34,.90),rgba(10,17,26,.96));
+  box-shadow:0 14px 34px rgba(0,0,0,.12),inset 0 1px rgba(255,255,255,.018);
+}
+.accounts-card-section-v1{
+  margin-top:12px;
+  padding-top:14px;
+  border-top:1px solid rgba(145,169,201,.13);
+}
+.accounts-section-title-v1{grid-column:1;margin:0}
+.accounts-section-title-v1 h2{font-size:17px;font-weight:740;letter-spacing:-.02em}
+.accounts-account-section-v1>.accounts-inline-primary-v0,
+.accounts-card-section-v1>.accounts-inline-primary-v0{
+  grid-column:2;
+  justify-self:end;
+  min-height:34px;
+  margin:0;
+  padding:0 10px;
+  border:1px solid rgba(112,163,255,.18);
+  border-radius:999px;
+  background:rgba(112,163,255,.055);
+  color:#83adfb;
+  font-size:12px;
+  font-weight:720;
+}
+.accounts-account-section-v1>.accounts-list-v0,
+.accounts-card-section-v1>.accounts-list-v0,
+.accounts-account-section-v1>.accounts-empty-compact-v1,
+.accounts-card-section-v1>.accounts-empty-compact-v1{
+  grid-column:1/-1;
+}
+.accounts-list-v0{
+  margin-top:10px;
+  border-top:1px solid rgba(145,169,201,.10);
+}
+.account-row-v0{
+  min-height:72px;
+  padding:11px 2px;
+  border-top:1px solid rgba(145,169,201,.09);
+}
+.account-row-v0:first-child{border-top:0}
+.account-row-v0:last-child{border-bottom:0}
+.account-logo-v0{
+  width:40px;
+  height:40px;
+  border-radius:13px;
+  border:1px solid rgba(184,203,229,.14);
+  box-shadow:0 7px 18px rgba(0,0,0,.18),inset 0 1px rgba(255,255,255,.04);
+}
+.account-row-copy-v0 strong{font-size:14px;font-weight:720;color:#eef3f9}
+.account-row-copy-v0 small{color:#8795a8;font-size:11px}
+.account-row-balance-v0{font-size:14px;font-variant-numeric:tabular-nums;color:#e7edf6}
+.account-row-chevron-v0{color:#7898c1;font-size:22px}
+.accounts-empty-compact-v1{padding:13px 2px 3px;color:#7e8c9f;font-size:12px}
+
+/* ===== Ajustes ===== */
+.settings-screen-v0{gap:13px;padding-top:16px}
+.settings-profile-summary-v0{
+  gap:4px;
+  padding:15px 16px;
+  border:1px solid rgba(112,163,255,.16);
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 94% 0%,rgba(112,163,255,.08),transparent 34%),
+    linear-gradient(150deg,rgba(17,27,40,.93),rgba(11,18,27,.97));
+  box-shadow:0 14px 34px rgba(0,0,0,.13),inset 0 1px rgba(255,255,255,.02);
+}
+.settings-profile-summary-v0 strong{font-size:22px;font-weight:760;letter-spacing:-.025em}
+.settings-profile-summary-v0 span{color:#8e9caf;font-size:12px}
+.settings-list-v0{
+  overflow:hidden;
+  border:1px solid rgba(145,169,201,.13);
+  border-radius:20px;
+  background:linear-gradient(150deg,rgba(15,23,34,.90),rgba(10,17,26,.96));
+  box-shadow:0 14px 34px rgba(0,0,0,.10),inset 0 1px rgba(255,255,255,.015);
+}
+.settings-row-v0,
+.settings-action-v0{
+  min-height:66px;
+  padding:12px 14px;
+  border-bottom:1px solid rgba(145,169,201,.10);
+  transition:background-color .15s ease;
+}
+.settings-row-v0:last-child,.settings-action-v0:last-child{border-bottom:0}
+.settings-row-v0:active,.settings-action-v0:active{background:rgba(112,163,255,.04)}
+.settings-row-copy-v0 strong{font-size:14px;font-weight:720;color:#eef3f9}
+.settings-row-copy-v0 small{color:#8795a8;font-size:11px}
+.settings-row-value-v0{color:#a8b6c9;font-size:12px}
+.settings-row-chevron-v0{color:#7898c1;font-size:22px}
+.settings-danger-zone-v0{
+  margin-top:0;
+  overflow:hidden;
+  border:1px solid rgba(255,140,134,.18);
+  border-radius:18px;
+  background:linear-gradient(150deg,rgba(31,19,22,.66),rgba(15,17,23,.94));
+}
+.settings-danger-zone-v0 .settings-row-v0{border-bottom:0}
+.settings-row-v0.danger .settings-row-copy-v0 strong,
+.settings-danger-zone-v0 .settings-row-copy-v0 strong{color:#ff938d}
+
+/* ===== Fiscal ===== */
+.fiscal-screen-v1{gap:12px;padding-top:16px}
+.fiscal-hero-v1{
+  padding:17px 18px;
+  border-color:rgba(112,163,255,.20);
+  border-radius:23px;
+  background:
+    radial-gradient(circle at 92% 3%,rgba(112,163,255,.12),transparent 34%),
+    linear-gradient(145deg,rgba(17,27,40,.96),rgba(10,16,24,.98));
+  box-shadow:0 16px 38px rgba(0,0,0,.16),inset 0 1px rgba(255,255,255,.02);
+}
+.fiscal-hero-v1 strong{font-size:21px;letter-spacing:-.035em}
+.fiscal-hero-v1 p{color:#95a2b3;font-size:12px;line-height:1.48}
+.fiscal-kicker-v1{color:#dfbf75;font-size:9px;letter-spacing:.17em}
+.fiscal-metrics-v1{gap:9px}
+.fiscal-metric-v1{
+  min-height:78px;
+  padding:13px 14px;
+  border-color:rgba(145,169,201,.12);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(112,163,255,.035),transparent 42%),
+    linear-gradient(150deg,rgba(15,23,34,.88),rgba(10,17,26,.95));
+}
+.fiscal-metric-v1 span{color:#8f9daf;font-size:9px}
+.fiscal-metric-v1 strong{font-size:16px}
+.fiscal-metric-v1 small{color:#718095}
+.fiscal-section-v1 h2{margin:7px 4px 2px;font-size:14px;letter-spacing:-.01em}
+.fiscal-action-v1{
+  min-height:70px;
+  padding:13px 14px;
+  border-color:rgba(145,169,201,.12);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(112,163,255,.035),transparent 40%),
+    linear-gradient(150deg,rgba(15,23,34,.88),rgba(10,17,26,.95));
+  box-shadow:inset 0 1px rgba(255,255,255,.014);
+  transition:border-color .15s ease,transform .15s ease;
+}
+.fiscal-action-v1:active{transform:scale(.994);border-color:rgba(112,163,255,.22)}
+.fiscal-action-copy-v1 strong{font-size:13px}
+.fiscal-action-copy-v1 span{color:#8997aa;font-size:10px}
+.fiscal-action-chevron-v1{color:#7898c1;font-size:22px}
+.fiscal-status-row-v1{
+  min-height:64px;
+  border-color:rgba(145,169,201,.11);
+  border-radius:17px;
+  background:linear-gradient(150deg,rgba(14,22,32,.82),rgba(10,17,26,.92));
+}
+
+/* Coerência de toque sem animação excessiva. */
+@media(prefers-reduced-motion:no-preference){
+  .planning-domain-row-v0,
+  .account-row-v0,
+  .settings-row-v0,
+  .fiscal-action-v1,
+  .movement-row-v0{transition-duration:.15s}
+}
+
+@media(max-width:370px){
+  .app-header-v0{padding-left:max(12px,var(--safe-left));padding-right:max(12px,var(--safe-right))}
+  .shell-title-v0{font-size:16px}
+  .accounts-account-section-v1,
+  .accounts-card-section-v1{padding:12px}
+  .settings-profile-summary-v0{padding-left:14px;padding-right:14px}
+}
