@@ -1,5 +1,5 @@
 /* Orion 0.1.0 · Coerência do Resumo
-   O card de fase passa a refletir a meta/reserva real e absorve o antigo bloco "Próximo passo". */
+   O card de fase reflete a meta/reserva real e benefícios ficam junto do saldo principal sem somar ao Livre. */
 .summary-base-phase-v2{
   padding-bottom:11px;
 }
@@ -68,6 +68,84 @@
 .summary-base-phase-action-v2:active{
   opacity:.76;
 }
+
+/* Benefícios são uma disponibilidade paralela ao Livre, não parte dele. */
+.summary-base-benefit-companion-v2{
+  margin-top:8px;
+  padding:11px 14px 10px;
+  border:1px solid rgba(217,185,111,.22);
+  border-radius:16px;
+  background:
+    radial-gradient(circle at 96% 0%,rgba(217,185,111,.10),transparent 38%),
+    linear-gradient(145deg,rgba(22,24,28,.96),rgba(13,19,27,.98));
+  box-shadow:inset 0 1px rgba(255,255,255,.018);
+}
+.summary-base-benefit-companion-head-v2{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.summary-base-benefit-companion-head-v2 .summary-base-kicker-v2{
+  color:var(--base-gold);
+  font-size:9px;
+  letter-spacing:.14em;
+}
+.summary-base-benefit-companion-head-v2 > small{
+  color:#7f8a99;
+  font-size:9px;
+  font-weight:650;
+  white-space:nowrap;
+}
+.summary-base-benefit-companion-list-v2{
+  display:grid;
+  margin-top:7px;
+}
+.summary-base-benefit-companion-row-v2{
+  min-height:44px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:14px;
+}
+.summary-base-benefit-companion-row-v2 + .summary-base-benefit-companion-row-v2{
+  border-top:1px solid rgba(217,185,111,.10);
+}
+.summary-base-benefit-companion-copy-v2{
+  min-width:0;
+  display:grid;
+  gap:2px;
+}
+.summary-base-benefit-companion-copy-v2 strong{
+  color:#f0f3f7;
+  font-size:12px;
+  line-height:1.35;
+}
+.summary-base-benefit-companion-copy-v2 small{
+  color:#7f8ea1;
+  font-size:9px;
+  line-height:1.35;
+}
+.summary-base-benefit-companion-value-v2{
+  color:var(--base-gold);
+  font-size:16px;
+  line-height:1.2;
+  font-weight:760;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+.summary-base-benefit-companion-total-v2{
+  display:block;
+  padding-top:6px;
+  border-top:1px solid rgba(217,185,111,.10);
+  color:#8d98a7;
+  font-size:9px;
+  line-height:1.35;
+}
+.summary-base-benefit-companion-v2 + .summary-base-phase-v2{
+  margin-top:8px;
+}
+
 /* O antigo cartão de orientação foi incorporado ao card de fase. */
 .summary-base-guidance-v2,
 .summary-base-next-action-v2{
@@ -76,4 +154,7 @@
 @media(max-width:360px){
   .summary-base-phase-title-v2{font-size:17px}
   .summary-base-progress-copy-v2{gap:8px}
+  .summary-base-benefit-companion-v2{padding-left:12px;padding-right:12px}
+  .summary-base-benefit-companion-row-v2{gap:10px}
+  .summary-base-benefit-companion-value-v2{font-size:15px}
 }
