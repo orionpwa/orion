@@ -52,113 +52,118 @@
 .app-content-v0{min-width:0;min-height:0;overflow:hidden}
 
 /*
- * Orion floating dock · revisão V3 Glass
- * Material translúcido mais próximo da linguagem do iOS: o conteúdo do Orion
- * permanece visível e desfocado sob a barra. O dock ganha massa sem espalhar
- * os cinco destinos e continua respeitando a safe area do aparelho.
+ * Orion floating dock · revisão V3.1 Glass
+ * Retoma as proporções compactas aprovadas no V2 e concentra o refinamento no
+ * material. Em WebKit/iOS o dock usa uma camada realmente translúcida com blur
+ * do conteúdo que passa por trás; navegadores sem suporte recebem fallback opaco.
  */
 .bottom-nav-v0{
   position:absolute;
   z-index:60;
   left:50%;
   right:auto;
-  bottom:max(7px,calc(var(--safe-bottom) - 7px));
-  width:min(372px,calc(100% - 20px - var(--safe-left) - var(--safe-right)));
-  min-height:80px;
+  bottom:max(9px,calc(var(--safe-bottom) - 9px));
+  width:min(356px,calc(100% - 32px - var(--safe-left) - var(--safe-right)));
+  min-height:72px;
   margin:0;
-  padding:8px 9px;
+  padding:6px 8px;
   display:grid;
   grid-template-columns:repeat(5,minmax(0,1fr));
   align-items:center;
-  gap:4px;
+  gap:2px;
   overflow:hidden;
-  border:1px solid rgba(223,235,250,.16);
-  border-radius:38px;
-  background:
-    linear-gradient(180deg,rgba(28,39,53,.46),rgba(8,13,21,.54)),
-    linear-gradient(105deg,rgba(118,166,255,.055),rgba(255,255,255,.018) 44%,rgba(118,166,255,.035));
+  border:1px solid rgba(224,235,250,.17);
+  border-radius:36px;
+  background:rgba(8,13,21,.78);
+  background-clip:padding-box;
   box-shadow:
-    0 18px 48px rgba(0,0,0,.34),
-    0 3px 12px rgba(0,0,0,.18),
-    inset 0 1px 0 rgba(255,255,255,.10),
+    0 14px 38px rgba(0,0,0,.28),
+    0 2px 10px rgba(0,0,0,.15),
+    inset 0 1px 0 rgba(255,255,255,.09),
     inset 0 -1px 0 rgba(255,255,255,.025);
-  backdrop-filter:blur(36px) saturate(180%) contrast(108%) brightness(1.02);
-  -webkit-backdrop-filter:blur(36px) saturate(180%) contrast(108%) brightness(1.02);
-  transform:translateX(-50%);
-  isolation:isolate;
+  transform:translate3d(-50%,0,0);
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
+}
+@supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+  .bottom-nav-v0{
+    background:rgba(9,15,24,.24);
+    -webkit-backdrop-filter:blur(24px) saturate(175%) brightness(1.08);
+    backdrop-filter:blur(24px) saturate(175%) brightness(1.08);
+  }
 }
 .bottom-nav-v0::before{
   content:"";
   position:absolute;
   inset:0;
-  z-index:-1;
+  z-index:0;
   border-radius:inherit;
   background:
-    radial-gradient(ellipse at 50% -8%,rgba(255,255,255,.10),transparent 43%),
-    radial-gradient(circle at 16% 36%,rgba(112,163,255,.065),transparent 30%),
-    linear-gradient(112deg,rgba(255,255,255,.026),transparent 38%,rgba(112,163,255,.04));
+    linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.012) 48%,rgba(112,163,255,.018)),
+    radial-gradient(circle at 18% 8%,rgba(112,163,255,.09),transparent 34%);
   pointer-events:none;
 }
 .bottom-nav-v0::after{
   content:"";
   position:absolute;
   inset:1px;
-  z-index:-1;
-  border-radius:calc(38px - 1px);
-  border:1px solid rgba(255,255,255,.025);
+  z-index:0;
+  border-radius:35px;
+  border:1px solid rgba(255,255,255,.028);
   pointer-events:none;
 }
 .bottom-nav-v0[hidden]{display:none}
 .nav-item-v0{
   position:relative;
+  z-index:1;
   min-width:0;
-  min-height:64px;
+  min-height:58px;
   padding:0;
   display:grid;
   place-items:center;
   border:0;
-  border-radius:25px;
+  border-radius:27px;
   background:transparent;
-  color:rgba(169,184,202,.78);
-  opacity:.94;
+  color:rgba(173,187,204,.80);
   touch-action:manipulation;
   transition:background-color .16s ease,color .16s ease,transform .16s ease,box-shadow .16s ease,opacity .16s ease;
 }
 .nav-item-v0:active{transform:scale(.955)}
 .nav-item-v0.active{
-  color:#83adff;
-  opacity:1;
+  color:#82adff;
   background:
-    radial-gradient(circle at 50% 24%,rgba(126,172,255,.26),rgba(76,123,210,.11) 58%,rgba(56,91,153,.055) 100%),
-    linear-gradient(180deg,rgba(35,54,83,.34),rgba(19,31,49,.20));
+    radial-gradient(circle at 50% 26%,rgba(121,169,255,.20),rgba(69,112,190,.09) 60%,rgba(42,69,116,.035) 100%),
+    rgba(35,54,82,.09);
   box-shadow:
-    inset 0 0 0 1px rgba(139,181,255,.13),
-    inset 0 1px 0 rgba(255,255,255,.06),
-    0 8px 24px rgba(24,68,139,.14);
+    inset 0 0 0 1px rgba(137,181,255,.12),
+    inset 0 1px 0 rgba(255,255,255,.055),
+    0 7px 20px rgba(25,70,142,.11);
 }
 .nav-item-v0.active::after{
   content:"";
   position:absolute;
-  bottom:5px;
-  width:22px;
-  height:3px;
+  bottom:4px;
+  width:20px;
+  height:2px;
   border-radius:999px;
-  background:linear-gradient(90deg,#72a5ff,#9ac2ff);
-  box-shadow:0 0 12px rgba(112,163,255,.46);
+  background:linear-gradient(90deg,#70a3ff,#91beff);
+  box-shadow:0 0 11px rgba(112,163,255,.42);
 }
 .nav-icon-v0{
-  width:28px;
-  height:28px;
-  stroke-width:1.9;
+  width:27px;
+  height:27px;
+  stroke-width:1.85;
   transition:width .16s ease,height .16s ease,filter .16s ease,opacity .16s ease;
 }
+.nav-icon-v0 .nav-icon-fill{opacity:.18;transition:opacity .16s ease}
 .nav-item-v0:not(.active) .nav-icon-v0{opacity:.88}
 .nav-item-v0.active .nav-icon-v0{
-  width:31px;
-  height:31px;
-  stroke-width:2.0;
-  filter:drop-shadow(0 0 9px rgba(112,163,255,.25));
+  width:30px;
+  height:30px;
+  stroke-width:1.95;
+  filter:drop-shadow(0 0 8px rgba(112,163,255,.22));
 }
+.nav-item-v0.active .nav-icon-v0 .nav-icon-fill{opacity:.30}
 .nav-label-v0{
   position:absolute!important;
   width:1px!important;
@@ -180,16 +185,16 @@
   .accounts-screen-v0,
   .fiscal-screen-v1
 ){
-  padding-bottom:calc(116px + max(12px,var(--safe-bottom)));
-  scroll-padding-bottom:calc(116px + max(12px,var(--safe-bottom)));
+  padding-bottom:calc(104px + max(12px,var(--safe-bottom)));
+  scroll-padding-bottom:calc(104px + max(12px,var(--safe-bottom)));
 }
 
 @media(max-width:340px){
   .app-header-v0{grid-template-columns:minmax(64px,1fr) auto minmax(64px,1fr);padding-left:max(10px,var(--safe-left));padding-right:max(10px,var(--safe-right))}
   .shell-title-v0{font-size:17px}
   .shell-action-v0,.shell-back-v0{font-size:13px;padding-left:4px;padding-right:4px}
-  .bottom-nav-v0{width:min(330px,calc(100% - 14px - var(--safe-left) - var(--safe-right)));min-height:76px;padding:7px 7px;gap:2px;border-radius:35px}
-  .nav-item-v0{min-height:60px;border-radius:23px}
-  .nav-icon-v0{width:26px;height:26px}
-  .nav-item-v0.active .nav-icon-v0{width:29px;height:29px}
+  .bottom-nav-v0{width:min(324px,calc(100% - 20px - var(--safe-left) - var(--safe-right)));min-height:68px;padding:5px 7px;gap:1px}
+  .nav-item-v0{min-height:54px;border-radius:25px}
+  .nav-icon-v0{width:25px;height:25px}
+  .nav-item-v0.active .nav-icon-v0{width:28px;height:28px}
 }
