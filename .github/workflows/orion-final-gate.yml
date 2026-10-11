@@ -79,13 +79,14 @@ jobs:
           grep -q "width:356px" site/styles/ux-v4-dock.css
           grep -q "max-width:calc(100% - 32px - var(--safe-left) - var(--safe-right))" site/styles/ux-v4-dock.css
           grep -q "min-height:72px" site/styles/ux-v4-dock.css
-          grep -q "rgba(17,24,35,.28)" site/styles/ux-v4-dock.css
-          grep -q -- "-webkit-backdrop-filter:blur(30px) saturate(185%) brightness(1.08)" site/styles/ux-v4-dock.css
-          grep -q "backdrop-filter:blur(30px) saturate(185%) brightness(1.08)" site/styles/ux-v4-dock.css
+          grep -q "rgba(7,13,22,.10)" site/styles/ux-v4-dock.css
+          grep -q -- "-webkit-backdrop-filter:blur(16px) saturate(175%) brightness(1.12) contrast(1.03)" site/styles/ux-v4-dock.css
+          grep -q "backdrop-filter:blur(16px) saturate(175%) brightness(1.12) contrast(1.03)" site/styles/ux-v4-dock.css
+          grep -q "background-clip:padding-box" site/styles/ux-v4-dock.css
           grep -q "app-shell-v0:not(.internal-route-v0)" site/styles/ux-v4-dock.css
           grep -q "scroll-padding-bottom" site/styles/ux-v4-dock.css
           grep -q "ux-v0-shell.css?v=9" site/index.html
-          grep -q "ux-v4-dock.css?v=1" site/index.html
+          grep -q "ux-v4-dock.css?v=2" site/index.html
 
       - name: Check movement category presentation
         shell: bash
